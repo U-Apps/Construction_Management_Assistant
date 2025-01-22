@@ -13,7 +13,7 @@ namespace ConstructionManagementAssistant_EF.Configurations
     public static class DependencyInjection
     {
 
-        public static IServiceCollection AddBusinessCore(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
         {
             return services.AddEntityFrameworkCoreServices(configuration);
         }

@@ -3,6 +3,7 @@ namespace ConstructionManagementAssistant_EF.Data
 {
     internal class AppDbContext:DbContext
     {
+        public DbSet<Client> clients { get; set; }
         public AppDbContext()
         {
 

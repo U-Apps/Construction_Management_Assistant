@@ -1,21 +1,18 @@
 ﻿
 namespace ConstructionManagementAssistant_Core.Models
 {
-    public class Client:Entity<int>
+    public enum enClientType
     {
-    
-        public string FullName {  get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
+        Company,
+        individual
+    }
+    public class Client(int id, string FullName, string email, string phoneNumber, enClientType clientType) : Entity<int>(id)
+    {
 
-        public string ClientType { get; set; }
+        public string FullName { get; set; } = FullName;
+        public string Email { get; set; } = email;
+        public string PhoneNumber { get; set; } = phoneNumber;
 
-        public Client(int id,string fullname ,string email , string phoneNumber , string clientType):base(id)
-        {
-            this.FullName = fullname;
-            this.Email = email;
-            this.PhoneNumber = phoneNumber;
-            this.ClientType = clientType;
-        }
+        public enClientType ClientType { get; set; } = clientType;
     }
 }
