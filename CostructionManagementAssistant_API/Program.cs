@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using ConstructionManagementAssistant_EF.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+builder.Services.AddBusinessCore(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
