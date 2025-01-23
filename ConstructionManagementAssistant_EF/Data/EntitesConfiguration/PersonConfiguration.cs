@@ -3,11 +3,11 @@ using ConstructionManagementAssistant_Core.Entites;
 
 namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
-    internal class TbPersonConfiguration : IEntityTypeConfiguration<Person>
+    internal class PersonConfiguration : IEntityTypeConfiguration<Person>
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
-            builder.ToTable("tbPerson");
+            builder.ToTable("Person");
 
             builder.HasKey(e => e.Id);
 

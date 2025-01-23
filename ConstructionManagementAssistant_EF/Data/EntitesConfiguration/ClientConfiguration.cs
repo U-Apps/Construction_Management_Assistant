@@ -1,12 +1,14 @@
 ﻿using ConstructionManagementAssistant_Core.Entites;
+using ConstructionManagementAssistant_Core.Enums;
+using ConstructionManagementAssistant_EF.Extentions;
 
 namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
-    internal class TbClientConfiguration : IEntityTypeConfiguration<Client>
+    internal class ClientConfiguration : IEntityTypeConfiguration<Client>
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {
-            builder.ToTable("tbClient");
+            builder.ToTable("Client");
 
             builder.HasKey(e => e.Id);
 
@@ -23,15 +25,16 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            builder.Property(c => c.ClientType)
-                .HasConversion<string>();
-
+            builder.Property(e => e.ClientType)
+                .IsRequired();
 
             builder.HasIndex(e => e.PhoneNumber, "UniquePhoneNumber")
                 .IsUnique();
 
             builder.HasIndex(e => e.Email, "UniqueEmail")
                 .IsUnique();
+
+            builder.AddEnumCheckConstraint<ClientType>("Client", "ClientType");
         }
     }
 }

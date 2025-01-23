@@ -25,7 +25,7 @@ namespace ConstructionManagementAssistant_EF.Data
 
 
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TbPersonConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PersonConfiguration).Assembly);
 
         }
 

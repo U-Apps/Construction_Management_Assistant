@@ -4,6 +4,7 @@ using ConstructionManagementAssistant_EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant_EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250123174038_RenameTablesAndAddEnityFields")]
+    partial class RenameTablesAndAddEnityFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,8 +34,9 @@ namespace ConstructionManagementAssistant_EF.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClientType")
-                        .HasColumnType("int");
+                    b.Property<string>("ClientType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -69,10 +73,7 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.HasIndex(new[] { "PhoneNumber" }, "UniquePhoneNumber")
                         .IsUnique();
 
-                    b.ToTable("Client", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_Client_ClientType", "[ClientType] IN (1, 2)");
-                        });
+                    b.ToTable("Client", (string)null);
                 });
 
             modelBuilder.Entity("ConstructionManagementAssistant_Core.Entites.Person", b =>
