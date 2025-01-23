@@ -1,4 +1,5 @@
-﻿using ConstructionManagementAssistant_EF.Data.Configuration;
+﻿using ConstructionManagementAssistant_Core.Entites;
+using ConstructionManagementAssistant_EF.Data.Configuration;
 namespace ConstructionManagementAssistant_EF.Data
 {
     internal class AppDbContext:DbContext

@@ -1,4 +1,6 @@
 ﻿
+using ConstructionManagementAssistant_Core.Entites;
+
 namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
     internal class TbPersonConfiguration : IEntityTypeConfiguration<Person>
@@ -38,7 +40,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
                 .HasMaxLength(20)
                 .IsUnicode(false);
 
-           
+
 
             builder.Property(e => e.Email)
                 .HasMaxLength(255)
