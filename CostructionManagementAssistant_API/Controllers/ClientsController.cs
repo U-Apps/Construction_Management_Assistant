@@ -1,55 +1,77 @@
-﻿using ConstructionManagementAssistant_Core.Helper;
+﻿using ConstructionManagementAssistant_Core.DTOs;
+using ConstructionManagementAssistant_Core.Helper;
+using ConstructionManagementAssistant_Core.Interfaces;
+using ConstructionManagementAssistant_Core.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructionManagementAssistant_API.Controllers
 {
-    [Route(SystemApiRouts.Client.Base)]
     [ApiController]
     public class ClientsController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ClientsController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         #region Get Methods
 
         /// <summary>
         /// الحصول على جميع العملاء
         /// </summary>
+        /// <param name="pageNumber">رقم الصفحة</param>
+        /// <param name="pageSize">حجم الصفحة</param>
         /// <returns>قائمة العملاء</returns>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetAllClients()
+        [HttpGet(SystemApiRouts.Client.GetAllCleint)]
+        [ProducesResponseType(typeof(BaseResponse<PagedResult<GetClientDto>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<BaseResponse<PagedResult<GetClientDto>>>> GetAllClients(int pageNumber = 1, int pageSize = 10)
         {
-            // Implementation goes here
-            return Ok();
+            var result = await _unitOfWork.Clients.GetAllClients(pageNumber, pageSize);
+            if (result.Items == null || !result.Items.Any())
+                return NotFound(new BaseResponse<PagedResult<GetClientDto>>(null, "لم يتم العثورالعملاء", null, false));
+
+            return Ok(new BaseResponse<PagedResult<GetClientDto>>(result, "تم جلب العملاء بنجاح "));
+
         }
 
         /// <summary>
         /// الحصول على عميل بواسطة المعرف
         /// </summary>
-        /// <param name="id">معرف العميل</param>
+        /// <param name="Id">معرف العميل</param>
         /// <returns>تفاصيل العميل</returns>
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetClientById(int id)
+        [HttpGet(SystemApiRouts.Client.GetClientById)]
+        [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<BaseResponse<GetClientDto>>> GetClientById(int Id)
         {
-            // Implementation goes here
-            return Ok();
+            var result = await _unitOfWork.Clients.GetClientById(Id);
+            if (result is null)
+                return NotFound(new BaseResponse<GetClientDto>(null, "لا يوجد عميل بهذا المعرف", null, false));
+
+            return Ok(new BaseResponse<GetClientDto>(result, "تم جلب العميل بنجاح "));
         }
-
-        #endregion
-
-        #region Post Methods
 
         /// <summary>
         /// إنشاء عميل جديد
         /// </summary>
         /// <param name="client">بيانات العميل</param>
-        /// <returns>العميل الذي تم إنشاؤه</returns>
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult CreateClient([FromBody] object client)
+        /// <remarks>
+        /// ClientType Enum Values:
+        /// 1 - individual (فرد)
+        /// 2 - Company (شركة)
+        /// </remarks>
+        [HttpPost(SystemApiRouts.Client.AddClient)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<BaseResponse<string>>> CreateClient(AddClientDto client)
         {
-            // Implementation goes here
-            return CreatedAtAction(nameof(GetClientById), new { id = 0 }, client);
+            var result = await _unitOfWork.Clients.AddClientAsync(client);
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(result);
+
         }
 
         #endregion
@@ -59,16 +81,17 @@ namespace ConstructionManagementAssistant_API.Controllers
         /// <summary>
         /// تحديث عميل موجود
         /// </summary>
-        /// <param name="id">معرف العميل</param>
         /// <param name="client">بيانات العميل المحدثة</param>
         /// <returns>لا يوجد محتوى</returns>
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateClient(int id, [FromBody] object client)
+        [HttpPut(SystemApiRouts.Client.UpdateClient)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<BaseResponse<string>>> UpdateClient(UpdateClientDto client)
         {
-            // Implementation goes here
-            return NoContent();
+            var result = await _unitOfWork.Clients.UpdateClientAsync(client);
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(result);
         }
 
         #endregion
@@ -80,13 +103,16 @@ namespace ConstructionManagementAssistant_API.Controllers
         /// </summary>
         /// <param name="id">معرف العميل</param>
         /// <returns>لا يوجد محتوى</returns>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult DeleteClient(int id)
+        [HttpDelete(SystemApiRouts.Client.DeleteClient)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<BaseResponse<string>>> DeleteClient(int id)
         {
-            // Implementation goes here
-            return NoContent();
+            var result = await _unitOfWork.Clients.DeleteClientAsync(id);
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(result);
         }
 
         #endregion
