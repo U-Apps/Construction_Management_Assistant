@@ -11,6 +11,7 @@ public static class SystemApiRouts
         public const string GetAllCleint = Base;
         public const string AddClient = Base;
         public const string UpdateClient = Base;
+        public const string DeleteClient = Base;
     }
 
 }
