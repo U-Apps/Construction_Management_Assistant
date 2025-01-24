@@ -1,6 +1,8 @@
+using ConstructionManagementAssistant_Core.Interfaces;
+using ConstructionManagementAssistant_EF.Configurations;
+using ConstructionManagementAssistant_EF.Repositories;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using ConstructionManagementAssistant_EF.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
