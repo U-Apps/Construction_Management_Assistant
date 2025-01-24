@@ -35,6 +35,9 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
                 .IsUnique();
 
             builder.AddEnumCheckConstraint<ClientType>("Client", "ClientType");
+
+            // Global filter to exclude deleted clients
+            builder.HasQueryFilter(e => !e.IsDeleted);
         }
     }
 }

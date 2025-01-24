@@ -63,6 +63,9 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
 
             builder.UseTptMappingStrategy();
 
+            // Global filter to exclude deleted clients
+            builder.HasQueryFilter(e => !e.IsDeleted);
+
 
 
         }

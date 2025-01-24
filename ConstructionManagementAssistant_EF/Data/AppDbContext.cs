@@ -2,7 +2,7 @@
 using ConstructionManagementAssistant_EF.Data.Configuration;
 namespace ConstructionManagementAssistant_EF.Data
 {
-    internal class AppDbContext:DbContext
+    public class AppDbContext : DbContext
     {
         public DbSet<Client> clients { get; set; }
         public AppDbContext()
@@ -15,8 +15,6 @@ namespace ConstructionManagementAssistant_EF.Data
         {
 
         }
-
-     
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
