@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Constants\" />
     <Folder Include="Filters\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
