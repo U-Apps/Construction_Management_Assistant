@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant_EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250123174038_RenameTablesAndAddEnityFields")]
-    partial class RenameTablesAndAddEnityFields
+    [Migration("20250125193647_ClientAndPersonTable")]
+    partial class ClientAndPersonTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,8 @@ namespace ConstructionManagementAssistant_EF.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClientType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ClientType")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -73,7 +72,10 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.HasIndex(new[] { "PhoneNumber" }, "UniquePhoneNumber")
                         .IsUnique();
 
-                    b.ToTable("Client", (string)null);
+                    b.ToTable("Clients", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Clients_ClientType", "[ClientType] IN (1, 2)");
+                        });
                 });
 
             modelBuilder.Entity("ConstructionManagementAssistant_Core.Entites.Person", b =>
@@ -152,7 +154,7 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.HasIndex(new[] { "PhoneNumber" }, "UniquePhoneNumber")
                         .IsUnique();
 
-                    b.ToTable("Person", (string)null);
+                    b.ToTable("People", (string)null);
 
                     b.UseTptMappingStrategy();
                 });

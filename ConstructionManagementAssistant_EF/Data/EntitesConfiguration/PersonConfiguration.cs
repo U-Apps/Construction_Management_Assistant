@@ -7,7 +7,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
-            builder.ToTable("Person");
+            builder.ToTable("People");
 
             builder.HasKey(e => e.Id);
 
