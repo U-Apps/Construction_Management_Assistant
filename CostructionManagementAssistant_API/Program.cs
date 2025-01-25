@@ -27,6 +27,19 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()   // Allow requests from any origin
+              .AllowAnyMethod()   // Allow any HTTP method (GET, POST, etc.)
+              .AllowAnyHeader();  // Allow any HTTP headers
+    });
+});
+
+
 builder.Services.AddDataAccess(builder.Configuration);
 var app = builder.Build();
 
