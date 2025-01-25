@@ -8,7 +8,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {
-            builder.ToTable("Client");
+            builder.ToTable("Clients");
 
             builder.HasKey(e => e.Id);
 
@@ -34,7 +34,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
             builder.HasIndex(e => e.Email, "UniqueEmail")
                 .IsUnique();
 
-            builder.AddEnumCheckConstraint<ClientType>("Client", "ClientType");
+            builder.AddEnumCheckConstraint<ClientType>("Clients", "ClientType");
 
             // Global filter to exclude deleted clients
             builder.HasQueryFilter(e => !e.IsDeleted);

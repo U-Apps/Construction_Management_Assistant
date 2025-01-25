@@ -69,9 +69,9 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.HasIndex(new[] { "PhoneNumber" }, "UniquePhoneNumber")
                         .IsUnique();
 
-                    b.ToTable("Client", null, t =>
+                    b.ToTable("Clients", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Client_ClientType", "[ClientType] IN (1, 2)");
+                            t.HasCheckConstraint("CK_Clients_ClientType", "[ClientType] IN (1, 2)");
                         });
                 });
 
@@ -151,7 +151,7 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.HasIndex(new[] { "PhoneNumber" }, "UniquePhoneNumber")
                         .IsUnique();
 
-                    b.ToTable("Person", (string)null);
+                    b.ToTable("People", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
