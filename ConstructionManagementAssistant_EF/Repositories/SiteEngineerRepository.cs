@@ -41,6 +41,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                     Email = siteEngineerDto.Email,
                     PhoneNumber = siteEngineerDto.PhoneNumber,
                     NationalNumber = siteEngineerDto.NationalNumber,
+                    Address = siteEngineerDto.Address,
                     HireDate = siteEngineerDto.HireDate
 
                 };
@@ -141,6 +142,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 siteEngineer.Email = siteEngineerDto.Email;
                 siteEngineer.PhoneNumber = siteEngineerDto.PhoneNumber;
                 siteEngineer.NationalNumber = siteEngineerDto.NationalNumber;
+                siteEngineer.Address = siteEngineerDto.Address;
                 siteEngineer.HireDate = siteEngineerDto.HireDate;
                 siteEngineer.ModifiedDate = DateTime.Now;
 

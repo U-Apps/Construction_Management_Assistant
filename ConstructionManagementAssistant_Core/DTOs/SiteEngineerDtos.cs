@@ -23,7 +23,7 @@
         [Phone]
         public required string PhoneNumber { get; set; }
         public string NationalNumber { get; set; }
-
+        public string Address { get; set; }
         public DateTime HireDate { get; set; }
 
     }
@@ -44,7 +44,7 @@
         [Phone]
         public required string PhoneNumber { get; set; }
         public string NationalNumber { get; set; }
-
+        public string Address { get; set; }
         public DateTime HireDate { get; set; }
     }
 }

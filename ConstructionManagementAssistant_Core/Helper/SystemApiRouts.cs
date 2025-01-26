@@ -14,4 +14,14 @@ public static class SystemApiRouts
         public const string DeleteClient = Base;
     }
 
+    public static class SiteEngineer
+    {
+        public const string Base = "api/v1/SiteEngineers";
+        public const string GetSiteEngineerById = Base + "/{Id}";
+        public const string GetAllSiteEngineer = Base;
+        public const string AddSiteEngineer = Base;
+        public const string UpdateSiteEngineer = Base;
+        public const string DeleteSiteEngineer = Base;
+    }
+
 }
