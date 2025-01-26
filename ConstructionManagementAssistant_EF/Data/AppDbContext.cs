@@ -5,6 +5,7 @@ namespace ConstructionManagementAssistant_EF.Data
     public class AppDbContext : DbContext
     {
         public DbSet<Client> clients { get; set; }
+        public DbSet<SiteEngineer> SiteEngineers { get; set; }
         public AppDbContext()
         {
 
