@@ -12,8 +12,8 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
 
             builder.HasBaseType<Person>();
 
-            builder.Property(e => e.PersonId)
-                .IsRequired();
+            builder.Property(e => e.HireDate)
+                   .IsRequired();
 
             builder.Property(e => e.IsAvailable)
                    .IsRequired();
