@@ -4,6 +4,7 @@ using ConstructionManagementAssistant_EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant_EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250126123457_AddSiteEngineer")]
+    partial class AddSiteEngineer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,11 +163,14 @@ namespace ConstructionManagementAssistant_EF.Migrations
                 {
                     b.HasBaseType("ConstructionManagementAssistant_Core.Entites.Person");
 
-                    b.Property<DateOnly>("HireDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
 
                     b.ToTable("SiteEngineers", (string)null);
                 });
