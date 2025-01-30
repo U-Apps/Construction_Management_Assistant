@@ -1,5 +1,9 @@
-﻿namespace ConstructionManagementAssistant_API;
-
-public class GlobalUsings
-{
-}
+﻿global using ConstructionManagementAssistant_Core.Interfaces;
+global using ConstructionManagementAssistant_Core.Models.Response;
+global using ConstructionManagementAssistant_EF.Configurations;
+global using ConstructionManagementAssistant_EF.Repositories;
+global using iCode.Ecommerce.Api.Filters;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Filters;
+global using Microsoft.OpenApi.Models;
+global using System.Reflection;
