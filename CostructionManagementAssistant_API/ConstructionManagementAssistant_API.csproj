@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ConstructionManagementAssistant_EF\ConstructionManagementAssistant_EF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Filters\" />
+  </ItemGroup>
+
 </Project>

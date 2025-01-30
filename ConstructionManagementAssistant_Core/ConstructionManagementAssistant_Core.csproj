@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Constants\" />
-    <Folder Include="Filters\" />
   </ItemGroup>
 
 </Project>
