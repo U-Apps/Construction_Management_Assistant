@@ -1,9 +1,7 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Entites;
 using ConstructionManagementAssistant_Core.Extentions;
-using ConstructionManagementAssistant_Core.Interfaces;
 using ConstructionManagementAssistant_Core.Models.Response;
-using ConstructionManagementAssistant_EF.Data;
 using RepositoryWithUWO.EF.Repositories;
 
 namespace ConstructionManagementAssistant_EF.Repositories
@@ -15,20 +13,6 @@ namespace ConstructionManagementAssistant_EF.Repositories
         public ClientRepository(AppDbContext appDbContext) : base(appDbContext)
         {
             _appDbContext = appDbContext;
-        }
-
-        public async Task<GetClientDto> GetClientById(int id)
-        {
-            var query = _appDbContext.clients.Where(x => x.Id == id)
-          .Select(c => new GetClientDto
-          {
-              Id = c.Id,
-              FullName = c.FullName,
-              Email = c.Email,
-              PhoneNumber = c.PhoneNumber,
-              ClientType = c.ClientType.GetDisplayName(),
-          });
-            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<PagedResult<GetClientDto>> GetAllClients(int pageNumber = 1, int pageSize = 10)
@@ -61,75 +45,101 @@ namespace ConstructionManagementAssistant_EF.Repositories
             };
         }
 
+        public async Task<GetClientDto> GetClientById(int id)
+        {
+            var query = await _appDbContext.clients.Where(x => x.Id == id)
+            .Select(c => new GetClientDto
+            {
+                Id = c.Id,
+                FullName = c.FullName,
+                Email = c.Email,
+                PhoneNumber = c.PhoneNumber,
+                ClientType = c.ClientType.GetDisplayName(),
+            }).FirstOrDefaultAsync();
+
+            return query;
+        }
+
         public async Task<BaseResponse<string>> AddClientAsync(AddClientDto clientDto)
         {
-            try
+
+            if (await _appDbContext.clients.AnyAsync(c => c.Email == clientDto.Email))
             {
-                var emailExists = await _appDbContext.clients.AnyAsync(c => c.Email == clientDto.Email);
-                if (emailExists)
+                return new BaseResponse<string>
                 {
-                    return new BaseResponse<string>(null, "البريد الإلكتروني موجود بالفعل", null, false);
-                }
-
-                var phoneExists = await _appDbContext.clients.AnyAsync(c => c.PhoneNumber == clientDto.PhoneNumber);
-                if (phoneExists)
-                {
-                    return new BaseResponse<string>(null, "رقم الهاتف موجود بالفعل", null, false);
-                }
-
-                var newClient = new Client
-                {
-                    FullName = clientDto.FullName,
-                    Email = clientDto.Email,
-                    PhoneNumber = clientDto.PhoneNumber,
-                    ClientType = clientDto.ClientType
+                    Success = false,
+                    Message = "البريد الإلكتروني موجود بالفعل",
                 };
-                await _appDbContext.AddAsync(newClient);
-                await _appDbContext.SaveChangesAsync();
+            }
 
-                return new BaseResponse<string>(null, "تم إضافة العميل بنجاح");
-            }
-            catch (Exception ex)
+            if (await _appDbContext.clients.AnyAsync(c => c.PhoneNumber == clientDto.PhoneNumber))
             {
-                return new BaseResponse<string>(null, "لم تتم إضافة العميل ", new List<string> { ex.Message }, false);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "رقم الهاتف موجود بالفعل",
+                };
             }
+
+            var newClient = new Client
+            {
+                FullName = clientDto.FullName,
+                Email = clientDto.Email,
+                PhoneNumber = clientDto.PhoneNumber,
+                ClientType = clientDto.ClientType
+            };
+
+            await _appDbContext.AddAsync(newClient);
+            await _appDbContext.SaveChangesAsync();
+
+            return new BaseResponse<string>
+            {
+                Message = "تم إضافة العميل بنجاح",
+                Success = true
+            };
         }
 
         public async Task<BaseResponse<string>> UpdateClientAsync(UpdateClientDto clientDto)
         {
             var client = _appDbContext.clients.Where(x => x.Id == clientDto.Id).FirstOrDefault();
             if (client is null)
-                return new BaseResponse<string>(null, "العميل غير موجود", null, false);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "العميل غير موجود"
+                };
 
-
-            var emailExists = await _appDbContext.clients.AnyAsync(c => c.Email == clientDto.Email);
-            if (emailExists && clientDto.Email != client.Email)
+            if (await _appDbContext.clients.AnyAsync(c => c.Email == clientDto.Email && c.Id != clientDto.Id))
             {
-                return new BaseResponse<string>(null, "البريد الإلكتروني موجود بالفعل", null, false);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "البريد الإلكتروني موجود بالفعل"
+                };
             }
 
-            var phoneExists = await _appDbContext.clients.AnyAsync(c => c.PhoneNumber == clientDto.PhoneNumber);
-            if (phoneExists && clientDto.Email != client.Email)
+            if (await _appDbContext.clients.AnyAsync(c => c.PhoneNumber == clientDto.PhoneNumber && c.Id != clientDto.Id))
             {
-                return new BaseResponse<string>(null, "رقم الهاتف موجود بالفعل", null, false);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "رقم الهاتف موجود بالفعل"
+                };
             }
 
-            try
-            {
-                client.FullName = clientDto.FullName;
-                client.Email = clientDto.Email;
-                client.PhoneNumber = clientDto.PhoneNumber;
-                client.ModifiedDate = DateTime.Now;
+            client.FullName = clientDto.FullName;
+            client.Email = clientDto.Email;
+            client.PhoneNumber = clientDto.PhoneNumber;
+            client.ModifiedDate = DateTime.Now;
 
-                _appDbContext.Update(client);
-                await _appDbContext.SaveChangesAsync();
+            _appDbContext.Update(client);
+            await _appDbContext.SaveChangesAsync();
 
-                return new BaseResponse<string>(null, "تم تحديث العميل بنجاح");
-            }
-            catch (Exception ex)
+            return new BaseResponse<string>
             {
-                return new BaseResponse<string>(null, "لم تتم عميلة التعديل", [ex.Message], false);
-            }
+                Success = true,
+                Message = "تم تحديث العميل بنجاح"
+            };
 
         }
 
@@ -137,11 +147,19 @@ namespace ConstructionManagementAssistant_EF.Repositories
         {
             var client = _appDbContext.clients.Where(x => x.Id == id).FirstOrDefault();
             if (client is null)
-                return new BaseResponse<string>(null, "العميل غير موجود", null, false);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "العميل غير موجود"
+                };
 
             client.IsDeleted = true;
             await _appDbContext.SaveChangesAsync();
-            return new BaseResponse<string>(null, "تم حذف العميل بنجاح");
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم حذف العميل بنجاح"
+            };
         }
 
     }

@@ -14,13 +14,13 @@ namespace ConstructionManagementAssistant_Core.Models.Response
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public T? Data { get; set; }
 
-        public BaseResponse(T? data, string message, List<string>? errors = null, bool success = true)
-        {
-            Data = data;
-            Message = message;
-            Errors = errors;
-            Success = success;
-        }
+        //public BaseResponse(T? data, string message, List<string>? errors = null, bool success = true)
+        //{
+        //    Data = data;
+        //    Message = message;
+        //    Errors = errors;
+        //    Success = success;
+        //}
 
         public override string ToString()
         {

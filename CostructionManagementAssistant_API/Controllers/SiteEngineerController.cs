@@ -1,15 +1,12 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Helper;
-using ConstructionManagementAssistant_Core.Interfaces;
-using ConstructionManagementAssistant_Core.Models.Response;
-using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConstructionManagementAssistant_API.Controllers
 {
     [ApiController]
-    public class SiteEngineerController(IUnitOfWork unitOfWork) : ControllerBase
+    public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork=unitOfWork;
 
         #region Get Methods
 
@@ -21,14 +18,22 @@ namespace ConstructionManagementAssistant_API.Controllers
         /// <returns>قائمة المهندسين</returns>
         [HttpGet(SystemApiRouts.SiteEngineer.GetAllSiteEngineer)]
         [ProducesResponseType(typeof(BaseResponse<PagedResult<GetSiteEngineerDto>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<BaseResponse<PagedResult<GetSiteEngineerDto>>>> GetAllSiteEngineers(int pageNumber = 1, int pageSize = 10)
+        public async Task<ActionResult<BaseResponse<PagedResult<GetSiteEngineerDto>>>> GetAllSiteEngineers(int pageNumber = 1, [Range(1, 50)] int pageSize = 10)
         {
             var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(pageNumber, pageSize);
             if (result.Items == null || !result.Items.Any())
-                return NotFound(new BaseResponse<PagedResult<GetSiteEngineerDto>>(null, "لم يتم العثور على المهندسين", null, false));
+                return NotFound(new BaseResponse<PagedResult<GetSiteEngineerDto>>
+                {
+                    Message = "لم يتم العثور على المهندسين",
+                    Success = false
+                });
 
-            return Ok(new BaseResponse<PagedResult<GetSiteEngineerDto>>(result, "تم جلب المهندسين بنجاح "));
-
+            return Ok(new BaseResponse<PagedResult<GetSiteEngineerDto>>
+            {
+                Data = result,
+                Message = "تم جلب المهندسين بنجاح ",
+                Success = true
+            });
         }
 
         /// <summary>
@@ -43,9 +48,18 @@ namespace ConstructionManagementAssistant_API.Controllers
         {
             var result = await _unitOfWork.SiteEngineers.GetSiteEngineerById(Id);
             if (result is null)
-                return NotFound(new BaseResponse<GetSiteEngineerDto>(null, "لا يوجد مهندس بهذا المعرف", null, false));
+                return NotFound(new BaseResponse<GetSiteEngineerDto>
+                {
+                    Message = "لا يوجد مهندس بهذا المعرف",
+                    Success = false
+                });
 
-            return Ok(new BaseResponse<GetSiteEngineerDto>(result, "تم جلب المهندس بنجاح "));
+            return Ok(new BaseResponse<GetSiteEngineerDto>
+            {
+                Data = result,
+                Message = "تم جلب المهندس بنجاح ",
+                Success = true
+            });
         }
 
         #endregion

@@ -1,20 +1,12 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Helper;
-using ConstructionManagementAssistant_Core.Interfaces;
-using ConstructionManagementAssistant_Core.Models.Response;
-using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConstructionManagementAssistant_API.Controllers
 {
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ClientsController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
 
         #region Get Methods
 
@@ -26,13 +18,24 @@ namespace ConstructionManagementAssistant_API.Controllers
         /// <returns>قائمة العملاء</returns>
         [HttpGet(SystemApiRouts.Client.GetAllCleint)]
         [ProducesResponseType(typeof(BaseResponse<PagedResult<GetClientDto>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<BaseResponse<PagedResult<GetClientDto>>>> GetAllClients(int pageNumber = 1, int pageSize = 10)
+        public async Task<ActionResult<BaseResponse<PagedResult<GetClientDto>>>> GetAllClients(int pageNumber = 1, [Range(1, 50)] int pageSize = 10)
         {
             var result = await _unitOfWork.Clients.GetAllClients(pageNumber, pageSize);
             if (result.Items == null || !result.Items.Any())
-                return NotFound(new BaseResponse<PagedResult<GetClientDto>>(null, "لم يتم العثورالعملاء", null, false));
+                //return NotFound(new BaseResponse<PagedResult<GetClientDto>>(null, "لم يتم العثورالعملاء", null, false));
 
-            return Ok(new BaseResponse<PagedResult<GetClientDto>>(result, "تم جلب العملاء بنجاح "));
+                return NotFound(new BaseResponse<PagedResult<GetClientDto>>()
+                {
+                    Success = false,
+                    Message = "لم يتم العثورالعملاء",
+                });
+
+            return Ok(new BaseResponse<PagedResult<GetClientDto>>()
+            {
+                Success = true,
+                Message = "تم جلب العملاء بنجاح",
+                Data = result,
+            });
 
         }
 
@@ -48,9 +51,18 @@ namespace ConstructionManagementAssistant_API.Controllers
         {
             var result = await _unitOfWork.Clients.GetClientById(Id);
             if (result is null)
-                return NotFound(new BaseResponse<GetClientDto>(null, "لا يوجد عميل بهذا المعرف", null, false));
+                return NotFound(new BaseResponse<GetClientDto>()
+                {
+                    Success = false,
+                    Message = "لا يوجد عميل بهذا المعرف"
+                });
 
-            return Ok(new BaseResponse<GetClientDto>(result, "تم جلب العميل بنجاح "));
+            return Ok(new BaseResponse<GetClientDto>()
+            {
+                Success = true,
+                Message = "تم جلب العميل بنجاح",
+                Data = result
+            });
         }
 
         /// <summary>
@@ -76,6 +88,7 @@ namespace ConstructionManagementAssistant_API.Controllers
 
         #endregion
 
+
         #region Put Methods
 
         /// <summary>
@@ -95,6 +108,7 @@ namespace ConstructionManagementAssistant_API.Controllers
         }
 
         #endregion
+
 
         #region Delete Methods
 

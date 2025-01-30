@@ -14,6 +14,11 @@
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
+
+        public string GetFullName()
+        {
+            return $"{FirstName} {SecondName} {ThirdName} {LastName}".Replace("  ", " ").Trim();
+        }
     }
 }
 
