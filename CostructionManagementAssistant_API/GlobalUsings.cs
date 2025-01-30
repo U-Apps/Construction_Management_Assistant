@@ -1,8 +1,10 @@
-﻿global using ConstructionManagementAssistant_Core.Interfaces;
+﻿global using ConstructionManagementAssistant_API.Filters;
+global using ConstructionManagementAssistant_API.Middleware;
+global using ConstructionManagementAssistant_API.Services;
+global using ConstructionManagementAssistant_Core.Interfaces;
 global using ConstructionManagementAssistant_Core.Models.Response;
-global using ConstructionManagementAssistant_EF.Configurations;
-global using ConstructionManagementAssistant_EF.Repositories;
-global using iCode.Ecommerce.Api.Filters;
+global using ConstructionManagementAssistant_Core.Services;
+global using ConstructionManagementAssistant_EF.Services;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.Filters;
 global using Microsoft.OpenApi.Models;

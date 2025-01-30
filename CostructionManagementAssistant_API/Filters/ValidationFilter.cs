@@ -1,4 +1,4 @@
-﻿namespace iCode.Ecommerce.Api.Filters;
+﻿namespace ConstructionManagementAssistant_API.Filters;
 
 /// <summary>
 /// This filter isn't necessary because ASP.NET Core already handles validation bu using the [ApiController] atrribute, 

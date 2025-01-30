@@ -1,39 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>());
+// Register services
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddApiServices();
+builder.Services.AddCoreServices();
+builder.Services.AddEFServices(builder.Configuration);
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Construction Management Assistant APi Documenation",
-        Description = "API documentation for the Construction Management Assistant application.",
-        Version = "v1 Last Update 2025-01-21 2:32 PM"
-    });
 
-    // Optional: Set the comments path for the Swagger JSON and UI.
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
-});
-
-// Configure CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()   // Allow requests from any origin
-              .AllowAnyMethod()   // Allow any HTTP method (GET, POST, etc.)
-              .AllowAnyHeader();  // Allow any HTTP headers
-    });
-});
-
-builder.Services.AddDataAccess(builder.Configuration);
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.MapOpenApi();
@@ -44,16 +19,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     });
 }
 
-// Middleware to redirect the base URL to Swagger
-app.Use(async (context, next) =>
-{
-    if (context.Request.Path == "/")
-    {
-        context.Response.Redirect("/swagger");
-        return;
-    }
-    await next();
-});
+// Use the custom middleware to redirect the base URL to Swagger
+app.UseMiddleware<RedirectToSwaggerMiddleware>();
 
 app.UseHttpsRedirection();
 
