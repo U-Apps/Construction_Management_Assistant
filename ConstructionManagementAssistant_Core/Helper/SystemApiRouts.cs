@@ -11,7 +11,7 @@ public static class SystemApiRouts
         public const string GetAllCleint = Base;
         public const string AddClient = Base;
         public const string UpdateClient = Base;
-        public const string DeleteClient = Base + "/{Id}";
+        public const string DeleteClient = Base + "/{id}";
     }
 
     public static class SiteEngineer
@@ -21,7 +21,7 @@ public static class SystemApiRouts
         public const string GetAllSiteEngineer = Base;
         public const string AddSiteEngineer = Base;
         public const string UpdateSiteEngineer = Base;
-        public const string DeleteSiteEngineer = Base + "/{Id}";
+        public const string DeleteSiteEngineer = Base + "/{id}";
     }
 
 }
