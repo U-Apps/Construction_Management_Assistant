@@ -1,6 +1,6 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Entites;
-using ConstructionManagementAssistant_Core.Extentions;
+using ConstructionManagementAssistant_Core.Mapping;
 using ConstructionManagementAssistant_Core.Models.Response;
 using RepositoryWithUWO.EF.Repositories;
 
@@ -18,14 +18,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
         public async Task<PagedResult<GetClientDto>> GetAllClients(int pageNumber = 1, int pageSize = 10)
         {
             var query = _appDbContext.clients
-                .Select(c => new GetClientDto
-                {
-                    Id = c.Id,
-                    FullName = c.FullName,
-                    Email = c.Email,
-                    PhoneNumber = c.PhoneNumber,
-                    ClientType = c.ClientType.GetDisplayName(),
-                });
+                .Select(c => c.ToGetClientDto());
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -48,14 +41,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
         public async Task<GetClientDto> GetClientById(int id)
         {
             var query = await _appDbContext.clients.Where(x => x.Id == id)
-            .Select(c => new GetClientDto
-            {
-                Id = c.Id,
-                FullName = c.FullName,
-                Email = c.Email,
-                PhoneNumber = c.PhoneNumber,
-                ClientType = c.ClientType.GetDisplayName(),
-            }).FirstOrDefaultAsync();
+            .Select(c => c.ToGetClientDto()).SingleOrDefaultAsync();
 
             return query;
         }
@@ -81,13 +67,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            var newClient = new Client
-            {
-                FullName = clientDto.FullName,
-                Email = clientDto.Email,
-                PhoneNumber = clientDto.PhoneNumber,
-                ClientType = clientDto.ClientType
-            };
+            var newClient = clientDto.ToClient();
 
             await _appDbContext.AddAsync(newClient);
             await _appDbContext.SaveChangesAsync();
@@ -127,10 +107,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            client.FullName = clientDto.FullName;
-            client.Email = clientDto.Email;
-            client.PhoneNumber = clientDto.PhoneNumber;
-            client.ModifiedDate = DateTime.Now;
+            client = clientDto.ToClient();
 
             _appDbContext.Update(client);
             await _appDbContext.SaveChangesAsync();

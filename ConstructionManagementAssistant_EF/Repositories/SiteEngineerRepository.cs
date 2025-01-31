@@ -1,5 +1,6 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Entites;
+using ConstructionManagementAssistant_Core.Mapping;
 using ConstructionManagementAssistant_Core.Models.Response;
 using RepositoryWithUWO.EF.Repositories;
 
@@ -12,12 +13,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
         public async Task<PagedResult<GetSiteEngineerDto>> GetAllSiteEngineers(int pageNumber = 1, int pageSize = 10)
         {
             var query = _context.SiteEngineers
-                  .Select(c => new GetSiteEngineerDto
-                  {
-                      Id = c.Id,
-                      FullName = $"{c.FirstName} {c.SecondName} {c.ThirdName} {c.LastName}",
-                      IsAvailable = c.IsAvailable,
-                  });
+                  .Select(c => c.ToGetSiteEngineerDto());
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -40,13 +36,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
         public async Task<GetSiteEngineerDto> GetSiteEngineerById(int id)
         {
             var query = await _context.SiteEngineers.Where(x => x.Id == id)
-            .Select(c => new GetSiteEngineerDto
-            {
-                Id = c.Id,
-                FullName = c.GetFullName(),
-                IsAvailable = c.IsAvailable,
-
-            }).FirstOrDefaultAsync();
+            .Select(c => c.ToGetSiteEngineerDto()).SingleOrDefaultAsync();
             return query;
         }
 
@@ -75,18 +65,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
 
 
-            var newSiteEngineer = new SiteEngineer
-            {
-                FirstName = siteEngineerDto.FirstName,
-                SecondName = siteEngineerDto.SecondName,
-                ThirdName = siteEngineerDto.ThirdName,
-                LastName = siteEngineerDto.LastName,
-                Email = siteEngineerDto.Email,
-                PhoneNumber = siteEngineerDto.PhoneNumber,
-                NationalNumber = siteEngineerDto.NationalNumber,
-                Address = siteEngineerDto.Address,
-                HireDate = siteEngineerDto.HireDate
-            };
+            var newSiteEngineer = siteEngineerDto.ToSiteEngineer();
             await _context.AddAsync(newSiteEngineer);
             await _context.SaveChangesAsync();
 
@@ -135,16 +114,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            siteEngineer.FirstName = siteEngineerDto.FirstName;
-            siteEngineer.SecondName = siteEngineerDto.SecondName;
-            siteEngineer.ThirdName = siteEngineerDto.ThirdName;
-            siteEngineer.LastName = siteEngineerDto.LastName;
-            siteEngineer.Email = siteEngineerDto.Email;
-            siteEngineer.PhoneNumber = siteEngineerDto.PhoneNumber;
-            siteEngineer.NationalNumber = siteEngineerDto.NationalNumber;
-            siteEngineer.Address = siteEngineerDto.Address;
-            siteEngineer.HireDate = siteEngineerDto.HireDate;
-            siteEngineer.ModifiedDate = DateTime.Now;
+            siteEngineer = siteEngineerDto.ToSiteEngineer();
 
             _context.Update(siteEngineer);
             await _context.SaveChangesAsync();
