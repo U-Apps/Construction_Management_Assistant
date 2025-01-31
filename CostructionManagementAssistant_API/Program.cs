@@ -18,6 +18,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
         c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
     });
 }
+// Register the custom exception handling middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Use the custom middleware to redirect the base URL to Swagger
 app.UseMiddleware<RedirectToSwaggerMiddleware>();
