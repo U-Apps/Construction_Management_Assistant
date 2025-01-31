@@ -9,19 +9,30 @@ namespace ConstructionManagementAssistant_API.Controllers
     {
 
         #region Get Methods
-
         /// <summary>
         /// الحصول على جميع المهندسين
         /// </summary>
         /// <param name="pageNumber">رقم الصفحة</param>
         /// <param name="pageSize">حجم الصفحة</param>
+        /// <param name="searchTerm">نص البحث, اختياري</param>
+        /// <param name="isAvailable">التوافر, اختياري</param>
+        /// <remarks>
+        /// سيتم جلب المهندسين الذين تحتوي اسماءهم أو أي من حقولهم على النص البحثي في حالة ارفاقه
+        /// <br/>
+        /// في حالة لم يتم تحديد نص بحثي أو التوافر سيتم الجلب حسب الصفحات 
+        /// </remarks>
         /// <returns>قائمة المهندسين</returns>
         [HttpGet(SystemApiRouts.SiteEngineer.GetAllSiteEngineer)]
         [ProducesResponseType(typeof(BaseResponse<PagedResult<GetSiteEngineerDto>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<BaseResponse<PagedResult<GetSiteEngineerDto>>>> GetAllSiteEngineers(int pageNumber = 1, [Range(1, 50)] int pageSize = 10)
+        public async Task<IActionResult> GetAllSiteEngineers(
+            int pageNumber = 1,
+            [Range(1, 50)] int pageSize = 10,
+            string? searchTerm = null,
+            bool? isAvailable = null)
         {
-            var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(pageNumber, pageSize);
-            if (result.Items == null || !result.Items.Any())
+            var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(pageNumber, pageSize, searchTerm, isAvailable);
+
+            if (result.Items == null || result.Items.Count == 0)
                 return NotFound(new BaseResponse<PagedResult<GetSiteEngineerDto>>
                 {
                     Message = "لم يتم العثور على المهندسين",
@@ -36,6 +47,7 @@ namespace ConstructionManagementAssistant_API.Controllers
             });
         }
 
+
         /// <summary>
         /// الحصول على مهندس بواسطة المعرف
         /// </summary>
@@ -44,7 +56,7 @@ namespace ConstructionManagementAssistant_API.Controllers
         [HttpGet(SystemApiRouts.SiteEngineer.GetSiteEngineerById)]
         [ProducesResponseType(typeof(BaseResponse<GetSiteEngineerDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse<GetSiteEngineerDto>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<BaseResponse<GetSiteEngineerDto>>> GetSiteEngineerById(int Id)
+        public async Task<IActionResult> GetSiteEngineerById(int Id)
         {
             var result = await _unitOfWork.SiteEngineers.GetSiteEngineerById(Id);
             if (result is null)
@@ -64,6 +76,8 @@ namespace ConstructionManagementAssistant_API.Controllers
 
         #endregion
 
+
+
         #region Post Method
 
         /// <summary>
@@ -73,7 +87,7 @@ namespace ConstructionManagementAssistant_API.Controllers
         [HttpPost(SystemApiRouts.SiteEngineer.AddSiteEngineer)]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<BaseResponse<string>>> CreateSiteEngineer(AddSiteEngineerDto siteEngineer)
+        public async Task<IActionResult> CreateSiteEngineer(AddSiteEngineerDto siteEngineer)
         {
             var result = await _unitOfWork.SiteEngineers.AddSiteEngineerAsync(siteEngineer);
             if (!result.Success)
@@ -83,6 +97,8 @@ namespace ConstructionManagementAssistant_API.Controllers
         }
 
         #endregion
+
+
 
         #region Put Methods
 
@@ -94,7 +110,7 @@ namespace ConstructionManagementAssistant_API.Controllers
         [HttpPut(SystemApiRouts.SiteEngineer.UpdateSiteEngineer)]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<BaseResponse<string>>> UpdateSiteEngineer(UpdateSiteEngineerDto siteEngineer)
+        public async Task<IActionResult> UpdateSiteEngineer(UpdateSiteEngineerDto siteEngineer)
         {
             var result = await _unitOfWork.SiteEngineers.UpdateSiteEngineerAsync(siteEngineer);
             if (!result.Success)
@@ -103,6 +119,8 @@ namespace ConstructionManagementAssistant_API.Controllers
         }
 
         #endregion
+
+
 
         #region Delete Methods
 
@@ -115,7 +133,7 @@ namespace ConstructionManagementAssistant_API.Controllers
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<BaseResponse<string>>> DeleteSiteEngineer(int id)
+        public async Task<IActionResult> DeleteSiteEngineer(int id)
         {
             var result = await _unitOfWork.SiteEngineers.DeleteSiteEngineerAsync(id);
             if (!result.Success)

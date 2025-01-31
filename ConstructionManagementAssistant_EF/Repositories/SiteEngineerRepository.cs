@@ -10,17 +10,32 @@ namespace ConstructionManagementAssistant_EF.Repositories
     {
         private readonly AppDbContext _context = context;
 
-        public async Task<PagedResult<GetSiteEngineerDto>> GetAllSiteEngineers(int pageNumber = 1, int pageSize = 10)
+        public async Task<PagedResult<GetSiteEngineerDto>> GetAllSiteEngineers(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, bool? isAvailable = null)
         {
-            var query = _context.SiteEngineers
-                  .Select(c => c.ToGetSiteEngineerDto());
+            var query = _context.SiteEngineers.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+                query = query.Where(se => se.FirstName.Contains(searchTerm)
+                || se.SecondName.Contains(searchTerm)
+                || se.ThirdName.Contains(searchTerm)
+                || se.LastName.Contains(searchTerm)
+                || se.Email.Contains(searchTerm)
+                || se.PhoneNumber.Contains(searchTerm)
+                || se.Address.Contains(searchTerm));
+
+
+            if (isAvailable.HasValue)
+                query = query.Where(se => se.IsAvailable == isAvailable.Value);
+
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             var items = await query
+                .OrderBy(c => c.FirstName)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Select(c => c.ToGetSiteEngineerDto())
                 .ToListAsync();
 
             return new PagedResult<GetSiteEngineerDto>
