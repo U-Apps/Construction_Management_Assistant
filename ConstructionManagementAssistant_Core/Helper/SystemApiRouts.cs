@@ -11,7 +11,7 @@ public static class SystemApiRouts
         public const string GetAllCleint = Base;
         public const string AddClient = Base;
         public const string UpdateClient = Base;
-        public const string DeleteClient = Base + "/{id}";
+        public const string DeleteClient = Base + "/{Id}";
     }
 
     public static class SiteEngineer
@@ -21,7 +21,27 @@ public static class SystemApiRouts
         public const string GetAllSiteEngineer = Base;
         public const string AddSiteEngineer = Base;
         public const string UpdateSiteEngineer = Base;
-        public const string DeleteSiteEngineer = Base + "/{id}";
+        public const string DeleteSiteEngineer = Base + "/{Id}";
+    }
+
+    public class WorkerSpecialty
+    {
+        public const string Base = "api/v1/WorkerSpecialties";
+        public const string GetWorkerSpecialtyById = Base + "/{Id}";
+        public const string GetAllWorkerSpecialties = Base;
+        public const string AddWorkerSpecialty = Base;
+        public const string UpdateWorkerSpecialty = Base;
+        public const string DeleteWorkerSpecialty = Base + "/{Id}";
+
+    }
+
+    public class Worker
+    {
+        public const string Base = "api/v1/Workers";
+        public const string AddWorker = Base + "/Register";
+        public const string GetAllWorkers = Base;
+        public const string UpdateWorker = Base;
+        public const string DeleteWorker = Base;
     }
 
 }
