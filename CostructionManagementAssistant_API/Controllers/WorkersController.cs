@@ -75,6 +75,33 @@ namespace ConstructionManagementAssistant_API.Controllers
 
         }
 
+
+        /// <summary>
+        /// الحصول على عميل بواسطة المعرف
+        /// </summary>
+        /// <param name="Id">معرف العميل</param>
+        /// <returns>تفاصيل العميل</returns>
+        [HttpGet(SystemApiRouts.Worker.GetWorkerById)]
+        [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetWorkerById(int Id)
+        {
+            var result = await _unitOfWork.Workers.GetWorkerById(Id);
+            if (result is null)
+                return NotFound(new BaseResponse<WorkerDetailsDto>()
+                {
+                    Success = false,
+                    Message = "لا يوجد عامل بهذا المعرف"
+                });
+
+            return Ok(new BaseResponse<WorkerDetailsDto>()
+            {
+                Success = true,
+                Message = "تم جلب العامل بنجاح",
+                Data = result
+            });
+        }
+
         #endregion
 
         #region Put Methods
