@@ -32,21 +32,18 @@ public static class SiteEngineerProfile
             IsAvailable = true
         };
     }
-    public static SiteEngineer ToSiteEngineer(this UpdateSiteEngineerDto updateSiteEngineerDto)
+    public static void UpdateSiteEngineer(this SiteEngineer siteEngineer, UpdateSiteEngineerDto updateSiteEngineerDto)
     {
-        return new SiteEngineer
-        {
-            Id = updateSiteEngineerDto.Id,
-            FirstName = updateSiteEngineerDto.FirstName,
-            SecondName = updateSiteEngineerDto.SecondName,
-            ThirdName = updateSiteEngineerDto.ThirdName,
-            LastName = updateSiteEngineerDto.LastName,
-            Email = updateSiteEngineerDto.Email,
-            PhoneNumber = updateSiteEngineerDto.PhoneNumber,
-            NationalNumber = updateSiteEngineerDto.NationalNumber,
-            Address = updateSiteEngineerDto.Address,
-            HireDate = updateSiteEngineerDto.HireDate,
-            ModifiedDate = DateTime.Now,
-        };
+        siteEngineer.Id = updateSiteEngineerDto.Id;
+        siteEngineer.FirstName = updateSiteEngineerDto.FirstName;
+        siteEngineer.SecondName = updateSiteEngineerDto.SecondName;
+        siteEngineer.ThirdName = updateSiteEngineerDto.ThirdName;
+        siteEngineer.LastName = updateSiteEngineerDto.LastName;
+        siteEngineer.Email = updateSiteEngineerDto.Email;
+        siteEngineer.PhoneNumber = updateSiteEngineerDto.PhoneNumber;
+        siteEngineer.NationalNumber = updateSiteEngineerDto.NationalNumber;
+        siteEngineer.Address = updateSiteEngineerDto.Address;
+        siteEngineer.HireDate = updateSiteEngineerDto.HireDate;
+        siteEngineer.ModifiedDate = DateTime.Now;
     }
 }

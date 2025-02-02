@@ -29,15 +29,12 @@ public static class ClientProfile
         };
     }
 
-    public static Client ToClient(this UpdateClientDto updateClientDto)
+    public static void UpdateClient(this Client client, UpdateClientDto updateClientDto)
     {
-        return new Client
-        {
-            Id = updateClientDto.Id,
-            FullName = updateClientDto.FullName,
-            Email = updateClientDto.Email,
-            PhoneNumber = updateClientDto.PhoneNumber,
-            ModifiedDate = DateTime.Now,
-        };
+        client.FullName = updateClientDto.FullName;
+        client.Email = updateClientDto.Email;
+        client.PhoneNumber = updateClientDto.PhoneNumber;
+        client.ClientType = updateClientDto.ClientType;
+        client.ModifiedDate = DateTime.Now;
     }
 }

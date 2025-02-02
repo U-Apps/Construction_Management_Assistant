@@ -95,7 +95,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                     Message = "العميل غير موجود"
                 };
 
-            if (await _appDbContext.clients.AnyAsync(c => c.Email == clientDto.Email && c.Id != clientDto.Id))
+            if (await _appDbContext.clients.IgnoreQueryFilters().AnyAsync(c => c.Email == clientDto.Email && c.Id != clientDto.Id))
             {
                 return new BaseResponse<string>
                 {
@@ -104,7 +104,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            if (await _appDbContext.clients.AnyAsync(c => c.PhoneNumber == clientDto.PhoneNumber && c.Id != clientDto.Id))
+            if (await _appDbContext.clients.IgnoreQueryFilters().AnyAsync(c => c.PhoneNumber == clientDto.PhoneNumber && c.Id != clientDto.Id))
             {
                 return new BaseResponse<string>
                 {
@@ -113,9 +113,8 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            client = clientDto.ToClient();
 
-            _appDbContext.Update(client);
+            client.UpdateClient(clientDto);
             await _appDbContext.SaveChangesAsync();
 
             return new BaseResponse<string>

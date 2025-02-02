@@ -111,7 +111,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            if (await _context.SiteEngineers.AnyAsync(c => c.PhoneNumber == siteEngineerDto.PhoneNumber && c.Id != siteEngineerDto.Id))
+            if (await _context.SiteEngineers.IgnoreQueryFilters().AnyAsync(c => c.PhoneNumber == siteEngineerDto.PhoneNumber && c.Id != siteEngineerDto.Id))
             {
                 return new BaseResponse<string>
                 {
@@ -120,7 +120,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            if (await _context.SiteEngineers.AnyAsync(c => c.NationalNumber == siteEngineerDto.NationalNumber && c.Id != siteEngineerDto.Id))
+            if (await _context.SiteEngineers.IgnoreQueryFilters().AnyAsync(c => c.NationalNumber == siteEngineerDto.NationalNumber && c.Id != siteEngineerDto.Id))
             {
                 return new BaseResponse<string>
                 {
@@ -129,9 +129,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            siteEngineer = siteEngineerDto.ToSiteEngineer();
-
-            _context.Update(siteEngineer);
+            siteEngineer.UpdateSiteEngineer(siteEngineerDto);
             await _context.SaveChangesAsync();
 
             return new BaseResponse<string>
