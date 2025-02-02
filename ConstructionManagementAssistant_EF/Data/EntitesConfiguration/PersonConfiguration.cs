@@ -34,21 +34,25 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
             builder.Property(e => e.NationalNumber)
                 .HasColumnName("NationalNumber")
                 .HasMaxLength(15)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .IsRequired(false);
 
             builder.Property(e => e.PhoneNumber)
                 .HasMaxLength(20)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .IsRequired(false);
 
 
 
             builder.Property(e => e.Email)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .IsRequired(false);
 
             builder.Property(e => e.Address)
                 .HasMaxLength(255)
-                .IsUnicode(true);
+                .IsUnicode(true)
+                .IsRequired(false);
 
 
             builder.HasIndex(e => e.NationalNumber, "UniqueNationalNumber")
