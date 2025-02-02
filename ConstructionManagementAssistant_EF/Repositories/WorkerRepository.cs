@@ -159,6 +159,24 @@ namespace ConstructionManagementAssistant_EF.Repositories
             };
         }
 
+        public async Task<WorkerDetailsDto> GetWorkerById(int id)
+        {
+            var query = await _appDbContext.Set<Worker>().Where(x => x.Id == id)
+                        .Select(w => new WorkerDetailsDto
+                        {
+                            Id = w.Id,
+                            FullName = w.GetFullName(),
+                            Email = w.Email,
+                            PhoneNumber = w.PhoneNumber,
+                            NationalNumber = w.NationalNumber,
+                            Address = w.Address,
+                            IsAvailable = w.IsAvailable,
+                            Specialty = w.Specialty.Name
+                        }).SingleOrDefaultAsync();
+
+            return query;
+        }
+
         public async Task<BaseResponse<string>> UpdateWorkerAsync(UpdateWorkerDto workerInfo)
         {
             var worker = await _appDbContext.Set<Worker>().Where(w => w.Id == workerInfo.Id).FirstOrDefaultAsync();

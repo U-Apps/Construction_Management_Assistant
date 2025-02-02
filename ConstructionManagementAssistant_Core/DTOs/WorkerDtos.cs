@@ -45,4 +45,16 @@ namespace ConstructionManagementAssistant_Core.DTOs
         public string? Address { get; init; }
         public int? SpecialtyId { get; init; }
     }
+
+    public class WorkerDetailsDto
+    {
+        public int Id { get; init; }
+        public string FullName { get; init; }
+        public string PhoneNumber { get; init; }
+        public string? Email { get; init; }
+        public string? NationalNumber { get; init; }
+        public string Address { get; init; }
+        public bool IsAvailable { get; init; }
+        public string Specialty { get; init; }
+    }
 }

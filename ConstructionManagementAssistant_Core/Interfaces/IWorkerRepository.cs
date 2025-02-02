@@ -10,5 +10,6 @@ namespace ConstructionManagementAssistant_Core.Interfaces
         public Task<BaseResponse<string>> UpdateWorkerAsync(UpdateWorkerDto workerInfo);
         public Task<BaseResponse<string>> DeleteWorkerAsync(int id);
         Task<PagedResult<GetWorkerDto>> GetAllWorkers(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, bool? isAvailable = null, int? SpecialtyId = null);
+        Task<WorkerDetailsDto> GetWorkerById(int id);
     }
 }
