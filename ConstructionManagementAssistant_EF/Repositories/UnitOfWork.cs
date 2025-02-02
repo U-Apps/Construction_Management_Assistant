@@ -7,7 +7,7 @@ public class UnitOfWork(AppDbContext _appDbContext) : IUnitOfWork
 {
     public IClientRepository Clients { get; private set; } = new ClientRepository(_appDbContext);
     public ISiteEngineerRepository SiteEngineers { get; private set; } = new SiteEngineerRepository(_appDbContext);
-
+    public IWorkerSpecialtyRepository WorkerSpecialties { get; private set; } = new WorkerSpecialtyRepository(_appDbContext);
 
     public void Dispose()
     {
