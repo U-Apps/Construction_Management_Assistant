@@ -8,6 +8,7 @@ using ConstructionManagementAssistant_Core.Entites;
 using ConstructionManagementAssistant_Core.Interfaces;
 using ConstructionManagementAssistant_Core.Models.Response;
 using ConstructionManagementAssistant_EF.Data;
+using Microsoft.EntityFrameworkCore;
 using RepositoryWithUWO.EF.Repositories;
 
 namespace ConstructionManagementAssistant_EF.Repositories
@@ -108,17 +109,45 @@ namespace ConstructionManagementAssistant_EF.Repositories
             };
         }
 
-        public async Task<PagedResult<GetWorkerDto>> GetAllWorkers(int pageNumber = 1, int pageSize = 10)
+        public async Task<PagedResult<GetWorkerDto>> GetAllWorkers(int pageNumber = 1,
+                                                                   int pageSize = 10,
+                                                                   string? searchTerm = null,
+                                                                   bool? isAvailable = null,
+                                                                   int? SpecialtyId = null)
         {
-            var query = _appDbContext.Set<Worker>().AsQueryable();
-            var totalItems = await query.CountAsync();
-            var workers = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(w => new GetWorkerDto
+            var query = _appDbContext.Set<Worker>().AsNoTracking();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+                query = query.Where(w => w.FirstName.Contains(searchTerm)
+                || w.SecondName.Contains(searchTerm)
+                || w.ThirdName.Contains(searchTerm)
+                || w.LastName.Contains(searchTerm)
+                || w.Email.Contains(searchTerm)
+                || w.PhoneNumber.Contains(searchTerm)
+                || w.Address.Contains(searchTerm));
+
+            if (isAvailable.HasValue)
+                query = query.Where(w => w.IsAvailable == isAvailable.Value);
+
+            if (SpecialtyId.HasValue)
             {
-                Id = w.Id,
-                FullName = w.FirstName + " " + w.SecondName + " " + w.ThirdName + " " + w.LastName,
-                Specialty = w.Specialty.Name,
-                IsAvailable = w.IsAvailable
-            }).ToListAsync();
+                query = query.Where(w => w.SpecialtyId == SpecialtyId.Value);
+            }
+
+
+            var totalItems = await query.CountAsync();
+            var workers = await query
+                .OrderBy(w => w.FirstName)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(w => new GetWorkerDto
+                    {
+                        Id = w.Id,
+                        FullName = w.FirstName + " " + w.SecondName + " " + w.ThirdName + " " + w.LastName,
+                        Specialty = w.Specialty.Name,
+                        IsAvailable = w.IsAvailable
+                    })
+                .ToListAsync();
 
             return new PagedResult<GetWorkerDto>
             {
