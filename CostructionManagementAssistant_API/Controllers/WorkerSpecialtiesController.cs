@@ -55,7 +55,9 @@ namespace ConstructionManagementAssistant_API.Controllers
             return Ok(new BaseResponse<GetWorkerSpecialtyDto>
             {
                 Success = true,
-                Message = "تم جلب التخصص بنجاح "
+                Message = "تم جلب التخصص بنجاح ",
+                Data = result
+                
             });
         }
 

@@ -113,8 +113,10 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            if (await _appDbContext.Set<WorkerSpecialty>()
-                    .AnyAsync(c => c.Name == specialtyInfo.SpecialtyName))
+            var specialtyExist = await _appDbContext.Set<WorkerSpecialty>()
+                    .AnyAsync(c => c.Name == specialtyInfo.SpecialtyName);
+
+            if (specialtyExist && specialtyInfo.SpecialtyName != Specialty.Name)
             {
                 return new BaseResponse<string>
                 {
