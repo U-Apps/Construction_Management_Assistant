@@ -42,6 +42,7 @@ public static class SystemApiRouts
         public const string GetAllWorkers = Base;
         public const string UpdateWorker = Base;
         public const string DeleteWorker = Base;
+        public const string GetWorkerById = Base + "/{Id}";
     }
 
 }
