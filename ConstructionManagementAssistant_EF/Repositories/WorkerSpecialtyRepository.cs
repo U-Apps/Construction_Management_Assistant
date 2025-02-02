@@ -28,6 +28,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 {
                     return new BaseResponse<string>
                     {
+                        Success = false,
                         Message = "لم تتم اضافة التخصص",
                         Errors = ["التخصص موجود مسبقا"]
                     };
@@ -42,6 +43,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
 
                 return new BaseResponse<string>
                 { 
+                    Success = true,
                     Message = "تم إضافة التخصص بنجاح" 
                 };
             }
@@ -49,6 +51,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
             {
                 return new BaseResponse<string>
                 {
+                    Success = false,
                     Message = "لم تتم إضافة التخصص",
                     Errors = new List<string> { ex.Message }
                 };
@@ -60,11 +63,19 @@ namespace ConstructionManagementAssistant_EF.Repositories
         {
             var Specialty = _appDbContext.Set<WorkerSpecialty>().Where(x => x.Id == id).FirstOrDefault();
             if (Specialty is null)
-                return new BaseResponse<string> { Message = "التخصص غير موجود" };
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "التخصص غير موجود"
+                };
 
             Specialty.IsDeleted = true;
             await _appDbContext.SaveChangesAsync();
-            return new BaseResponse<string>{ Message = "تم حذف التخصص بنجاح" };
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم حذف التخصص بنجاح"
+            };
         }
 
         public async Task<List<GetWorkerSpecialtyDto>> GetAllWorkerSpecialties()
@@ -94,13 +105,23 @@ namespace ConstructionManagementAssistant_EF.Repositories
             var Specialty = await _appDbContext.Set<WorkerSpecialty>().Where(c => c.Id == specialtyInfo.Id).FirstOrDefaultAsync();
             if (Specialty is null)
             {
-                return new BaseResponse<string>{ Message = "لم تتم اضافة التخصص", Errors = [$"لا يوجد تخصص بالمعرف {specialtyInfo.Id}"] };
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "لم تتم اضافة التخصص",
+                    Errors = [$"لا يوجد تخصص بالمعرف {specialtyInfo.Id}"]
+                };
             }
 
             if (await _appDbContext.Set<WorkerSpecialty>()
                     .AnyAsync(c => c.Name == specialtyInfo.SpecialtyName))
             {
-                return new BaseResponse<string>{ Message = "لم تتم اضافة التخصص", Errors = ["يوجد تخصص بنفس الاسم"] };
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "لم تتم اضافة التخصص",
+                    Errors = ["يوجد تخصص بنفس الاسم"]
+                };
             }
 
             Specialty.Name = specialtyInfo.SpecialtyName;
@@ -109,12 +130,21 @@ namespace ConstructionManagementAssistant_EF.Repositories
             {
                 _appDbContext.Update(Specialty);
                 await _appDbContext.SaveChangesAsync();
-                return new BaseResponse<string>{ Message = "تم تحديث التخصص بنجاح" };
+                return new BaseResponse<string>
+                {
+                    Success = true,
+                    Message = "تم تحديث التخصص بنجاح"
+                };
             }
             catch (Exception)
             {
 
-                return new BaseResponse<string>{ Message = "لم يتم تحديث التخصص", Errors = ["حصل خطأ"] };
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "لم يتم تحديث التخصص",
+                    Errors = ["حصل خطأ"]
+                };
 
             }
         }
