@@ -161,7 +161,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
             }
 
             var NationalNumberExists = await _appDbContext.Set<Worker>().AnyAsync(c => c.NationalNumber != null && c.NationalNumber == workerInfo.NationalNumber);
-            if (phoneExists && workerInfo.NationalNumber != worker.NationalNumber)
+            if (NationalNumberExists && workerInfo.NationalNumber != worker.NationalNumber)
             {
                 return new BaseResponse<string>
                 {
