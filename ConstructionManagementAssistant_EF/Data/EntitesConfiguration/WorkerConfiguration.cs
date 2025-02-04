@@ -1,5 +1,4 @@
 ﻿using ConstructionManagementAssistant_Core;
-using ConstructionManagementAssistant_Core.Entites;
 
 namespace ConstructionManagementAssistant_EF.Configurations;
 
@@ -18,7 +17,7 @@ public class WorkerConfiguration : IEntityTypeConfiguration<Worker>
         .IsRequired(false);
 
         builder.HasOne(w => w.Specialty)
-        .WithMany()
+        .WithMany(w => w.Workers)
         .HasForeignKey(w => w.SpecialtyId)
         .IsRequired(false)
         .OnDelete(DeleteBehavior.SetNull);

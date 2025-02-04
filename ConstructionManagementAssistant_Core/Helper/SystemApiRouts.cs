@@ -3,6 +3,7 @@
 
 // This class is used to store all the API routes in one place so that we can easily access them.
 public static class SystemApiRouts
+
 {
     public static class Client
     {
@@ -38,11 +39,11 @@ public static class SystemApiRouts
     public class Worker
     {
         public const string Base = "api/v1/Workers";
-        public const string AddWorker = Base + "/Register";
-        public const string GetAllWorkers = Base;
-        public const string UpdateWorker = Base;
-        public const string DeleteWorker = Base;
         public const string GetWorkerById = Base + "/{Id}";
+        public const string GetAllWorkers = Base;
+        public const string AddWorker = Base;
+        public const string UpdateWorker = Base;
+        public const string DeleteWorker = Base + "/{Id}";
     }
 
 }

@@ -1,6 +1,8 @@
 ﻿global using ConstructionManagementAssistant_API.Filters;
 global using ConstructionManagementAssistant_API.Middleware;
 global using ConstructionManagementAssistant_API.Services;
+global using ConstructionManagementAssistant_Core.DTOs;
+global using ConstructionManagementAssistant_Core.Helper;
 global using ConstructionManagementAssistant_Core.Interfaces;
 global using ConstructionManagementAssistant_Core.Models.Response;
 global using ConstructionManagementAssistant_Core.Services;
@@ -11,6 +13,7 @@ global using Microsoft.AspNetCore.Mvc.Filters;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.OpenApi.Models;
 global using System;
+global using System.ComponentModel.DataAnnotations;
 global using System.Net;
 global using System.Reflection;
 global using System.Threading.Tasks;
