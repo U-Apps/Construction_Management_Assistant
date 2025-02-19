@@ -1,4 +1,4 @@
-﻿namespace ConstructionManagementAssistant_EF.Services;
+﻿namespace ConstructionManagementAssistant_EF.Helper;
 
 public static class EFServices
 {

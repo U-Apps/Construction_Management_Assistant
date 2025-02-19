@@ -1,4 +1,4 @@
-﻿namespace ConstructionManagementAssistant_Core.Services;
+﻿namespace ConstructionManagementAssistant_Core.Helper;
 
 public static class CoreServices
 {

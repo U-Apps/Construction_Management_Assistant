@@ -1,4 +1,4 @@
-﻿namespace ConstructionManagementAssistant_API.Services;
+﻿namespace ConstructionManagementAssistant_API.Helper;
 
 public static class ApiServices
 {

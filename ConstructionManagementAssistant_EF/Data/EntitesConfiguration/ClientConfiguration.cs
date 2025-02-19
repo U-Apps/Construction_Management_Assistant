@@ -1,6 +1,6 @@
 ﻿using ConstructionManagementAssistant_Core.Entites;
 using ConstructionManagementAssistant_Core.Enums;
-using ConstructionManagementAssistant_EF.Extentions;
+using ConstructionManagementAssistant_EF.Extensions;
 
 namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
