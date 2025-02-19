@@ -4,9 +4,37 @@ public static class ApiServices
 {
     public static void AddApiServices(this IServiceCollection services)
     {
+        // Register global filters and configure JSON options
+        services.AddControllers()
+            .AddJsonOptions(options =>
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    // Extract validation errors from the ModelState
+                    var errors = context.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .ToDictionary(
+                            kvp => kvp.Key,
+                            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        );
 
-        // Register global filters
-        services.AddControllers(options => options.Filters.Add<ValidationFilter>());
+                    // Create a BaseResponse<object> for the 400 Bad Request response
+                    var response = new BaseResponse<object>
+                    {
+                        Success = false,
+                        Message = "One or more validation errors occurred.",
+                        Errors = errors.SelectMany(e => e.Value).ToList()
+                    };
+
+                    // Return a BadRequestObjectResult with the custom response
+                    return new BadRequestObjectResult(response)
+                    {
+                        ContentTypes = { "application/json" }
+                    };
+                };
+            });
 
         services.AddSwaggerGen(c =>
         {
@@ -34,5 +62,4 @@ public static class ApiServices
             });
         });
     }
-
 }
