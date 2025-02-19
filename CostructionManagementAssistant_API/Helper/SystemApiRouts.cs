@@ -46,4 +46,20 @@ public static class SystemApiRouts
         public const string DeleteWorker = Base + "/{Id}";
     }
 
+    public static class Project
+    {
+        public const string Base = "api/v1/Projects";
+        public const string GetProjectById = Base + "/{Id}";
+        public const string GetAllProjects = Base;
+        public const string AddProject = Base;
+        public const string UpdateProject = Base;
+        public const string DeleteProject = Base + "/{Id}";
+        public const string GetAllCompletedProjects = Base + "/Completed";
+        public const string GetAllCancelProjects = Base + "/Cancelled";
+        public const string GetUnderImplementingProjects = Base + "/UnderImplementing";
+        public const string CompleteProject = Base + "/Complete/{Id}";
+        public const string CancelProject = Base + "/Cancel/{Id}";
+        public const string AssignProjectToSiteEngineer = Base + "/AssignToSiteEngineer";
+    }
+
 }
