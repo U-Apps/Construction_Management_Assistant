@@ -39,10 +39,10 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
                 .HasDefaultValue(false);
 
             builder.Property(p => p.DateModified)
-                .HasDefaultValueSql("CURRENT_DATE");
+                .HasDefaultValueSql("GETDATE()");
 
             builder.Property(p => p.DateCreated)
-                .HasDefaultValueSql("CURRENT_DATE");
+                .HasDefaultValueSql("GETDATE()");
 
             builder.Property(p => p.Startdate)
                 .IsRequired();
