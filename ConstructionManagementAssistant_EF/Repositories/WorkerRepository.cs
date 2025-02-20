@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant_EF.Repositories;
+﻿using ConstructionManagementAssistant_Core.Mapping;
+
+namespace ConstructionManagementAssistant_EF.Repositories;
 
 public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
 {
@@ -15,7 +17,9 @@ public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
                                                                bool? isAvailable = null,
                                                                int? SpecialtyId = null)
     {
-        var query = _appDbContext.Set<Worker>().AsNoTracking();
+        var query = _appDbContext.Set<Worker>()
+            .Include(w => w.Specialty)
+            .AsNoTracking();
 
         if (!string.IsNullOrEmpty(searchTerm))
             query = query.Where(w => w.FirstName.Contains(searchTerm)
@@ -25,6 +29,7 @@ public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
             || w.Email.Contains(searchTerm)
             || w.PhoneNumber.Contains(searchTerm)
             || w.Address.Contains(searchTerm));
+
 
         if (isAvailable.HasValue)
             query = query.Where(w => w.IsAvailable == isAvailable.Value);
@@ -40,13 +45,7 @@ public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
             .OrderBy(w => w.FirstName)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(w => new GetWorkerDto
-            {
-                Id = w.Id,
-                FullName = w.FirstName + " " + w.SecondName + " " + w.ThirdName + " " + w.LastName,
-                Specialty = w.Specialty.Name,
-                IsAvailable = w.IsAvailable
-            })
+            .Select(w => w.ToGetWorkerDto())
             .ToListAsync();
 
         return new PagedResult<GetWorkerDto>
@@ -61,18 +60,11 @@ public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
 
     public async Task<WorkerDetailsDto> GetWorkerById(int id)
     {
-        var query = await _appDbContext.Set<Worker>().Where(x => x.Id == id)
-                    .Select(w => new WorkerDetailsDto
-                    {
-                        Id = w.Id,
-                        FullName = w.GetFullName(),
-                        Email = w.Email,
-                        PhoneNumber = w.PhoneNumber,
-                        NationalNumber = w.NationalNumber,
-                        Address = w.Address,
-                        IsAvailable = w.IsAvailable,
-                        Specialty = w.Specialty.Name
-                    }).SingleOrDefaultAsync();
+        var query = await _appDbContext.Set<Worker>()
+                                       .Include(w => w.Specialty)
+                                       .Where(x => x.Id == id)
+                                       .Select(w => w.ToWorkerDetailsDto())
+                                       .SingleOrDefaultAsync();
 
         return query;
     }
@@ -112,19 +104,7 @@ public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
                 };
             }
 
-            var newWorker = new Worker
-            {
-                FirstName = workerInfo.FirstName,
-                SecondName = workerInfo.SecondName,
-                ThirdName = workerInfo.ThirdName,
-                LastName = workerInfo.LastName,
-                Email = workerInfo.Email,
-                PhoneNumber = workerInfo.PhoneNumber,
-                NationalNumber = workerInfo.PhoneNumber,
-                Address = workerInfo.Address,
-                SpecialtyId = workerInfo.SpecialtyId,
-                IsAvailable = true
-            };
+            var newWorker = workerInfo.ToWorker();
 
             await _appDbContext.AddAsync(newWorker);
             await _appDbContext.SaveChangesAsync();
@@ -189,16 +169,8 @@ public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
         }
         try
         {
-            worker.FirstName = workerInfo.FirstName;
-            worker.SecondName = workerInfo.SecondName;
-            worker.ThirdName = workerInfo.ThirdName;
-            worker.LastName = workerInfo.LastName;
-            worker.Email = workerInfo.Email;
-            worker.PhoneNumber = workerInfo.PhoneNumber;
-            worker.NationalNumber = workerInfo.PhoneNumber;
-            worker.Address = workerInfo.Address;
-            worker.SpecialtyId = workerInfo.SpecialtyId;
-
+            workerInfo.MapToWorker(worker);
+            
 
             _appDbContext.Update(worker);
             await _appDbContext.SaveChangesAsync();
