@@ -38,13 +38,10 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
             builder.Property(p => p.IsDeleted)
                 .HasDefaultValue(false);
 
-            builder.Property(p => p.DateModified)
+            builder.Property(p => p.CreatedDate)
                 .HasDefaultValueSql("GETDATE()");
 
-            builder.Property(p => p.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
-
-            builder.Property(p => p.Startdate)
+            builder.Property(p => p.StartDate)
                 .IsRequired();
 
             builder.Property(p => p.ExpectedEndDate)
@@ -70,6 +67,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.AddEnumCheckConstraint<ProjectStatus>("Projects", "Status");
+           // builder.AddEnumCheckConstraint<ProjectStatus>(nameof(Project), nameof(Project.Status));
 
             builder.HasQueryFilter(e => !e.IsDeleted);
         }
