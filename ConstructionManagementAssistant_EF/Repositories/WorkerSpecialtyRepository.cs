@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant_EF.Repositories;
+﻿using ConstructionManagementAssistant_Core.Mapping;
+
+namespace ConstructionManagementAssistant_EF.Repositories;
 
 public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorkerSpecialtyRepository
 {
@@ -11,22 +13,15 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
     public async Task<List<GetWorkerSpecialtyDto>> GetAllWorkerSpecialties()
     {
         return await _appDbContext.Set<WorkerSpecialty>()
-            .Select(c => new GetWorkerSpecialtyDto
-            {
-                Id = c.Id,
-                SpecialtyName = c.Name
-            })
-            .ToListAsync();
+                                  .Select(c => c.ToGetWorkerSpecialtyDto())
+                                  .ToListAsync();
     }
 
     public async Task<GetWorkerSpecialtyDto?> GetWorkerSpecialtyById(int id)
     {
-        var query = _appDbContext.Set<WorkerSpecialty>().Where(x => x.Id == id)
-      .Select(c => new GetWorkerSpecialtyDto
-      {
-          Id = c.Id,
-          SpecialtyName = c.Name
-      });
+        var query = _appDbContext.Set<WorkerSpecialty>()
+                                 .Where(x => x.Id == id)
+                                 .Select(c => c.ToGetWorkerSpecialtyDto());
         return await query.FirstOrDefaultAsync();
     }
 
@@ -45,10 +40,8 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
                 };
             }
 
-            var newSpecialty = new WorkerSpecialty
-            {
-                Name = specialtyInfo.SpecialtyName,
-            };
+            var newSpecialty = specialtyInfo.ToWorkerSpecialty();
+            
             await _appDbContext.AddAsync(newSpecialty);
             await _appDbContext.SaveChangesAsync();
 
@@ -79,7 +72,7 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
             return new BaseResponse<string>
             {
                 Success = false,
-                Message = "لم تتم اضافة التخصص",
+                Message = "لم يتم تحديث التخصص",
                 Errors = [$"لا يوجد تخصص بالمعرف {specialtyInfo.Id}"]
             };
         }
@@ -92,12 +85,12 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
             return new BaseResponse<string>
             {
                 Success = false,
-                Message = "لم تتم اضافة التخصص",
+                Message = "لم يتم تحديث التخصص",
                 Errors = ["يوجد تخصص بنفس الاسم"]
             };
         }
 
-        Specialty.Name = specialtyInfo.SpecialtyName;
+        specialtyInfo.MapToWorkerSpecialty(Specialty);
 
         try
         {
