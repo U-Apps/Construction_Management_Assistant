@@ -1,4 +1,4 @@
-﻿using ConstructionManagementAssistant_Core.Entites;
+﻿using ConstructionManagementAssistant_Core.Constants;
 using ConstructionManagementAssistant_Core.Enums;
 using ConstructionManagementAssistant_EF.Extensions;
 
@@ -10,23 +10,16 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
         {
             builder.ToTable("Clients");
 
-            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.FullName)
-                .HasMaxLength(30)
-                .IsUnicode(true)
-                .IsRequired(true);
+                .HasMaxLength(100);
 
             builder.Property(e => e.PhoneNumber)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+                .HasMaxLength(20);
 
             builder.Property(e => e.Email)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+                .HasMaxLength(255);
 
-            builder.Property(e => e.ClientType)
-                .IsRequired();
 
             builder.HasIndex(e => e.PhoneNumber, "UniquePhoneNumber")
                 .IsUnique();
@@ -34,7 +27,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
             builder.HasIndex(e => e.Email, "UniqueEmail")
                 .IsUnique();
 
-            builder.AddEnumCheckConstraint<ClientType>("Clients", "ClientType");
+            builder.AddEnumCheckConstraint<ClientType>(TablesNames.Clients, nameof(Client.ClientType));
 
             // Global filter to exclude deleted clients
             builder.HasQueryFilter(e => !e.IsDeleted);
