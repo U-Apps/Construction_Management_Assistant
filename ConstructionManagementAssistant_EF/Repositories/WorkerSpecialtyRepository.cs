@@ -4,129 +4,82 @@ namespace ConstructionManagementAssistant_EF.Repositories;
 
 public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorkerSpecialtyRepository
 {
-    protected readonly AppDbContext _appDbContext;
-    public WorkerSpecialtyRepository(AppDbContext appDbContext) : base(appDbContext)
+    private readonly AppDbContext _context;
+
+    public WorkerSpecialtyRepository(AppDbContext context) : base(context)
     {
-        _appDbContext = appDbContext;
+        _context = context;
     }
 
     public async Task<List<GetWorkerSpecialtyDto>> GetAllWorkerSpecialties()
     {
-        return await _appDbContext.Set<WorkerSpecialty>()
-                                  .Select(c => c.ToGetWorkerSpecialtyDto())
-                                  .ToListAsync();
+        return await GetAllDataWithSelectionAsync(
+            orderBy: x => x.Name,
+            selector: WorkerSpecialtyProfile.ToGetWorkerSpecialtyDto());
     }
 
     public async Task<GetWorkerSpecialtyDto?> GetWorkerSpecialtyById(int id)
     {
-        var query = _appDbContext.Set<WorkerSpecialty>()
-                                 .Where(x => x.Id == id)
-                                 .Select(c => c.ToGetWorkerSpecialtyDto());
-        return await query.FirstOrDefaultAsync();
+        return await FindWithSelectionAsync(
+            selector: WorkerSpecialtyProfile.ToGetWorkerSpecialtyDto(),
+            criteria: x => x.Id == id);
     }
 
     public async Task<BaseResponse<string>> AddWorkerSpecialtyAsync(AddWorkerSpecialtyDto specialtyInfo)
     {
-        try
-        {
-            var isSpecialtyExists = await _appDbContext.Set<WorkerSpecialty>().AnyAsync(c => c.Name == specialtyInfo.SpecialtyName);
-            if (isSpecialtyExists)
-            {
-                return new BaseResponse<string>
-                {
-                    Success = false,
-                    Message = "لم تتم اضافة التخصص",
-                    Errors = ["التخصص موجود مسبقا"]
-                };
-            }
+        var isSpecialtyExists = await AnyAsync(c => c.Name == specialtyInfo.Name);
 
-            var newSpecialty = specialtyInfo.ToWorkerSpecialty();
-            
-            await _appDbContext.AddAsync(newSpecialty);
-            await _appDbContext.SaveChangesAsync();
+        if (isSpecialtyExists)
+            return new BaseResponse<string> { Success = false, Message = "لم تتم اضافة التخصص, التخصص موجود مسبقا" };
 
-            return new BaseResponse<string>
-            {
-                Success = true,
-                Message = "تم إضافة التخصص بنجاح"
-            };
-        }
-        catch (Exception ex)
-        {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "لم تتم إضافة التخصص",
-                Errors = new List<string> { ex.Message }
-            };
-        }
+        var newSpecialty = specialtyInfo.ToWorkerSpecialty();
+        await AddAsync(newSpecialty);
+        await _context.SaveChangesAsync();
 
+
+        return new BaseResponse<string> { Success = true, Message = "تم إضافة التخصص بنجاح" };
     }
-
 
     public async Task<BaseResponse<string>> UpdateWorkerSpecialtyAsync(UpdateWorkerSpecialtyDto specialtyInfo)
     {
-        var Specialty = await _appDbContext.Set<WorkerSpecialty>().Where(c => c.Id == specialtyInfo.Id).FirstOrDefaultAsync();
-        if (Specialty is null)
+        var specialty = await GetByIdAsync(specialtyInfo.Id);
+
+        if (specialty is null)
+            return new BaseResponse<string> { Success = false, Message = $"لم يتم تحديث التخصص. لا يوجد تخصص بالمعرف {specialtyInfo.Id}" };
+
+
+        var specialtyExist = await AnyAsync(c => c.Name == specialtyInfo.Name && c.Id != specialtyInfo.Id);
+        if (specialtyExist)
         {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "لم يتم تحديث التخصص",
-                Errors = [$"لا يوجد تخصص بالمعرف {specialtyInfo.Id}"]
-            };
+            return new BaseResponse<string> { Success = false, Message = "لم يتم تحديث التخصص, يوجد تخصص بنفس الاسم" };
         }
 
-        var specialtyExist = await _appDbContext.Set<WorkerSpecialty>()
-                .AnyAsync(c => c.Name == specialtyInfo.SpecialtyName);
 
-        if (specialtyExist && specialtyInfo.SpecialtyName != Specialty.Name)
+        specialtyInfo.UpdateWorkerSpecialty(specialty);
+        await _context.SaveChangesAsync();
+
+        return new BaseResponse<string>
         {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "لم يتم تحديث التخصص",
-                Errors = ["يوجد تخصص بنفس الاسم"]
-            };
-        }
-
-        specialtyInfo.MapToWorkerSpecialty(Specialty);
-
-        try
-        {
-            _appDbContext.Update(Specialty);
-            await _appDbContext.SaveChangesAsync();
-            return new BaseResponse<string>
-            {
-                Success = true,
-                Message = "تم تحديث التخصص بنجاح"
-            };
-        }
-        catch (Exception)
-        {
-
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "لم يتم تحديث التخصص",
-                Errors = ["حصل خطأ"]
-            };
-
-        }
+            Success = true,
+            Message = "تم تحديث التخصص بنجاح"
+        };
     }
 
     public async Task<BaseResponse<string>> DeleteWorkerSpecialtyAsync(int id)
     {
-        var Specialty = _appDbContext.Set<WorkerSpecialty>().Where(x => x.Id == id).FirstOrDefault();
-        if (Specialty is null)
+        var specialty = await GetByIdAsync(id);
+        if (specialty is null)
+        {
             return new BaseResponse<string>
             {
                 Success = false,
                 Message = "التخصص غير موجود"
             };
+        }
 
-        Specialty.IsDeleted = true;
-        await _appDbContext.SaveChangesAsync();
+        Delete(specialty);
+        await _context.SaveChangesAsync();
+
         return new BaseResponse<string>
         {
             Success = true,

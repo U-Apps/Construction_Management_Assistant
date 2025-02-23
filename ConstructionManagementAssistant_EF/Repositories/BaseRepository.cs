@@ -85,7 +85,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
 
     #region Read Data Methods
 
-    public async Task<IEnumerable<T>> GetAllDataAsync(
+    public async Task<List<T>> GetAllDataAsync(
         Expression<Func<T, object>> orderBy,
         Expression<Func<T, bool>>? criteria = null,
         params Expression<Func<T, object>>[] includes)
@@ -94,7 +94,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
         return await query.ToListAsync();
     }
 
-    public async Task<IEnumerable<TResult>> GetAllDataWithSelectionAsync<TResult>(
+    public async Task<List<TResult>> GetAllDataWithSelectionAsync<TResult>(
         Expression<Func<T, object>> orderBy,
         Expression<Func<T, TResult>> selector,
         Expression<Func<T, bool>>? criteria = null,

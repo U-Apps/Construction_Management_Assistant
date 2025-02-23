@@ -23,13 +23,13 @@ public interface IBaseRepository<T> where T : class
         params Expression<Func<T, object>>[] includes);
     #endregion
 
-    #region Paged Data Methods
-    Task<IEnumerable<T>> GetAllDataAsync(
+    #region Read Data Methods
+    Task<List<T>> GetAllDataAsync(
         Expression<Func<T, object>> orderBy,
         Expression<Func<T, bool>>? criteria = null,
         params Expression<Func<T, object>>[] includes);
 
-    Task<IEnumerable<TResult>> GetAllDataWithSelectionAsync<TResult>(
+    Task<List<TResult>> GetAllDataWithSelectionAsync<TResult>(
         Expression<Func<T, object>> orderBy,
         Expression<Func<T, TResult>> selector,
         Expression<Func<T, bool>>? criteria = null,

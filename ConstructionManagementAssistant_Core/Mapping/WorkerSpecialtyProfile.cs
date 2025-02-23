@@ -1,32 +1,35 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Entites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace ConstructionManagementAssistant_Core.Mapping
 {
     public static class WorkerSpecialtyProfile
     {
-        public static WorkerSpecialty ToWorkerSpecialty(this AddWorkerSpecialtyDto workerDto)
-        => new()
-        {
-            Name = workerDto.SpecialtyName,
-        };
 
-        public static void MapToWorkerSpecialty(this UpdateWorkerSpecialtyDto workerSpecialtyDto, WorkerSpecialty worker )
+        public static Expression<Func<WorkerSpecialty, GetWorkerSpecialtyDto>> ToGetWorkerSpecialtyDto()
         {
-            worker.Id = workerSpecialtyDto.Id;
-            worker.Name = workerSpecialtyDto.SpecialtyName;
+            return specialty => new GetWorkerSpecialtyDto
+            {
+                Id = specialty.Id,
+                Name = specialty.Name
+            };
         }
 
-        public static GetWorkerSpecialtyDto ToGetWorkerSpecialtyDto(this WorkerSpecialty worker)
-        => new()
+        public static WorkerSpecialty ToWorkerSpecialty(this AddWorkerSpecialtyDto specialtyDto)
         {
-            Id = worker.Id,
-            SpecialtyName = worker.Name
+            return new WorkerSpecialty
+            {
+                Name = specialtyDto.Name
+            };
         };
+
+        public static void UpdateWorkerSpecialty(this UpdateWorkerSpecialtyDto workerSpecialtyDto, WorkerSpecialty worker)
+        {
+            worker.Id = workerSpecialtyDto.Id;
+            worker.Name = workerSpecialtyDto.Name;
+        }
+
+
     }
 }
