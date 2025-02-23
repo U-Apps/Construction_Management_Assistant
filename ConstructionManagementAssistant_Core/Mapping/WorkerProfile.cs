@@ -1,25 +1,24 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
-using ConstructionManagementAssistant_Core.Entites;
-using ConstructionManagementAssistant_Core.Extentions;
+using System.Linq.Expressions;
 
 namespace ConstructionManagementAssistant_Core.Mapping;
 
 public static class WorkerProfile
 {
-    public static GetWorkerDto ToGetWorkerDto(this Worker worker)
+    public static Expression<Func<Worker, GetWorkerDto>> ToGetWorkerDto()
     {
-        return new GetWorkerDto
+        return worker => new GetWorkerDto
         {
             Id = worker.Id,
             FullName = worker.GetFullName(),
-            Specialty = worker.Specialty?.Name,
+            Specialty = worker.Specialty.Name,
             IsAvailable = worker.IsAvailable,
         };
     }
 
-    public static WorkerDetailsDto ToWorkerDetailsDto(this Worker worker)
+    public static Expression<Func<Worker, WorkerDetailsDto>> ToWorkerDetailsDto()
     {
-        return new WorkerDetailsDto
+        return worker => new WorkerDetailsDto
         {
             Id = worker.Id,
             FullName = worker.GetFullName(),
@@ -27,7 +26,7 @@ public static class WorkerProfile
             PhoneNumber = worker.PhoneNumber,
             NationalNumber = worker.NationalNumber,
             Address = worker.Address,
-            Specialty = worker.Specialty?.Name,
+            Specialty = worker.Specialty.Name,
             IsAvailable = worker.IsAvailable,
         };
     }
@@ -49,7 +48,7 @@ public static class WorkerProfile
         };
     }
 
-    public static void MapToWorker(this UpdateWorkerDto updateWorkerDto, Worker worker)
+    public static void UpdateWorker(this UpdateWorkerDto updateWorkerDto, Worker worker)
     {
         worker.Id = updateWorkerDto.Id;
         worker.FirstName = updateWorkerDto.FirstName;
