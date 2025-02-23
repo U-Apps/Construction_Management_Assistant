@@ -13,5 +13,5 @@ public class Client : IEntity
     public DateTime? DeletedDate { get; set; }
     public bool IsDeleted { get; set; }
 
-    //public ICollection<Project> Projects { get; set; }
+    public ICollection<Project> Projects { get; set; }
 }
