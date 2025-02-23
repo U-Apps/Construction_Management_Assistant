@@ -6,6 +6,8 @@
 
         public DbSet<Person> People { get; set; }
         public DbSet<SiteEngineer> SiteEngineers { get; set; }
+        public DbSet<Worker> Workers { get; set; }
+        public DbSet<WorkerSpecialty> WorkerSpecialties { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Project> Projects { get; set; }
 
