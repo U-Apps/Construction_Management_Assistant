@@ -1,9 +1,11 @@
-﻿namespace ConstructionManagementAssistant_EF.Configurations;
+﻿using ConstructionManagementAssistant_Core.Constants;
+
+namespace ConstructionManagementAssistant_EF.Configurations;
 internal class WorkerSpecialtyConfiguration : IEntityTypeConfiguration<WorkerSpecialty>
 {
     public void Configure(EntityTypeBuilder<WorkerSpecialty> builder)
     {
-        builder.ToTable("WorkerSpecialties");
+        builder.ToTable(TablesNames.WorkerSpecialties);
 
 
         builder.Property(e => e.Name)

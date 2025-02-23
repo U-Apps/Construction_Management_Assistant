@@ -8,7 +8,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Project> builder)
         {
-            builder.ToTable(TablesNames.Projects)
+            builder.ToTable(TablesNames.Projects);
 
 
             builder.Property(p => p.Name)

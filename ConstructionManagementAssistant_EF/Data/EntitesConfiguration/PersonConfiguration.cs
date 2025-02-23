@@ -1,10 +1,12 @@
-﻿namespace ConstructionManagementAssistant_EF.Data.Configuration
+﻿using ConstructionManagementAssistant_Core.Constants;
+
+namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
     internal class PersonConfiguration : IEntityTypeConfiguration<Person>
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
-            builder.ToTable("People");
+            builder.ToTable(TablesNames.People);
 
 
             builder.Property(e => e.FirstName)
