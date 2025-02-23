@@ -1,20 +1,31 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Entites;
+using System.Linq.Expressions;
 
 namespace ConstructionManagementAssistant_Core.Mapping;
 
 public static class SiteEngineerProfile
 {
-    public static GetSiteEngineerDto ToGetSiteEngineerDto(this SiteEngineer siteEngineer)
+
+    // returns Expression so ef can translate it to sql
+    public static Expression<Func<SiteEngineer, GetSiteEngineerDto>> ToGetSiteEngineerDto()
     {
-        return new GetSiteEngineerDto
+        return siteEngineer => new GetSiteEngineerDto
         {
             Id = siteEngineer.Id,
-            FullName = siteEngineer.GetFullName(),
+            //FullName = siteEngineer.GetFullName(), // ef, cant use it in query directly 
+            FullName = siteEngineer.FirstName
+                       + (string.IsNullOrEmpty(siteEngineer.SecondName) ? "" : " " + siteEngineer.SecondName)
+                       + (string.IsNullOrEmpty(siteEngineer.ThirdName) ? "" : " " + siteEngineer.ThirdName)
+                       + " " + siteEngineer.LastName,
             Email = siteEngineer.Email,
             PhoneNumber = siteEngineer.PhoneNumber,
+            Address = siteEngineer.Address,
+            IsAvailable = siteEngineer.IsAvailable
         };
     }
+
+
     public static SiteEngineer ToSiteEngineer(this AddSiteEngineerDto addSiteEngineerDto)
     {
         return new SiteEngineer

@@ -16,13 +16,13 @@
         [Length(3, 20)]
         public required string FirstName { get; set; }
         [Length(3, 20)]
-        public required string SecondName { get; set; }
+        public string SecondName { get; set; }
         [Length(3, 20)]
-        public required string ThirdName { get; set; }
+        public string ThirdName { get; set; }
         [Length(3, 20)]
         public required string LastName { get; set; }
         [EmailAddress]
-        public required string Email { get; set; }
+        public string Email { get; set; }
         [Phone]
         public required string PhoneNumber { get; set; }
         public string NationalNumber { get; set; }
@@ -37,13 +37,13 @@
         [Length(3, 20)]
         public required string FirstName { get; set; }
         [Length(3, 20)]
-        public required string SecondName { get; set; }
+        public string SecondName { get; set; }
         [Length(3, 20)]
-        public required string ThirdName { get; set; }
+        public string ThirdName { get; set; }
         [Length(3, 20)]
         public required string LastName { get; set; }
         [EmailAddress]
-        public required string Email { get; set; }
+        public string Email { get; set; }
         [Phone]
         public required string PhoneNumber { get; set; }
         public string NationalNumber { get; set; }
