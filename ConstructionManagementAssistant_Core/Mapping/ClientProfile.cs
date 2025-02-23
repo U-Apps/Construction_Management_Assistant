@@ -1,20 +1,21 @@
 ﻿using ConstructionManagementAssistant_Core.DTOs;
 using ConstructionManagementAssistant_Core.Entites;
 using ConstructionManagementAssistant_Core.Extentions;
+using System.Linq.Expressions;
 
 namespace ConstructionManagementAssistant_Core.Mapping;
 
 public static class ClientProfile
 {
-    public static GetClientDto ToGetClientDto(this Client client)
+    public static Expression<Func<Client, GetClientDto>> ToGetClientDto()
     {
-        return new GetClientDto
+        return client => new GetClientDto
         {
             Id = client.Id,
             FullName = client.FullName,
             Email = client.Email,
             PhoneNumber = client.PhoneNumber,
-            ClientType = client.ClientType.GetDisplayName(),
+            ClientType = (client.ClientType).GetDisplayName(),
         };
     }
 
