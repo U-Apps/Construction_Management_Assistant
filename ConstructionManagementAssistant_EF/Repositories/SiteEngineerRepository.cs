@@ -52,7 +52,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
 
         public async Task<BaseResponse<string>> AddSiteEngineerAsync(AddSiteEngineerDto siteEngineerDto)
         {
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberAsync(
+            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
                 phoneNumber: siteEngineerDto.PhoneNumber,
                 email: siteEngineerDto.Email,
                 nationalNumber: siteEngineerDto.NationalNumber);
@@ -79,7 +79,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 return new BaseResponse<string> { Message = "المهندس غير موجود", Success = false };
 
 
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberAsync(
+            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
                 phoneNumber: siteEngineerDto.PhoneNumber,
                 email: siteEngineerDto.Email,
                 nationalNumber: siteEngineerDto.NationalNumber,

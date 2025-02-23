@@ -49,7 +49,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
 
         public async Task<BaseResponse<string>> AddWorkerAsync(AddWorkerDto workerDto)
         {
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberAsync(
+            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
                 phoneNumber: workerDto.PhoneNumber,
                 email: workerDto.Email,
                 nationalNumber: workerDto.NationalNumber);
@@ -80,7 +80,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
 
 
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberAsync(
+            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
                 phoneNumber: workerInfo.PhoneNumber,
                 email: workerInfo.Email,
                 nationalNumber: workerInfo.NationalNumber,
