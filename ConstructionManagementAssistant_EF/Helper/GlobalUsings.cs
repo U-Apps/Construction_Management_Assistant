@@ -4,6 +4,7 @@ global using ConstructionManagementAssistant_Core.Entites;
 global using ConstructionManagementAssistant_Core.Interfaces;
 global using ConstructionManagementAssistant_Core.Models.Response;
 global using ConstructionManagementAssistant_EF.Data;
+global using ConstructionManagementAssistant_EF.Data.Configuration;
 global using ConstructionManagementAssistant_EF.Repositories;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

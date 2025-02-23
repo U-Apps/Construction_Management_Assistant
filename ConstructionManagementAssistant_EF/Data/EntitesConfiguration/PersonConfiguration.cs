@@ -1,7 +1,4 @@
-﻿
-using ConstructionManagementAssistant_Core.Entites;
-
-namespace ConstructionManagementAssistant_EF.Data.Configuration
+﻿namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
     internal class PersonConfiguration : IEntityTypeConfiguration<Person>
     {
@@ -9,50 +6,35 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
         {
             builder.ToTable("People");
 
-            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.FirstName)
-                .HasMaxLength(50)
-                .IsUnicode(true)
-                .IsRequired(true);
+                .HasMaxLength(50);
 
             builder.Property(e => e.SecondName)
                 .HasMaxLength(50)
-                .IsUnicode(true)
-                .IsRequired(true);
+                .IsRequired(false);
 
             builder.Property(e => e.ThirdName)
                 .HasMaxLength(50)
-                .IsUnicode(true)
                 .IsRequired(false);
 
             builder.Property(e => e.LastName)
-                .HasMaxLength(50)
-                .IsUnicode(true)
-                .IsRequired(true);
+                .HasMaxLength(50);
 
             builder.Property(e => e.NationalNumber)
-                .HasColumnName("NationalNumber")
-                .HasMaxLength(15)
-                .IsUnicode(false)
-                .IsRequired(false);
+                .HasMaxLength(15);
+
 
             builder.Property(e => e.PhoneNumber)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .IsRequired(false);
-
+                .HasMaxLength(20);
 
 
             builder.Property(e => e.Email)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .IsRequired(false);
+                .HasMaxLength(255);
+
 
             builder.Property(e => e.Address)
-                .HasMaxLength(255)
-                .IsUnicode(true)
-                .IsRequired(false);
+                .HasMaxLength(255);
 
 
             builder.HasIndex(e => e.NationalNumber, "UniqueNationalNumber")
@@ -65,7 +47,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
             builder.HasIndex(e => e.Email, "UniqueEmail")
                 .IsUnique();
 
-            builder.UseTptMappingStrategy();
+            //builder.UseTptMappingStrategy(); // by convention used
 
             // Global filter to exclude deleted clients
             builder.HasQueryFilter(e => !e.IsDeleted);
