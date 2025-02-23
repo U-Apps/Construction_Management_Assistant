@@ -28,7 +28,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
                                                                                            bool? isAvailable = null,
                                                                                            int? SpecialtyId = null)
     {
-        var result = await _unitOfWork.Workers.GetAllWorkers(pageNumber, pageSize, searchTerm, isAvailable, SpecialtyId);
+        var result = await _unitOfWork.Workers.GetAllWorkers(pageNumber, pageSize, searchTerm, isAvailable);
         if (result.Items == null || !result.Items.Any())
             return NotFound(new BaseResponse<PagedResult<GetClientDto>>
             {

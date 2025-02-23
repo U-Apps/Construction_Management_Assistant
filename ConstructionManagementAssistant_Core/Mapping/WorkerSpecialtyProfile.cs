@@ -22,7 +22,7 @@ namespace ConstructionManagementAssistant_Core.Mapping
             {
                 Name = specialtyDto.Name
             };
-        };
+        }
 
         public static void UpdateWorkerSpecialty(this UpdateWorkerSpecialtyDto workerSpecialtyDto, WorkerSpecialty worker)
         {

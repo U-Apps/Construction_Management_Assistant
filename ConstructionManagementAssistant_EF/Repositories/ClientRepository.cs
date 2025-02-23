@@ -23,7 +23,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
         public async Task<PagedResult<GetClientDto>> GetAllClients(
             int pageNumber = 1,
             int pageSize = 10,
-            string? searchTerm = null,,
+            string? searchTerm = null,
             ClientType? clientType = null)
         {
             Expression<Func<Client, bool>> filter = x => true;

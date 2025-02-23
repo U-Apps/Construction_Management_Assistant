@@ -12,15 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant_EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250220114448_AddProjectEntity")]
-    partial class AddProjectEntity
+    [Migration("20250223181452_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -40,17 +39,17 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -61,13 +60,13 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
                     b.HasIndex(new[] { "Email" }, "UniqueEmail")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex(new[] { "PhoneNumber" }, "UniquePhoneNumber")
                         .IsUnique();
@@ -88,21 +87,21 @@ namespace ConstructionManagementAssistant_EF.Migrations
 
                     b.Property<string>("Address")
                         .HasMaxLength(255)
-                        .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(true)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsDeleted")
@@ -111,7 +110,6 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(true)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -119,24 +117,19 @@ namespace ConstructionManagementAssistant_EF.Migrations
 
                     b.Property<string>("NationalNumber")
                         .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(15)")
-                        .HasColumnName("NationalNumber");
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("SecondName")
-                        .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(true)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ThirdName")
                         .HasMaxLength(50)
-                        .IsUnicode(true)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
@@ -150,8 +143,7 @@ namespace ConstructionManagementAssistant_EF.Migrations
                         .HasFilter("[NationalNumber] IS NOT NULL");
 
                     b.HasIndex(new[] { "PhoneNumber" }, "UniquePhoneNumber")
-                        .IsUnique()
-                        .HasFilter("[PhoneNumber] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("People", (string)null);
 
@@ -173,34 +165,23 @@ namespace ConstructionManagementAssistant_EF.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("CancelledAtStage")
-                        .HasColumnType("int");
-
                     b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClientId1")
                         .HasColumnType("int");
 
                     b.Property<DateOnly?>("CompletionDate")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("date")
-                        .HasDefaultValueSql("GETDATE()");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("date")
-                        .HasDefaultValueSql("GETDATE()");
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<DateOnly>("ExpectedEndDate")
+                    b.Property<DateOnly?>("ExpectedEndDate")
                         .HasColumnType("date");
 
                     b.Property<string>("GeographicalCoordinates")
@@ -211,9 +192,10 @@ namespace ConstructionManagementAssistant_EF.Migrations
                         .HasColumnType("date");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -224,13 +206,10 @@ namespace ConstructionManagementAssistant_EF.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("SiteEngineerId")
+                    b.Property<int?>("SiteEngineerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SiteEngineerId1")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("Startdate")
+                    b.Property<DateOnly?>("StartDate")
                         .HasColumnType("date");
 
                     b.Property<int>("Status")
@@ -238,18 +217,14 @@ namespace ConstructionManagementAssistant_EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId")
-                        .IsUnique();
+                    b.HasIndex("ClientId");
 
-                    b.HasIndex("ClientId1");
-
-                    b.HasIndex("SiteEngineerId")
-                        .IsUnique();
-
-                    b.HasIndex("SiteEngineerId1");
+                    b.HasIndex("SiteEngineerId");
 
                     b.ToTable("Projects", null, t =>
                         {
+                            t.HasCheckConstraint("CK_Project_CancelationCompletionDate", "([CancelationDate] IS NULL OR [CompletionDate] IS NULL)");
+
                             t.HasCheckConstraint("CK_Projects_Status", "[Status] BETWEEN 0 AND 4");
                         });
                 });
@@ -265,6 +240,9 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -274,9 +252,7 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("Name");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -304,12 +280,10 @@ namespace ConstructionManagementAssistant_EF.Migrations
                     b.HasBaseType("ConstructionManagementAssistant_Core.Entites.Person");
 
                     b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit")
-                        .HasColumnName("IsAvailable");
+                        .HasColumnType("bit");
 
                     b.Property<int?>("SpecialtyId")
-                        .HasColumnType("int")
-                        .HasColumnName("SpecialtyId");
+                        .HasColumnType("int");
 
                     b.HasIndex("SpecialtyId");
 
@@ -318,29 +292,15 @@ namespace ConstructionManagementAssistant_EF.Migrations
 
             modelBuilder.Entity("ConstructionManagementAssistant_Core.Entites.Project", b =>
                 {
-                    b.HasOne("ConstructionManagementAssistant_Core.Entites.Client", null)
-                        .WithOne()
-                        .HasForeignKey("ConstructionManagementAssistant_Core.Entites.Project", "ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ConstructionManagementAssistant_Core.Entites.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConstructionManagementAssistant_Core.Entites.SiteEngineer", null)
-                        .WithOne()
-                        .HasForeignKey("ConstructionManagementAssistant_Core.Entites.Project", "SiteEngineerId")
+                        .WithMany("Projects")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ConstructionManagementAssistant_Core.Entites.SiteEngineer", "SiteEngineer")
-                        .WithMany()
-                        .HasForeignKey("SiteEngineerId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Projects")
+                        .HasForeignKey("SiteEngineerId");
 
                     b.Navigation("Client");
 
@@ -366,15 +326,24 @@ namespace ConstructionManagementAssistant_EF.Migrations
 
                     b.HasOne("ConstructionManagementAssistant_Core.Entites.WorkerSpecialty", "Specialty")
                         .WithMany("Workers")
-                        .HasForeignKey("SpecialtyId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("SpecialtyId");
 
                     b.Navigation("Specialty");
+                });
+
+            modelBuilder.Entity("ConstructionManagementAssistant_Core.Entites.Client", b =>
+                {
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("ConstructionManagementAssistant_Core.Entites.WorkerSpecialty", b =>
                 {
                     b.Navigation("Workers");
+                });
+
+            modelBuilder.Entity("ConstructionManagementAssistant_Core.Entites.SiteEngineer", b =>
+                {
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }
