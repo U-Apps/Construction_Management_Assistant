@@ -1,6 +1,7 @@
 ﻿global using ConstructionManagementAssistant_API.Helper;
 global using ConstructionManagementAssistant_API.Middleware;
 global using ConstructionManagementAssistant_Core.DTOs;
+global using ConstructionManagementAssistant_Core.Enums;
 global using ConstructionManagementAssistant_Core.Helper;
 global using ConstructionManagementAssistant_Core.Interfaces;
 global using ConstructionManagementAssistant_Core.Models.Response;
