@@ -1,7 +1,10 @@
+using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Register services
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiServices();
 builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
@@ -12,6 +15,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
