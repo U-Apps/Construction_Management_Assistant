@@ -321,33 +321,6 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
         return new BaseResponse<string> { Success = true };
     }
 
-    public async Task<BaseResponse<string>> CheckDuplicatePhoneEmailForClientAsync(
-    string? phoneNumber,
-    string? email,
-    int? id = null)
-    {
-        if (phoneNumber != null && await _context.Clients.IgnoreQueryFilters().AnyAsync(g => g.PhoneNumber == phoneNumber && (!id.HasValue || g.Id != id.Value)))
-        {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "A client with the same phone number already exists.",
-            };
-        }
-
-        if (email != null && await _context.Clients.IgnoreQueryFilters().AnyAsync(g => g.Email == email && (!id.HasValue || g.Id != id.Value)))
-        {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "A client with the same email already exists.",
-            };
-        }
-
-        return new BaseResponse<string> { Success = true };
-    }
-
-
     #endregion
 
 }
