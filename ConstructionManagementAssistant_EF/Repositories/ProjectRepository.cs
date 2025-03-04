@@ -11,5 +11,29 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
             criteria: x => x.Id == id);
     }
 
-   
+    public async Task<PagedResult<GetProjectsDto>> GetAllProjects(
+        int pageNumber = 1,
+        int pageSize = 10,
+        string? searchTerm = null)
+    {
+        Expression<Func<Project, bool>> filter = x => true;
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            filter = filter.AndAlso(p =>
+                p.Client.FullName.Contains(searchTerm) ||
+                p.SiteEngineer.GetFullName().Contains(searchTerm));
+        }
+
+
+        var pagedResult = await GetPagedDataWithSelectionAsync(
+            orderBy: x => x.Name,
+            selector: ProjectProfile.ToGetProjectDto(),
+            criteria: filter,
+            pageNumber: pageNumber,
+            pageSize: pageSize);
+
+        return pagedResult;
+    }
+
 }
