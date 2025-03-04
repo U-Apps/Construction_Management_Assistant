@@ -40,6 +40,10 @@ public static class ProjectProfile
         project.Description = updateProjectDto.Description;
         project.SiteAddress = updateProjectDto.SiteAddress;
         project.GeographicalCoordinates = updateProjectDto.GeographicalCoordinates;
+        if (updateProjectDto.ProjectStatus != null)
+            project.Status =(ProjectStatus) updateProjectDto.ProjectStatus.ToEnumByDisplayName<ProjectStatus>();
+        if (updateProjectDto.SiteEngineerId != null)
+            project.SiteEngineerId = updateProjectDto.SiteEngineerId;
         project.ModifiedDate = DateTime.Now;
     }
 }
