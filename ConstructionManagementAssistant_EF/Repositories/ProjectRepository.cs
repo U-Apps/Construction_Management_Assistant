@@ -36,4 +36,18 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
         return pagedResult;
     }
 
+    public async Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto)
+    {
+
+        var newProject = addProjectDto.ToProject();
+        await AddAsync(newProject);
+        await _context.SaveChangesAsync();
+
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم إضافة المشروع بنجاح"
+        };
+    }
+
 }
