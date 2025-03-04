@@ -11,5 +11,7 @@ namespace ConstructionManagementAssistant_Core.Interfaces
             int pageNumber,
             int pageSize,
             string? searchTerm = null );
+        public Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto);
+
     }
 }
