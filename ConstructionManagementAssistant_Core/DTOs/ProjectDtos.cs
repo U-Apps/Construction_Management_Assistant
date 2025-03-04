@@ -36,6 +36,9 @@ namespace ConstructionManagementAssistant_Core.DTOs
         public string? SiteAddress { get; init; }
         [MaxLength(100)]
         public string? GeographicalCoordinates { get; init; }
+        public string? ProjectStatus { get; init; }
+        public int? SiteEngineerId { get; init; }
+
         // we will look at them later
         //public DateOnly? StartDate { get; init; }
         //public DateOnly? ExpectedEndDate { get; init; }
