@@ -50,4 +50,26 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
         };
     }
 
+    public async Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto)
+    {
+        var project = await GetByIdAsync(updateProjectDto.Id);
+        if (project is null)
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "المشروع غير موجود"
+            };
+
+   
+
+        project.UpdateProject(updateProjectDto);
+        await _context.SaveChangesAsync();
+
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تحديث المشروع بنجاح"
+        };
+    }
+
 }
