@@ -21,5 +21,18 @@ public static class DisplayEnumeNameExtension
             return enumValue.ToString();
         }
     }
+    public static T? ToEnumByDisplayName<T>(this string displayName) where T : struct, Enum
+    {
+        foreach (var field in typeof(T).GetFields())
+        {
+            var attribute = Attribute.GetCustomAttribute(field, typeof(DisplayAttribute)) as DisplayAttribute;
+            if (attribute != null && attribute.Name == displayName)
+            {
+                return (T)field.GetValue(null);
+            }
+        }
+        return null;
+    }
+
 
 }
