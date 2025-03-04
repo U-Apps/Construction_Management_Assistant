@@ -13,6 +13,8 @@ namespace ConstructionManagementAssistant_Core.Interfaces
             string? searchTerm = null );
         public Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto);
         public Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto);
+        public Task<BaseResponse<string>> DeleteProjectAsync(int id);
+
 
     }
 }
