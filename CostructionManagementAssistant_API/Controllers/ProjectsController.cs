@@ -1,7 +1,10 @@
-﻿namespace ConstructionManagementAssistant_API.Controllers;
+﻿using ConstructionManagementAssistant_Core.Enums;
+using ConstructionManagementAssistant_Core.Extentions;
+
+namespace ConstructionManagementAssistant_API.Controllers;
 
 [ApiController]
-public class ProjectsController : ControllerBase
+public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
 {
     #region Get All Projects
 
@@ -15,10 +18,25 @@ public class ProjectsController : ControllerBase
     /// <response code="200">تم العثور على المشاريع</response>
     [HttpGet(SystemApiRouts.Project.GetAllProjects)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<object>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllProjects(int pageSize, int pageNumber, string? searchTerm = null)
+    public async Task<IActionResult> GetAllProjects(int pageNumber = 1,
+        [Range(1, 50)] int pageSize = 10, string? searchTerm = null)
     {
-        // Implementation goes here
-        return Ok();
+        var result = await _unitOfWork.Projects.GetAllProjects(pageNumber, pageSize, searchTerm);
+        if (result.Items == null || result.Items.Count == 0)
+        {
+            return NotFound(new BaseResponse<PagedResult<GetProjectsDto>>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشاريع",
+            });
+        }
+
+        return Ok(new BaseResponse<PagedResult<GetProjectsDto>>
+        {
+            Success = true,
+            Message = "تم جلب المشاريع بنجاح",
+            Data = result,
+        });
     }
 
 
@@ -34,8 +52,32 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<PagedResult<object>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllCompletedProjects(int pageSize, int pageNumber, string? searchTerm = null)
     {
-        // Implementation goes here
-        return Ok();
+        var result = await _unitOfWork.Projects.GetAllProjects(pageNumber, pageSize, searchTerm);
+        var completedProjects = result.Items?.Where(p => p.ProjectStatus == ProjectStatus.Completed.GetDisplayName()).ToList();
+
+        if (completedProjects == null || completedProjects.Count == 0)
+        {
+            return NotFound(new BaseResponse<PagedResult<GetProjectsDto>>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشاريع المكتملة",
+            });
+        }
+
+        var pagedResult = new PagedResult<GetProjectsDto>
+        {
+            Items = completedProjects,
+            CurrentPage = pageNumber,
+            PageSize = pageSize,
+            TotalItems = completedProjects.Count
+        };
+
+        return Ok(new BaseResponse<PagedResult<GetProjectsDto>>
+        {
+            Success = true,
+            Message = "تم جلب المشاريع المكتملة بنجاح",
+            Data = pagedResult,
+        });
     }
 
 
@@ -51,8 +93,32 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<PagedResult<object>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllCancelProjects(int pageSize, int pageNumber, string? searchTerm = null)
     {
-        // Implementation goes here
-        return Ok();
+        var result = await _unitOfWork.Projects.GetAllProjects(pageNumber, pageSize, searchTerm);
+        var canceledProjects = result.Items?.Where(p => p.ProjectStatus == ProjectStatus.Cancelled.GetDisplayName()).ToList();
+
+        if (canceledProjects == null || canceledProjects.Count == 0)
+        {
+            return NotFound(new BaseResponse<PagedResult<GetProjectsDto>>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشاريع الملغاة",
+            });
+        }
+
+        var pagedResult = new PagedResult<GetProjectsDto>
+        {
+            Items = canceledProjects,
+            CurrentPage = pageNumber,
+            PageSize = pageSize,
+            TotalItems = canceledProjects.Count
+        };
+
+        return Ok(new BaseResponse<PagedResult<GetProjectsDto>>
+        {
+            Success = true,
+            Message = "تم جلب المشاريع الملغاة بنجاح",
+            Data = pagedResult,
+        });
     }
 
 
@@ -69,8 +135,32 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<PagedResult<object>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUnderImplementingProjects(int pageSize, int pageNumber, string? searchTerm = null)
     {
-        // Implementation goes here
-        return Ok();
+        var result = await _unitOfWork.Projects.GetAllProjects(pageNumber, pageSize, searchTerm);
+        var underImplementingProjects = result.Items?.Where(p => p.ProjectStatus == ProjectStatus.InProgress.GetDisplayName()).ToList();
+
+        if (underImplementingProjects == null || underImplementingProjects.Count == 0)
+        {
+            return NotFound(new BaseResponse<PagedResult<GetProjectsDto>>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشاريع قيد التنفيذ",
+            });
+        }
+
+        var pagedResult = new PagedResult<GetProjectsDto>
+        {
+            Items = underImplementingProjects,
+            CurrentPage = pageNumber,
+            PageSize = pageSize,
+            TotalItems = underImplementingProjects.Count
+        };
+
+        return Ok(new BaseResponse<PagedResult<GetProjectsDto>>
+        {
+            Success = true,
+            Message = "تم جلب المشاريع قيد التنفيذ بنجاح",
+            Data = pagedResult,
+        });
     }
 
     #endregion
@@ -89,8 +179,22 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProjectById(int id)
     {
-        // Implementation goes here
-        return Ok();
+        var project = await _unitOfWork.Projects.GetProjectById(id);
+        if (project == null)
+        {
+            return NotFound(new BaseResponse<GetProjectsDto>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشروع",
+            });
+        }
+
+        return Ok(new BaseResponse<GetProjectsDto>
+        {
+            Success = true,
+            Message = "تم العثور على المشروع",
+            Data = project,
+        });
     }
 
     #endregion
@@ -107,10 +211,29 @@ public class ProjectsController : ControllerBase
     [HttpPost(SystemApiRouts.Project.AddProject)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddProject([FromBody] object project)
+    public async Task<IActionResult> AddProject([FromBody] AddProjectDto project)
     {
-        // Implementation goes here
-        return Ok();
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "بيانات المشروع غير صحيحة",
+            });
+        }
+
+        var response = await _unitOfWork.Projects.AddProjectAsync(project);
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم إضافة المشروع بنجاح",
+            Data = response.Data,
+        });
     }
 
     #endregion
@@ -129,10 +252,33 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateProject([FromBody] object project)
+    public async Task<IActionResult> UpdateProject([FromBody] UpdateProjectDto project)
     {
-        // Implementation goes here
-        return Ok();
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "بيانات المشروع غير صحيحة",
+            });
+        }
+
+        var response = await _unitOfWork.Projects.UpdateProjectAsync(project);
+        if (!response.Success)
+        {
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشروع",
+            });
+        }
+
+        return Ok(new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تحديث المشروع بنجاح",
+            Data = response.Data,
+        });
     }
 
     #endregion
@@ -151,8 +297,22 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteProject(int id)
     {
-        // Implementation goes here
-        return Ok();
+        var response = await _unitOfWork.Projects.DeleteProjectAsync(id);
+        if (!response.Success)
+        {
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشروع",
+            });
+        }
+
+        return Ok(new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم حذف المشروع بنجاح",
+            Data = response.Data,
+        });
     }
 
     #endregion
@@ -171,8 +331,37 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CompleteProject(int id)
     {
-        // Implementation goes here
-        return Ok();
+        var project = await _unitOfWork.Projects.GetProjectById(id);
+        if (project == null)
+        {
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشروع",
+            });
+        }
+
+        var updatedProject = new UpdateProjectDto
+        {
+            Id = project.Id,
+            ProjectName = project.ProjectName,
+            SiteAddress = project.SiteAddress,
+            ProjectStatus = ProjectStatus.Completed.GetDisplayName()
+        };
+
+        var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم إكمال المشروع بنجاح",
+            Data = response.Data,
+        });
     }
 
     #endregion
@@ -191,8 +380,37 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CancelProject(int id)
     {
-        // Implementation goes here
-        return Ok();
+        var project = await _unitOfWork.Projects.GetProjectById(id);
+        if (project == null)
+        {
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشروع",
+            });
+        }
+
+        var updatedProject = new UpdateProjectDto
+        {
+            Id = project.Id,
+            ProjectName = project.ProjectName,
+            SiteAddress = project.SiteAddress,
+            ProjectStatus = ProjectStatus.Cancelled.GetDisplayName()
+        };
+
+        var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم إلغاء المشروع بنجاح",
+            Data = response.Data,
+        });
     }
     #endregion
 
@@ -211,8 +429,47 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> AssignProjectToSiteEngineer(int projectId, int siteEngineerId)
     {
-        // Implementation goes here
-        return Ok();
+        var project = await _unitOfWork.Projects.GetProjectById(projectId);
+        if (project == null)
+        {
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لم يتم العثور على المشروع",
+            });
+        }
+
+        var siteEngineer = await _unitOfWork.SiteEngineers.GetSiteEngineerById(siteEngineerId);
+        if (siteEngineer == null)
+        {
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لم يتم العثور على مهندس الموقع",
+            });
+        }
+
+        var updatedProject = new UpdateProjectDto
+        {
+            Id = project.Id,
+            ProjectName = project.ProjectName,
+            SiteAddress = project.SiteAddress,
+            SiteEngineerId = siteEngineerId
+        };
+
+        var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تعيين المشروع بنجاح",
+            Data = response.Data,
+        });
     }
 
     #endregion
