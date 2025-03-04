@@ -6,8 +6,8 @@ namespace ConstructionManagementAssistant_Core.Interfaces
 {
     public interface IProjectRepository : IBaseRepository<Project>
     {
-        public Task<GetProjectDto> GetProjectById(int id);
-        public Task<PagedResult<GetProjectDto>> GetAllProjects(
+        public Task<GetProjectsDto> GetProjectById(int id);
+        public Task<PagedResult<GetProjectsDto>> GetAllProjects(
             int pageNumber,
             int pageSize,
             string? searchTerm = null );
