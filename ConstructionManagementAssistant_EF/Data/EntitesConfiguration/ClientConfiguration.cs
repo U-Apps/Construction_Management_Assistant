@@ -22,9 +22,11 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
 
 
             builder.HasIndex(e => e.PhoneNumber, "UniquePhoneNumber")
+                .HasFilter("[IsDeleted] = 0") // Ensures uniqueness only for active records
                 .IsUnique();
 
             builder.HasIndex(e => e.Email, "UniqueEmail")
+                .HasFilter("[IsDeleted] = 0") // Ensures uniqueness only for active records
                 .IsUnique();
 
             builder.AddEnumCheckConstraint<ClientType>(TablesNames.Clients, nameof(Client.ClientType));

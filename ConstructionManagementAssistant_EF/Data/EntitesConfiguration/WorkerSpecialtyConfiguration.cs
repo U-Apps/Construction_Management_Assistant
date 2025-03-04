@@ -12,6 +12,7 @@ internal class WorkerSpecialtyConfiguration : IEntityTypeConfiguration<WorkerSpe
         .HasMaxLength(100);
 
         builder.HasIndex(e => e.Name, "UniqueSpecialtyName")
+            .HasFilter("[IsDeleted] = 0")
         .IsUnique(true);
 
         builder.HasQueryFilter(e => !e.IsDeleted);
