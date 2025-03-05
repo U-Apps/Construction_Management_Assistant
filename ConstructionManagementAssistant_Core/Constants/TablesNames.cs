@@ -8,5 +8,6 @@
         public const string WorkerSpecialties = "WorkerSpecialties";
         public const string Clients = "Clients";
         public const string Projects = "Projects";
+        public const string Stages = "Stages";
     }
 }
