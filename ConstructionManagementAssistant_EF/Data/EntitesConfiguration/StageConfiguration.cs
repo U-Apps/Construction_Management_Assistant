@@ -1,6 +1,7 @@
 ﻿
 
 using ConstructionManagementAssistant_Core.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
 {
@@ -15,6 +16,11 @@ namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
 
             builder.Property(s => s.Description)
                 .HasMaxLength(1000);
+
+            builder.HasOne(s => s.Project)
+                .WithMany()
+                .HasForeignKey(s => s.ProjectId)
+                .IsRequired();
 
             // Global filter to exclude deleted clients
             builder.HasQueryFilter(e => !e.IsDeleted);
