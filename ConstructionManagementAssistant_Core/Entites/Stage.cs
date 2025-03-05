@@ -13,5 +13,8 @@ namespace ConstructionManagementAssistant_Core.Entites
         public DateTime? ModifiedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public bool IsDeleted { get; set; }
+        public int ProjectId { get; set; }
+        public Project Project { get; set; }
+
     }
 }
