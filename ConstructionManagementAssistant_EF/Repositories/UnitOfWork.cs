@@ -10,6 +10,7 @@ public class UnitOfWork(AppDbContext _appDbContext) : IUnitOfWork
     public ISiteEngineerRepository SiteEngineers { get; private set; } = new SiteEngineerRepository(_appDbContext);
     public IWorkerSpecialtyRepository WorkerSpecialties { get; private set; } = new WorkerSpecialtyRepository(_appDbContext);
     public IWorkerRepository Workers { get; private set; } = new WorkerRepository(_appDbContext);
+    public IStageRepository Stages { get; } = new StageRepository(_appDbContext);
 
     public void Dispose()
     {
