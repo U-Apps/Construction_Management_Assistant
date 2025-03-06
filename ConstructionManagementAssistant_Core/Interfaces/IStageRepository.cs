@@ -9,5 +9,6 @@ namespace ConstructionManagementAssistant_Core.Interfaces
     public interface IStageRepository : IBaseRepository<Stage>
     {
         public Task<BaseResponse<string>> AddStageAsync(AddStageDto stageInfo);
+        public Task<BaseResponse<string>> DeleteStageAsync(int id);
     }
 }
