@@ -22,6 +22,10 @@ namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
                 .HasForeignKey(s => s.ProjectId)
                 .IsRequired();
 
+            builder.HasIndex(s => new { s.Name, s.ProjectId })
+                .IsUnique()
+                .HasDatabaseName("IX_Stage_Name_ProjectId");
+
             // Global filter to exclude deleted clients
             builder.HasQueryFilter(e => !e.IsDeleted);
 
