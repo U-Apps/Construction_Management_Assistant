@@ -33,6 +33,28 @@ namespace ConstructionManagementAssistant_EF.Repositories
             };
         }
 
+        public async Task<BaseResponse<string>> DeleteStageAsync(int id)
+        {
+            var stage = await GetByIdAsync(id);
+            if (stage == null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "المرحلة غير موجوده"
+                };
+            }
+
+            Delete(stage);
+            await _context.SaveChangesAsync();
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم حذف المرحلة بنجاح"
+            };
+        }
+
         private async Task<bool> IsStageNameUniqueAsync(string name, int projectId)
         {
             return !await AnyAsync(s => s.Name == name && s.ProjectId == projectId);
