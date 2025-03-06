@@ -7,6 +7,7 @@ public interface IUnitOfWork : IDisposable
     ISiteEngineerRepository SiteEngineers { get; }
     IWorkerSpecialtyRepository WorkerSpecialties { get; }
     IWorkerRepository Workers { get; }
+    IStageRepository Stages { get; }
 
     Task<int> SaveAsync();
 
