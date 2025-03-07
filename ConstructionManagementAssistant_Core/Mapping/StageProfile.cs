@@ -23,7 +23,7 @@ namespace ConstructionManagementAssistant_Core.Mapping
             };
         }
 
-        public static Expression<Func<Stage, GetAllStagesDto>> ToGetStageDto()
+        public static Expression<Func<Stage, GetAllStagesDto>> ToGetAllStagesDto()
         {
             return stage => new GetAllStagesDto
             {
@@ -32,6 +32,19 @@ namespace ConstructionManagementAssistant_Core.Mapping
                 Description = stage.Description,
                 StartDate = stage.StartDate,
                 EndDate = stage.EndDate,
+            };
+        }
+
+        public static Expression<Func<Stage, GetStageDto>> ToGetStageDto()
+        {
+            return stage => new GetStageDto
+            {
+                Id = stage.Id,
+                Name = stage.Name,
+                Description = stage.Description,
+                StartDate = stage.StartDate,
+                EndDate = stage.EndDate,
+                ProjectName = stage.Project.Name
             };
         }
     }

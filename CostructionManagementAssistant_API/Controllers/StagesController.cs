@@ -72,6 +72,30 @@ namespace ConstructionManagementAssistant_API.Controllers
             });
         }
 
+        /// <summary>
+        /// الحصول على المرحلة بواسطة المعرف
+        /// </summary>
+        /// <param name="Id">معرف المرحلة</param>
+        /// <returns>تفاصيل المرحلة</returns>
+        [HttpGet(SystemApiRouts.Stage.GetStageById)]
+        [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetStageById(int Id)
+        {
+            var result = await _unitOfWork.Stages.GetStageByIdAsync(Id);
+            if (result is null)
+                return NotFound(new BaseResponse<GetStageDto>()
+                {
+                    Success = false,
+                    Message = "لا يوجد مرحلة بهذا المعرف"
+                });
 
+            return Ok(new BaseResponse<GetStageDto>()
+            {
+                Success = true,
+                Message = "تم جلب المرحلة بنجاح",
+                Data = result
+            });
+        }
     }
 }
