@@ -55,19 +55,29 @@ namespace ConstructionManagementAssistant_EF.Repositories
             };
         }
 
+        public async Task<GetStageDto> GetStageByIdAsync(int Id)
+        {
+            return await FindWithSelectionAsync(
+            selector: StageProfile.ToGetStageDto(),
+            criteria: x => x.Id == Id);
+        }
+
         public async Task<PagedResult<GetAllStagesDto>> GetStagesByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10)
         {
             Expression<Func<Stage, bool>> filter = s => s.ProjectId == projectId;
 
             var pagedResult = await GetPagedDataWithSelectionAsync(
                 orderBy: s => s.Name,
-                selector: StageProfile.ToGetStageDto(),
+                selector: StageProfile.ToGetAllStagesDto(),
                 criteria: filter,
                 pageNumber: pageNumber,
                 pageSize: pageSize);
 
             return pagedResult;
         }
+
+
+
         private async Task<bool> IsStageNameUniqueAsync(string name, int projectId)
         {
             return !await AnyAsync(s => s.Name == name && s.ProjectId == projectId);

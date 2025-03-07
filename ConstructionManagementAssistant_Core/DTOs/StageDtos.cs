@@ -32,6 +32,11 @@ namespace ConstructionManagementAssistant_Core.DTOs
             public DateOnly? EndDate { get; set; }
         }
 
+        public class GetStageDto : GetAllStagesDto
+        {
+            public string ProjectName { get; set; }
+        }
+
         public class UpdateStageDto
         {
             [Range(1, int.MaxValue)]
