@@ -23,14 +23,13 @@ namespace ConstructionManagementAssistant_Core.DTOs
             public required int ProjectId { get; set; }
         }
 
-        public class GetStageDto
+        public class GetAllStagesDto
         {
             public int Id { get; set; }
             public required string Name { get; set; }
             public string? Description { get; set; }
             public DateOnly? StartDate { get; set; }
             public DateOnly? EndDate { get; set; }
-            public required string ProjectName { get; set; }
         }
 
         public class UpdateStageDto

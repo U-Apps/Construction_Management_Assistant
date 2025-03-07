@@ -41,5 +41,37 @@ namespace ConstructionManagementAssistant_API.Controllers
                 return NotFound(response);
             return Ok(response);
         }
+
+        /// <summary>
+        /// الحصول على جميع المراحل
+        /// </summary>
+        /// <param name="projectId">معرف المشروع, الزامي</param>
+        /// <param name="pageNumber">رقم الصفحة</param>
+        /// <param name="pageSize">حجم الصفحة</param>
+        /// <returns>قائمة المراحل</returns>
+        [HttpGet(SystemApiRouts.Stage.GetAllStages)]
+        [ProducesResponseType(typeof(BaseResponse<PagedResult<GetAllStagesDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllStages([Required] int projectId, int pageNumber = 1, int pageSize = 10)
+        {
+            var result = await _unitOfWork.Stages.GetStagesByProjectIdAsync(projectId, pageNumber, pageSize);
+            if (result.Items == null || result.Items.Count == 0)
+            {
+                return NotFound(new BaseResponse<PagedResult<GetAllStagesDto>>
+                {
+                    Success = false,
+                    Message = "لم يتم العثور على المراحل",
+                });
+            }
+
+            return Ok(new BaseResponse<PagedResult<GetAllStagesDto>>
+            {
+                Success = true,
+                Message = "تم جلب المراحل بنجاح",
+                Data = result,
+            });
+        }
+
+
     }
 }
