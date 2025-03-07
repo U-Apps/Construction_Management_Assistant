@@ -8,7 +8,9 @@ namespace ConstructionManagementAssistant_Core.Interfaces
 {
     public interface IStageRepository : IBaseRepository<Stage>
     {
-        public Task<BaseResponse<string>> AddStageAsync(AddStageDto stageInfo);
-        public Task<BaseResponse<string>> DeleteStageAsync(int id);
+        Task<BaseResponse<string>> AddStageAsync(AddStageDto stageInfo);
+        Task<BaseResponse<string>> DeleteStageAsync(int id);
+        Task<PagedResult<GetAllStagesDto>> GetStagesByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10);
+
     }
 }

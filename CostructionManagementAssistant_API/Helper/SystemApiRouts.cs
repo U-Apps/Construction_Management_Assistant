@@ -66,6 +66,7 @@ public static class SystemApiRouts
     {
         public const string Base = "api/v1/Stages";
         public const string AddStage = Base;
+        public const string GetAllStages = Base;
         public const string DeleteStage = Base + "/{Id}";
     }
 }
