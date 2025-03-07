@@ -76,7 +76,37 @@ namespace ConstructionManagementAssistant_EF.Repositories
             return pagedResult;
         }
 
+        public async Task<BaseResponse<string>> UpdateStageAsync(UpdateStageDto stageInfo)
+        {
+            var stage = await GetByIdAsync(stageInfo.Id);
+            if (stage == null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "المرحلة غير موجوده"
+                };
+            }
 
+            if (!await IsStageNameUniqueAsync(stageInfo.Name, stageInfo.ProjectId))
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "يوجد مرحلة بنفس الاسم"
+                };
+            }
+
+            stage.UpdateStage(stageInfo);
+            Update(stage);
+            await _context.SaveChangesAsync();
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم تحديث المرحلة بنجاح"
+            };
+        }
 
         private async Task<bool> IsStageNameUniqueAsync(string name, int projectId)
         {

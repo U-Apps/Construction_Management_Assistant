@@ -97,5 +97,24 @@ namespace ConstructionManagementAssistant_API.Controllers
                 Data = result
             });
         }
+
+        /// <summary>
+        /// تحديث مرحلة
+        /// </summary>
+        /// <param name="updateStageDto">تفاصيل المرحلة</param>
+        [HttpPut(SystemApiRouts.Stage.UpdateStage)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateStage([FromBody] UpdateStageDto updateStageDto)
+        {
+            var response = await _unitOfWork.Stages.UpdateStageAsync(updateStageDto);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
     }
 }
