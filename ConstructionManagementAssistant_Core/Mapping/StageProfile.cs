@@ -23,6 +23,15 @@ namespace ConstructionManagementAssistant_Core.Mapping
             };
         }
 
+        public static void UpdateStage(this Stage stage, UpdateStageDto updateStageDto)
+        {
+            stage.Name = updateStageDto.Name;
+            stage.Description = updateStageDto.Description;
+            stage.StartDate = updateStageDto.StartDate;
+            stage.EndDate = updateStageDto.EndDate;
+            stage.ProjectId = updateStageDto.ProjectId;
+            stage.ModifiedDate = DateTime.Now;
+        }
         public static Expression<Func<Stage, GetAllStagesDto>> ToGetAllStagesDto()
         {
             return stage => new GetAllStagesDto
