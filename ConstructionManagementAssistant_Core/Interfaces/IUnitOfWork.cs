@@ -8,6 +8,7 @@ public interface IUnitOfWork : IDisposable
     IWorkerSpecialtyRepository WorkerSpecialties { get; }
     IWorkerRepository Workers { get; }
     IStageRepository Stages { get; }
+    ITaskRepository Tasks { get; }
 
     Task<int> SaveAsync();
 

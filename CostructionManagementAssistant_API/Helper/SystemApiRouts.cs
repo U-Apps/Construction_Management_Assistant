@@ -71,4 +71,13 @@ public static class SystemApiRouts
         public const string UpdateStage = Base;
         public const string DeleteStage = Base + "/{Id}";
     }
+    public static class Task
+    {
+        public const string Base = "api/v1/Tasks";
+        public const string GetTaskById = Base + "/{Id}";
+        public const string GetAllTasks = Base;
+        public const string AddTask = Base;
+        public const string UpdateTask = Base;
+        public const string DeleteTask = Base + "/{Id}";
+    }
 }
