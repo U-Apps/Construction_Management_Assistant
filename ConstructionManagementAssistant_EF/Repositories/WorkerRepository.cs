@@ -49,13 +49,18 @@ namespace ConstructionManagementAssistant_EF.Repositories
 
         public async Task<BaseResponse<string>> AddWorkerAsync(AddWorkerDto workerDto)
         {
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
-                phoneNumber: workerDto.PhoneNumber,
-                email: workerDto.Email,
-                nationalNumber: workerDto.NationalNumber);
+            var propertiesToCheck = new Dictionary<string, object?>
+            {
+                { nameof(Worker.PhoneNumber), workerDto.PhoneNumber },
+                { nameof(Worker.Email), workerDto.Email },
+                { nameof(Worker.NationalNumber), workerDto.NationalNumber },
+            };
+
+            var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck);
 
             if (!duplicateCheck.Success)
                 return duplicateCheck;
+
 
             var newWorker = workerDto.ToWorker();
             await AddAsync(newWorker);
@@ -68,9 +73,9 @@ namespace ConstructionManagementAssistant_EF.Repositories
             };
         }
 
-        public async Task<BaseResponse<string>> UpdateWorkerAsync(UpdateWorkerDto workerInfo)
+        public async Task<BaseResponse<string>> UpdateWorkerAsync(UpdateWorkerDto workerDto)
         {
-            var worker = await GetByIdAsync(workerInfo.Id);
+            var worker = await GetByIdAsync(workerDto.Id);
 
             if (worker is null)
                 return new BaseResponse<string>
@@ -79,17 +84,19 @@ namespace ConstructionManagementAssistant_EF.Repositories
                     Message = "العامل غير موجود"
                 };
 
+            var propertiesToCheck = new Dictionary<string, object?>
+            {
+                { nameof(Worker.PhoneNumber), workerDto.PhoneNumber },
+                { nameof(Worker.Email), workerDto.Email },
+                { nameof(Worker.NationalNumber), workerDto.NationalNumber },
+            };
 
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
-                phoneNumber: workerInfo.PhoneNumber,
-                email: workerInfo.Email,
-                nationalNumber: workerInfo.NationalNumber,
-                id: workerInfo.Id);
+            var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck, workerDto.Id);
 
             if (!duplicateCheck.Success)
                 return duplicateCheck;
 
-            workerInfo.UpdateWorker(worker);
+            workerDto.UpdateWorker(worker);
             await _context.SaveChangesAsync();
 
             return new BaseResponse<string>

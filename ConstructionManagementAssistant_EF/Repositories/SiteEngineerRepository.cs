@@ -52,10 +52,14 @@ namespace ConstructionManagementAssistant_EF.Repositories
 
         public async Task<BaseResponse<string>> AddSiteEngineerAsync(AddSiteEngineerDto siteEngineerDto)
         {
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
-                phoneNumber: siteEngineerDto.PhoneNumber,
-                email: siteEngineerDto.Email,
-                nationalNumber: siteEngineerDto.NationalNumber);
+            var propertiesToCheck = new Dictionary<string, object?>
+            {
+                { nameof(SiteEngineer.PhoneNumber), siteEngineerDto.PhoneNumber },
+                { nameof(SiteEngineer.Email), siteEngineerDto.Email },
+                { nameof(SiteEngineer.NationalNumber), siteEngineerDto.NationalNumber },
+            };
+
+            var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck);
 
             if (!duplicateCheck.Success)
                 return duplicateCheck;
@@ -79,11 +83,14 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 return new BaseResponse<string> { Message = "المهندس غير موجود", Success = false };
 
 
-            var duplicateCheck = await CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
-                phoneNumber: siteEngineerDto.PhoneNumber,
-                email: siteEngineerDto.Email,
-                nationalNumber: siteEngineerDto.NationalNumber,
-                id: siteEngineerDto.Id);
+            var propertiesToCheck = new Dictionary<string, object?>
+            {
+                { nameof(SiteEngineer.PhoneNumber), siteEngineerDto.PhoneNumber },
+                { nameof(SiteEngineer.Email), siteEngineerDto.Email },
+                { nameof(SiteEngineer.NationalNumber), siteEngineerDto.NationalNumber },
+            };
+
+            var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck, siteEngineerDto.Id);
 
             if (!duplicateCheck.Success)
                 return duplicateCheck;

@@ -80,11 +80,9 @@ public interface IBaseRepository<T> where T : class
 
     #region Helper Methods
 
-    Task<BaseResponse<string>> CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
-    string? phoneNumber,
-    string? email,
-    string? nationalNumber,
-    int? id = null);
+    Task<BaseResponse<string>> CheckDuplicatePropertiesAsync(
+         Dictionary<string, object?> properties,
+         int? id = null);
 
     #endregion
 

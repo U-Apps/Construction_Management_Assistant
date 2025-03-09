@@ -285,40 +285,83 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
         return query.OrderBy(orderBy);
     }
 
-    public async Task<BaseResponse<string>> CheckDuplicatePhoneEmailNationalNumberForPeopleAsync(
-        string? phoneNumber,
-        string? email,
-        string? nationalNumber,
+    public async Task<BaseResponse<string>> CheckDuplicatePropertiesAsync(
+        Dictionary<string, object?> properties,
         int? id = null)
     {
-        if (phoneNumber != null && await _context.People.IgnoreQueryFilters().AnyAsync(g => g.PhoneNumber == phoneNumber && (!id.HasValue || g.Id != id.Value)))
+        string? duplicateProperty = null;
+        Type entityType = typeof(T);
+
+        foreach (var property in properties)
         {
-            return new BaseResponse<string>
+            var propertyName = property.Key;
+            var propertyValue = property.Value;
+            if (propertyValue == null) continue;
+
+            // If the entity is Person or its derived types (Worker, SiteEngineer, etc.), check in Person table
+            if (typeof(Person).IsAssignableFrom(entityType))
             {
-                Success = false,
-                Message = "A user with the same phone number already exists.",
-            };
+                if (await CheckDuplicateInTable<Person>(propertyName, propertyValue, id))
+                {
+                    duplicateProperty = propertyName;
+                    break;
+                }
+            }
+            // If the entity is Client, check in Client table
+            else if (entityType == typeof(Client))
+            {
+                if (await CheckDuplicateInTable<Client>(propertyName, propertyValue, id))
+                {
+                    duplicateProperty = propertyName;
+                    break;
+                }
+            }
+            // Otherwise, check in the given entity's own table
+            else
+            {
+                if (await CheckDuplicateInTable<T>(propertyName, propertyValue, id))
+                {
+                    duplicateProperty = propertyName;
+                    break;
+                }
+            }
         }
 
-        if (email != null && await _context.People.IgnoreQueryFilters().AnyAsync(g => g.Email == email && (!id.HasValue || g.Id != id.Value)))
+        if (duplicateProperty != null)
         {
             return new BaseResponse<string>
             {
                 Success = false,
-                Message = "A user with the same email already exists.",
-            };
-        }
-
-        if (nationalNumber != null && await _context.People.IgnoreQueryFilters().AnyAsync(g => g.NationalNumber == nationalNumber && (!id.HasValue || g.Id != id.Value)))
-        {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "A user with the same NationalNumber already exists.",
+                Message = $"A user with the same {duplicateProperty} already exists.",
             };
         }
 
         return new BaseResponse<string> { Success = true };
+    }
+
+    // Generic method to check for duplicates in a specific table
+    private async Task<bool> CheckDuplicateInTable<T>(string propertyName, object propertyValue, int? id = null) where T : class
+    {
+        var parameter = Expression.Parameter(typeof(T), "e");
+        var propertyExpression = Expression.Property(parameter, propertyName);
+        var valueExpression = Expression.Constant(propertyValue);
+
+        var equalityExpression = Expression.Equal(propertyExpression, valueExpression);
+        var lambda = Expression.Lambda<Func<T, bool>>(equalityExpression, parameter);
+
+        var query = _context.Set<T>().IgnoreQueryFilters().Where(lambda);
+
+        if (id.HasValue)
+        {
+            var idProperty = Expression.Property(parameter, "Id");
+            var idValue = Expression.Constant(id.Value);
+            var idNotEqualExpression = Expression.NotEqual(idProperty, idValue);
+            var finalExpression = Expression.AndAlso(equalityExpression, idNotEqualExpression);
+            lambda = Expression.Lambda<Func<T, bool>>(finalExpression, parameter);
+            query = _context.Set<T>().IgnoreQueryFilters().Where(lambda);
+        }
+
+        return await query.AnyAsync();
     }
 
     #endregion

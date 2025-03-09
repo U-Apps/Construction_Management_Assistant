@@ -134,9 +134,9 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteClient(int id)
+    public async Task<IActionResult> DeleteClient(int Id)
     {
-        var result = await _unitOfWork.Clients.DeleteClientAsync(id);
+        var result = await _unitOfWork.Clients.DeleteClientAsync(Id);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);

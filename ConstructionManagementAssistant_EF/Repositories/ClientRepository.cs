@@ -43,9 +43,13 @@ public class ClientRepository(AppDbContext _context) : BaseRepository<Client>(_c
 
     public async Task<BaseResponse<string>> AddClientAsync(AddClientDto clientDto)
     {
-        var duplicateCheck = await CheckDuplicatePhoneEmailForClientAsync(
-            phoneNumber: clientDto.PhoneNumber,
-            email: clientDto.Email);
+        var propertiesToCheck = new Dictionary<string, object?>
+        {
+            { nameof(Client.PhoneNumber), clientDto.PhoneNumber },
+            { nameof(Client.Email), clientDto.Email }
+        };
+
+        var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck);
 
         if (!duplicateCheck.Success)
             return duplicateCheck;
@@ -65,21 +69,19 @@ public class ClientRepository(AppDbContext _context) : BaseRepository<Client>(_c
     {
         var client = await GetByIdAsync(clientDto.Id);
         if (client is null)
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "العميل غير موجود"
-            };
+            return new BaseResponse<string> { Success = false, Message = "العميل غير موجود" };
 
-        var duplicateCheck = await CheckDuplicatePhoneEmailForClientAsync(
-            phoneNumber: clientDto.PhoneNumber,
-            email: clientDto.Email,
-            id: clientDto.Id);
+
+        var properties = new Dictionary<string, object?>
+        {
+            { nameof(Client.PhoneNumber), clientDto.PhoneNumber },
+            { nameof(Client.Email), clientDto.Email }
+        };
+
+        var duplicateCheck = await CheckDuplicatePropertiesAsync(properties, clientDto.Id);
 
         if (!duplicateCheck.Success)
-        {
             return duplicateCheck;
-        }
 
         client.UpdateClient(clientDto);
         await _context.SaveChangesAsync();
@@ -90,6 +92,7 @@ public class ClientRepository(AppDbContext _context) : BaseRepository<Client>(_c
             Message = "تم تحديث العميل بنجاح"
         };
     }
+
 
     public async Task<BaseResponse<string>> DeleteClientAsync(int id)
     {
