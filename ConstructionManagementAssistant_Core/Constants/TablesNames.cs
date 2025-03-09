@@ -9,5 +9,6 @@
         public const string Clients = "Clients";
         public const string Projects = "Projects";
         public const string Stages = "Stages";
+        public const string Tasks = "Tasks";
     }
 }
