@@ -1,7 +1,4 @@
-﻿using ConstructionManagementAssistant_Core.DTOs;
-using ConstructionManagementAssistant_Core.Entites;
-using ConstructionManagementAssistant_Core.Models.Response;
-using static ConstructionManagementAssistant_Core.DTOs.StageDtos;
+﻿using ConstructionManagementAssistant_Core.Models.Response;
 
 
 namespace ConstructionManagementAssistant_Core.Interfaces
