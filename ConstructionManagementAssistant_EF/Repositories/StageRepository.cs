@@ -1,18 +1,10 @@
-﻿using ConstructionManagementAssistant_Core.DTOs;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ConstructionManagementAssistant_Core.DTOs.StageDtos;
-
-namespace ConstructionManagementAssistant_EF.Repositories
+﻿namespace ConstructionManagementAssistant_EF.Repositories
 {
     public class StageRepository(AppDbContext _context) : BaseRepository<Stage>(_context), IStageRepository
     {
         public async Task<BaseResponse<string>> AddStageAsync(AddStageDto stageDto)
         {
+
             if (!await IsStageNameUniqueAsync(stageDto.Name, stageDto.ProjectId))
             {
                 return new BaseResponse<string>
@@ -76,9 +68,9 @@ namespace ConstructionManagementAssistant_EF.Repositories
             return pagedResult;
         }
 
-        public async Task<BaseResponse<string>> UpdateStageAsync(UpdateStageDto stageInfo)
+        public async Task<BaseResponse<string>> UpdateStageAsync(UpdateStageDto stageDto)
         {
-            var stage = await GetByIdAsync(stageInfo.Id);
+            var stage = await GetByIdAsync(stageDto.Id);
             if (stage == null)
             {
                 return new BaseResponse<string>
@@ -88,7 +80,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            if (!await IsStageNameUniqueAsync(stageInfo.Name, stageInfo.ProjectId))
+            if (!await IsStageNameUniqueAsync(stageDto.Name, stageDto.ProjectId))
             {
                 return new BaseResponse<string>
                 {
@@ -97,7 +89,7 @@ namespace ConstructionManagementAssistant_EF.Repositories
                 };
             }
 
-            stage.UpdateStage(stageInfo);
+            stage.UpdateStage(stageDto);
             Update(stage);
             await _context.SaveChangesAsync();
 

@@ -1,7 +1,4 @@
-﻿using ConstructionManagementAssistant_Core.Interfaces;
-using ConstructionManagementAssistant_EF.Data;
-
-namespace ConstructionManagementAssistant_EF.Repositories;
+﻿namespace ConstructionManagementAssistant_EF.Repositories;
 
 public class UnitOfWork(AppDbContext _appDbContext) : IUnitOfWork
 {
@@ -11,6 +8,8 @@ public class UnitOfWork(AppDbContext _appDbContext) : IUnitOfWork
     public IWorkerSpecialtyRepository WorkerSpecialties { get; private set; } = new WorkerSpecialtyRepository(_appDbContext);
     public IWorkerRepository Workers { get; private set; } = new WorkerRepository(_appDbContext);
     public IStageRepository Stages { get; } = new StageRepository(_appDbContext);
+    public ITaskRepository Tasks { get; } = new TaskRepository(_appDbContext);
+
 
     public void Dispose()
     {

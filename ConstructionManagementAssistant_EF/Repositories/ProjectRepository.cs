@@ -38,7 +38,6 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
 
     public async Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto)
     {
-
         var newProject = addProjectDto.ToProject();
         await AddAsync(newProject);
         await _context.SaveChangesAsync();
@@ -60,8 +59,6 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
                 Message = "المشروع غير موجود"
             };
 
-
-
         project.UpdateProject(updateProjectDto);
         await _context.SaveChangesAsync();
 
@@ -69,7 +66,7 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
         {
             Success = true,
             Message = "تم تحديث المشروع بنجاح"
-        }; 
+        };
     }
 
     public async Task<BaseResponse<string>> DeleteProjectAsync(int id)

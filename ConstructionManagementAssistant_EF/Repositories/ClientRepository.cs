@@ -2,8 +2,6 @@
 
 public class ClientRepository(AppDbContext _context) : BaseRepository<Client>(_context), IClientRepository
 {
-
-
     public async Task<GetClientDto> GetClientById(int id)
     {
         return await FindWithSelectionAsync(
