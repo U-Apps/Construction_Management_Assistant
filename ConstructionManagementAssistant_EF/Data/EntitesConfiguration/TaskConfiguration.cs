@@ -1,4 +1,5 @@
 using ConstructionManagementAssistant_Core.Constants;
+using ConstructionManagementAssistant_EF.Data.Seading;
 namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
 {
     internal class TaskConfiguration : IEntityTypeConfiguration<ConstructionManagementAssistant_Core.Entites.Task>
@@ -24,6 +25,8 @@ namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
 
             // Global filter to exclude deleted tasks
             builder.HasQueryFilter(e => !e.IsDeleted);
+
+            builder.HasData(SeedData.SeedTasks());
         }
     }
 }

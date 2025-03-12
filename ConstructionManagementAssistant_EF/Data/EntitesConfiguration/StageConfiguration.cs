@@ -1,7 +1,7 @@
 ﻿
 
 using ConstructionManagementAssistant_Core.Constants;
-using Microsoft.EntityFrameworkCore;
+using ConstructionManagementAssistant_EF.Data.Seading;
 
 namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
 {
@@ -28,6 +28,8 @@ namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
 
             // Global filter to exclude deleted clients
             builder.HasQueryFilter(e => !e.IsDeleted);
+
+            builder.HasData(SeedData.SeedStages());
 
         }
     }

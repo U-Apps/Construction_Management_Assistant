@@ -1,6 +1,5 @@
 ﻿using ConstructionManagementAssistant_Core.Constants;
-using ConstructionManagementAssistant_Core.Enums;
-using ConstructionManagementAssistant_EF.Extensions;
+using ConstructionManagementAssistant_EF.Data.Seading;
 
 namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
@@ -48,6 +47,8 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
             //    "([HandoverDate] IS NULL OR [CompletionDate] IS NULL OR [HandoverDate] > [CompletionDate])");
 
             builder.HasQueryFilter(e => !e.IsDeleted);
+
+            builder.HasData(SeedData.SeedProjects());
         }
     }
 }
