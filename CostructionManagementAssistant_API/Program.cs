@@ -13,7 +13,7 @@ builder.Services.AddEFServices(builder.Configuration);
 var app = builder.Build();
 
 app.UseOpenApi();
-app.UseSwagger();
+app.UseSwaggerTool();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<RedirectToSwaggerMiddleware>();
 app.UseHttpsRedirection();

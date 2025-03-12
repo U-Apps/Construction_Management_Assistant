@@ -50,7 +50,7 @@ public static class SwaggerConfig
     }
 
 
-    public static void UseSwagger(this WebApplication app)
+    public static void UseSwaggerTool(this WebApplication app)
     {
         app.UseSwagger();
         app.UseSwaggerUI(c =>
