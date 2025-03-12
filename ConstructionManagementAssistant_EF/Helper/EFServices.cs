@@ -19,6 +19,9 @@ public static class EFServices
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        {
+            options.UseSqlServer(connectionString);
+            options.EnableSensitiveDataLogging();
+        });
     }
 }
