@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Filters\**" />
+    <Compile Remove="Services\**" />
+    <Content Remove="Filters\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Filters\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Filters\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -21,11 +32,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ConstructionManagementAssistant_Core\ConstructionManagementAssistant_Core.csproj" />
     <ProjectReference Include="..\ConstructionManagementAssistant_EF\ConstructionManagementAssistant_EF.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Filters\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
