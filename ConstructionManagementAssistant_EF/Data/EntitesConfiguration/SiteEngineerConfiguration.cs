@@ -1,4 +1,5 @@
 ﻿using ConstructionManagementAssistant_Core.Constants;
+using ConstructionManagementAssistant_EF.Data.Seading;
 
 namespace ConstructionManagementAssistant_EF.Data.Configuration
 {
@@ -15,6 +16,7 @@ namespace ConstructionManagementAssistant_EF.Data.Configuration
 
             //builder.Property(e => e.IsAvailable)  // by convention is configured
             //       .IsRequired();
+            builder.HasData(SeedData.SeedSiteEngineers());
         }
     }
 }
