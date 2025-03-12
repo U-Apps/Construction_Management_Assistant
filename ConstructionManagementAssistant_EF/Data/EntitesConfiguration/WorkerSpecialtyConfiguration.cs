@@ -1,4 +1,5 @@
 ﻿using ConstructionManagementAssistant_Core.Constants;
+using ConstructionManagementAssistant_EF.Data.Seading;
 
 namespace ConstructionManagementAssistant_EF.Configurations;
 internal class WorkerSpecialtyConfiguration : IEntityTypeConfiguration<WorkerSpecialty>
@@ -15,6 +16,8 @@ internal class WorkerSpecialtyConfiguration : IEntityTypeConfiguration<WorkerSpe
         .IsUnique(true);
 
         builder.HasQueryFilter(e => !e.IsDeleted);
+
+        builder.HasData(SeedData.SeedWorkerSpecialties());
 
     }
 }
