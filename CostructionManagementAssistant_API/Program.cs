@@ -1,40 +1,23 @@
-using Scalar.AspNetCore;
+using ConstructionManagementAssistant_API.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register services
-builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddApiServices();
+builder.Services.AddControllersServices();
+builder.Services.AddOpenApiServices();
+builder.Services.AddSwaggerServices();
 builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
 
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-    });
-}
-// Register the custom exception handling middleware
+app.UseOpenApi();
+app.UseSwagger();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-// Use the custom middleware to redirect the base URL to Swagger
 app.UseMiddleware<RedirectToSwaggerMiddleware>();
-
 app.UseHttpsRedirection();
-
-// Use CORS policy
 app.UseCors("AllowAll");
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
