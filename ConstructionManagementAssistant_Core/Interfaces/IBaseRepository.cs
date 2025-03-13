@@ -1,5 +1,4 @@
 ﻿using ConstructionManagementAssistant_Core.Models.Response;
-using System.Linq.Expressions;
 
 namespace ConstructionManagementAssistant_Core.Interfaces;
 
@@ -62,7 +61,7 @@ public interface IBaseRepository<T> where T : class
 
     #region Delete Methods
     void Delete(T entity);
-    void DeleteRange(IEnumerable<T> entities);
+    System.Threading.Tasks.Task DeleteRange(IEnumerable<T> entities);
     #endregion
 
     #region Attach Methods
