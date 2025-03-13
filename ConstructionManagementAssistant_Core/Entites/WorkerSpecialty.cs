@@ -1,6 +1,6 @@
 ﻿namespace ConstructionManagementAssistant_Core.Entites
 {
-    public class WorkerSpecialty : IEntity
+    public class WorkerSpecialty : IEntity, ISoftDeletable
     {
         public int Id { get; set; }
         public string Name { get; set; }

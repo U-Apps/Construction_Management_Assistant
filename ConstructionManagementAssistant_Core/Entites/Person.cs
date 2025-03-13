@@ -1,6 +1,6 @@
 ﻿namespace ConstructionManagementAssistant_Core.Entites;
 
-public class Person : IEntity
+public class Person : IEntity, ISoftDeletable
 {
     public int Id { get; set; }
     public string FirstName { get; set; }

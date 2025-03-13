@@ -1,6 +1,6 @@
 ﻿namespace ConstructionManagementAssistant_Core.Entites;
 
-public class Project : IEntity
+public class Project : IEntity, ISoftDeletable
 {
     #region Properties
 
@@ -29,6 +29,7 @@ public class Project : IEntity
 
     public SiteEngineer? SiteEngineer { get; set; }
     public Client Client { get; set; }
+    public ICollection<Stage> Stages { get; set; }
 
     #endregion
 }

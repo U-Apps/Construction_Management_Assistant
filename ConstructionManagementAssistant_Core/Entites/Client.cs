@@ -1,7 +1,7 @@
 ﻿namespace ConstructionManagementAssistant_Core.Entites;
 
 
-public class Client : IEntity
+public class Client : IEntity, ISoftDeletable
 {
     public int Id { get; set; }
     public string FullName { get; set; }

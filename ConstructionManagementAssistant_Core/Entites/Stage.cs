@@ -11,10 +11,13 @@ namespace ConstructionManagementAssistant_Core.Entites
         public DateOnly? EndDate { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
-        public DateTime? DeletedDate { get; set; }
-        public bool IsDeleted { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
+
+
+        #region Navigation Properties
+        public ICollection<Task> Tasks { get; set; }
+        #endregion
 
     }
 }
