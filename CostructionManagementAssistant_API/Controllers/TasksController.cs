@@ -50,9 +50,9 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
     [HttpGet(SystemApiRouts.Task.GetAllTasks)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetTaskDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllTasks(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
+    public async Task<IActionResult> GetAllTasks(int stageId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
     {
-        var result = await _unitOfWork.Tasks.GetAllTasks(pageNumber, pageSize, searchTerm);
+        var result = await _unitOfWork.Tasks.GetAllTasks(stageId, pageNumber, pageSize, searchTerm);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<GetTaskDto>>

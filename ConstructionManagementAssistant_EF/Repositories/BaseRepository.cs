@@ -190,7 +190,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
 
     public void Delete(T entity)
     {
-        if (entity is IEntity softDeletableEntity)
+        if (entity is ISoftDeletable softDeletableEntity)
         {
             softDeletableEntity.IsDeleted = true;
             softDeletableEntity.DeletedDate = DateTime.UtcNow;
@@ -202,20 +202,30 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
         }
     }
 
-    public void DeleteRange(IEnumerable<T> entities)
+    public async System.Threading.Tasks.Task DeleteRange(IEnumerable<T> entities)
     {
-        foreach (var entity in entities)
+
+        if (entities == null || !entities.Any())
+            return;
+
+        var entityType = typeof(T);
+
+        // Check if the entity implements ISoftDeletable
+        if (typeof(ISoftDeletable).IsAssignableFrom(entityType))
         {
-            if (entity is IEntity softDeletableEntity)
-            {
-                softDeletableEntity.IsDeleted = true;
-                softDeletableEntity.DeletedDate = DateTime.UtcNow;
-                _context.Update(entity);
-            }
-            else
-            {
-                _context.Set<T>().Remove(entity);
-            }
+            // Soft delete: Update DateDeleted and IsDeleted
+            var now = DateTime.UtcNow; // or DateTime.Now depending on your requirements
+            await _context.Set<T>()
+                .Where(e => entities.Contains(e))
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(e => ((ISoftDeletable)e).DeletedDate, now)
+                    .SetProperty(e => ((ISoftDeletable)e).IsDeleted, true));
+        }
+        else
+        {
+            // Hard delete: Remove the entities
+            _context.Set<T>().RemoveRange(entities);
+            await _context.SaveChangesAsync();
         }
     }
 

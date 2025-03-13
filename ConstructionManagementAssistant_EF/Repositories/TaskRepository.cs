@@ -10,11 +10,12 @@ public class TaskRepository(AppDbContext _context) : BaseRepository<Construction
     }
 
     public async Task<PagedResult<GetTaskDto>> GetAllTasks(
+        int stageId,
         int pageNumber = 1,
         int pageSize = 10,
         string? searchTerm = null)
     {
-        Expression<Func<ConstructionManagementAssistant_Core.Entites.Task, bool>> filter = x => true;
+        Expression<Func<ConstructionManagementAssistant_Core.Entites.Task, bool>> filter = x => x.StageId == stageId;
 
         if (!string.IsNullOrEmpty(searchTerm))
         {
@@ -22,6 +23,8 @@ public class TaskRepository(AppDbContext _context) : BaseRepository<Construction
                 t.Name.Contains(searchTerm) ||
                 t.Description.Contains(searchTerm));
         }
+
+
 
         var pagedResult = await GetPagedDataWithSelectionAsync(
             orderBy: x => x.Name,
