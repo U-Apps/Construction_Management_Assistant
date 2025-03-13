@@ -19,12 +19,10 @@ namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
             //    .HasForeignKey(t => t.StageId)
             //    .IsRequired();
 
-            builder.HasIndex(t => new { t.Name, t.StageId })
-                .IsUnique()
-                .HasDatabaseName("IX_Task_Name_StageId");
+            //builder.HasIndex(t => new { t.Name, t.StageId })
+            //    .IsUnique()
+            //    .HasDatabaseName("IX_Task_Name_StageId");
 
-            // Global filter to exclude deleted tasks
-            builder.HasQueryFilter(e => !e.IsDeleted);
 
             builder.HasData(SeedData.SeedTasks());
         }

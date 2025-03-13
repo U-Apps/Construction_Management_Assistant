@@ -17,17 +17,15 @@ namespace ConstructionManagementAssistant_EF.Data.EntitesConfiguration
             builder.Property(s => s.Description)
                 .HasMaxLength(1000);
 
-            builder.HasOne(s => s.Project)
-                .WithMany()
-                .HasForeignKey(s => s.ProjectId)
-                .IsRequired();
+            //builder.HasOne(s => s.Project)
+            //    .WithMany()
+            //    .HasForeignKey(s => s.ProjectId)
+            //    .IsRequired();
 
-            builder.HasIndex(s => new { s.Name, s.ProjectId })
-                .IsUnique()
-                .HasDatabaseName("IX_Stage_Name_ProjectId");
+            //builder.HasIndex(s => new { s.Name, s.ProjectId })
+            //    .IsUnique()
+            //    .HasDatabaseName("IX_Stage_Name_ProjectId");
 
-            // Global filter to exclude deleted clients
-            builder.HasQueryFilter(e => !e.IsDeleted);
 
             builder.HasData(SeedData.SeedStages());
 
