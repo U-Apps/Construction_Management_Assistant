@@ -10,6 +10,7 @@ namespace ConstructionManagementAssistant_Core.Interfaces
         public Task<PagedResult<GetProjectsDto>> GetAllProjects(
             int pageNumber,
             int pageSize,
+            ProjectStatus? status =null, 
             string? searchTerm = null );
         public Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto);
         public Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto);
