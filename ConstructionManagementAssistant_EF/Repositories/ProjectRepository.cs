@@ -14,9 +14,15 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
     public async Task<PagedResult<GetProjectsDto>> GetAllProjects(
         int pageNumber = 1,
         int pageSize = 10,
+        ProjectStatus? status = null,
         string? searchTerm = null)
     {
         Expression<Func<Project, bool>> filter = x => true;
+
+        if (status.HasValue)
+        {
+            filter = filter.AndAlso(p => p.Status == status.Value);
+        }
 
         if (!string.IsNullOrEmpty(searchTerm))
         {
@@ -24,7 +30,6 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
                 p.Client.FullName.Contains(searchTerm) ||
                 p.SiteEngineer.GetFullName().Contains(searchTerm));
         }
-
 
         var pagedResult = await GetPagedDataWithSelectionAsync(
             orderBy: x => x.Name,
