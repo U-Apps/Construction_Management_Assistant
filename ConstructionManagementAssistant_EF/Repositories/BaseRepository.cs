@@ -194,7 +194,6 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
         {
             softDeletableEntity.IsDeleted = true;
             softDeletableEntity.DeletedDate = DateTime.UtcNow;
-            _context.Update(entity);
         }
         else
         {
