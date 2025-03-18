@@ -1,0 +1,17 @@
+﻿global using ConstructionManagementAssistant.Core;
+global using ConstructionManagementAssistant.Core.DTOs;
+global using ConstructionManagementAssistant.Core.Entites;
+global using ConstructionManagementAssistant.Core.Enums;
+global using ConstructionManagementAssistant.Core.Interfaces;
+global using ConstructionManagementAssistant.Core.Mapping;
+global using ConstructionManagementAssistant.Core.Models.Response;
+global using ConstructionManagementAssistant.EF.Data;
+global using ConstructionManagementAssistant.EF.Data.Configuration;
+global using ConstructionManagementAssistant.EF.Extensions;
+global using ConstructionManagementAssistant.EF.Repositories;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using RepositoryWithUWO.EF.Repositories;
+global using System.Linq.Expressions;
