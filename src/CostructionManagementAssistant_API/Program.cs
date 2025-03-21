@@ -9,6 +9,16 @@ builder.Services.AddSwaggerServices();
 builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
