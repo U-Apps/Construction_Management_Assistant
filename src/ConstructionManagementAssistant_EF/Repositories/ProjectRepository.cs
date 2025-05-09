@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.EF.Repositories;
+﻿using Microsoft.Extensions.Logging;
+
+namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class ProjectRepository : BaseRepository<Project>, IProjectRepository
 {
@@ -11,10 +13,10 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
         _context = context;
     }
 
-    public async Task<GetProjectsDto> GetProjectById(int id)
+    public async Task<ProjectDetailsDto> GetProjectById(int id)
     {
         return await FindWithSelectionAsync(
-            selector: ProjectProfile.ToGetProjectDto(),
+            selector: ProjectProfile.ToProjectDetails(),
             criteria: x => x.Id == id);
     }
 
