@@ -58,7 +58,7 @@ namespace ConstructionManagementAssistant.Core.Helper.Attributes
                 };
             }
 
-            return endDate > comparisonDate
+            return endDate >= comparisonDate
                 ? ValidationResult.Success
                 : new ValidationResult(ErrorMessage ??
                     $"Date must be after {comparisonDate:yyyy-MM-dd}");

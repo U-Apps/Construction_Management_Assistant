@@ -9,7 +9,7 @@ builder.Services.AddOpenApiServices();
 builder.Services.AddSwaggerServices();
 builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
-builder.Host.UseSerilog();
+builder.Host.UseSerilogLoggging();
 
 // Add CORS policy
 builder.Services.AddCors(options =>

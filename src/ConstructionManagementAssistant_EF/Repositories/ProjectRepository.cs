@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace ConstructionManagementAssistant.EF.Repositories;
+﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class ProjectRepository : BaseRepository<Project>, IProjectRepository
 {
@@ -54,12 +52,44 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
         try
         {
+            // Validate ClientId
+            var clientExists = await _context.Clients.AnyAsync(c => c.Id == addProjectDto.ClientId);
+            if (!clientExists)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "معرف العميل غير صالح"
+                };
+            }
+
+            // Validate SiteEngineerId (if provided)
+            if (addProjectDto.SiteEngineerId.HasValue)
+            {
+                var siteEngineerExists = await _context.SiteEngineers.AnyAsync(se => se.Id == addProjectDto.SiteEngineerId.Value);
+                if (!siteEngineerExists)
+                {
+                    return new BaseResponse<string>
+                    {
+                        Success = false,
+                        Message = "معرف المهندس الموقعي غير صالح"
+                    };
+                }
+            }
+
+            // Log the addition of a new project
             _logger.LogInformation("Adding a new project: {ProjectName}", addProjectDto.ProjectName);
+
+            // Convert DTO to Project entity
             var newProject = addProjectDto.ToProject();
+
+            // Add the project to the database
             await AddAsync(newProject);
             await _context.SaveChangesAsync();
 
+            // Log success
             _logger.LogInformation("Project added successfully: {ProjectName}", addProjectDto.ProjectName);
+
             return new BaseResponse<string>
             {
                 Success = true,
@@ -68,10 +98,12 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
         }
         catch (Exception ex)
         {
+            // Log the error
             _logger.LogError(ex, "Error occurred while adding a project: {ProjectName}", addProjectDto.ProjectName);
             throw;
         }
     }
+
 
     public async Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto)
     {

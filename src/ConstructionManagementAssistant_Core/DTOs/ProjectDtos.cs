@@ -10,9 +10,9 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public required string ProjectName { get; init; }
         [MaxLength(1000)]
         public string? Description { get; init; }
-        [MaxLength (500)]
+        [MaxLength(500)]
         public string? SiteAddress { get; init; }
-        [MaxLength (100)]
+        [MaxLength(100)]
         public string? GeographicalCoordinates { get; init; }
         [Range(1, int.MaxValue)]
         public int? SiteEngineerId { get; init; }
