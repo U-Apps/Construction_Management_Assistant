@@ -31,7 +31,7 @@ public static class ClientProfile
         client.FullName = updateClientDto.FullName;
         client.Email = updateClientDto.Email;
         client.PhoneNumber = updateClientDto.PhoneNumber;
-        client.ClientType = updateClientDto.ClientType;
+        //client.ClientType = updateClientDto.ClientType;
         client.ModifiedDate = DateTime.Now;
     }
 }

@@ -125,6 +125,17 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
             return duplicateCheck;
         }
 
+        var clientType = clientDto.ClientType.ToEnum<ClientType>();
+        if (clientType == null)
+        {
+            _logger.LogWarning("Invalid ClientType provided: {ClientType}", clientDto.ClientType);
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "نوع العميل غير صالح"
+            };
+        }
+        client.ClientType = clientType.Value;
         client.UpdateClient(clientDto);
         await _context.SaveChangesAsync();
 
