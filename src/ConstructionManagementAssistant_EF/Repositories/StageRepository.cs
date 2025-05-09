@@ -75,10 +75,29 @@ public class StageRepository : BaseRepository<Stage>, IStageRepository
         criteria: x => x.Id == Id);
     }
 
-    public async Task<PagedResult<GetAllStagesDto>> GetStagesByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10)
+    public async Task<PagedResult<GetAllStagesDto>> GetStagesByProjectIdAsync(int projectId, string searchItem, DateOnly? startDateFilter, DateOnly? endDateFilter, int pageNumber = 1, int pageSize = 10)
     {
-        Expression<Func<Stage, bool>> filter = s => s.ProjectId == projectId;
 
+        Expression<Func<Stage, bool>> filter = s => s.ProjectId == projectId;
+        if (!string.IsNullOrWhiteSpace(searchItem))
+        {
+            filter = filter.AndAlso(s => s.Name.Contains(searchItem) || (s.Description ?? "").Contains(searchItem));
+        }
+        if (startDateFilter.HasValue && endDateFilter.HasValue)
+        {
+            if (startDateFilter.Value > endDateFilter.Value)
+            {
+                return new PagedResult<GetAllStagesDto> { Items = null };
+            }
+        }
+        if (startDateFilter.HasValue)
+        {
+            filter = filter.AndAlso(s => s.StartDate >= startDateFilter.Value);
+        }
+        if (endDateFilter.HasValue)
+        {
+            filter = filter.AndAlso(s => s.EndDate <= endDateFilter.Value);
+        }
         var pagedResult = await GetPagedDataWithSelectionAsync(
             orderBy: s => s.Name,
             selector: StageProfile.ToGetAllStagesDto(),
