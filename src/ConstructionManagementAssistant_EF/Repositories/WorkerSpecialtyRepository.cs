@@ -1,14 +1,14 @@
-﻿using ConstructionManagementAssistant.Core.Mapping;
-
-namespace ConstructionManagementAssistant.EF.Repositories;
+﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorkerSpecialtyRepository
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<WorkerSpecialtyRepository> _logger;
 
-    public WorkerSpecialtyRepository(AppDbContext context) : base(context)
+    public WorkerSpecialtyRepository(AppDbContext context, ILogger<WorkerSpecialtyRepository> logger) : base(context)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<List<GetWorkerSpecialtyDto>> GetAllWorkerSpecialties()
@@ -27,16 +27,22 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
 
     public async Task<BaseResponse<string>> AddWorkerSpecialtyAsync(AddWorkerSpecialtyDto specialtyInfo)
     {
+
+        _logger.LogInformation("Adding a new worker specialty: {SpecialtyName}", specialtyInfo.Name);
         var isSpecialtyExists = await AnyAsync(c => c.Name == specialtyInfo.Name);
 
         if (isSpecialtyExists)
+        {
+            _logger.LogWarning("Worker specialty already exists: {SpecialtyName}", specialtyInfo.Name);
             return new BaseResponse<string> { Success = false, Message = "لم تتم اضافة التخصص, التخصص موجود مسبقا" };
+        }
 
         var newSpecialty = specialtyInfo.ToWorkerSpecialty();
         await AddAsync(newSpecialty);
         await _context.SaveChangesAsync();
 
 
+        _logger.LogInformation("Worker specialty added successfully: {SpecialtyName}", specialtyInfo.Name);
         return new BaseResponse<string> { Success = true, Message = "تم إضافة التخصص بنجاح" };
     }
 

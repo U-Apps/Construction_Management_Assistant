@@ -1,4 +1,5 @@
 using ConstructionManagementAssistant.API.Startup;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddOpenApiServices();
 builder.Services.AddSwaggerServices();
 builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
+builder.Host.UseSerilog();
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -21,7 +23,7 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
+app.UseSerilogRequestLogging();
 app.UseOpenApi();
 app.UseSwaggerTool();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

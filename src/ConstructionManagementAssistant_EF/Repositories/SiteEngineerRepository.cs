@@ -1,15 +1,14 @@
-﻿using ConstructionManagementAssistant.Core.Mapping;
-using ConstructionManagementAssistant.EF.Extensions;
-
-namespace ConstructionManagementAssistant.EF.Repositories
+﻿namespace ConstructionManagementAssistant.EF.Repositories
 {
     public class SiteEngineerRepository : BaseRepository<SiteEngineer>, ISiteEngineerRepository
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<SiteEngineerRepository> _logger;
 
-        public SiteEngineerRepository(AppDbContext context) : base(context)
+        public SiteEngineerRepository(AppDbContext context, ILogger<SiteEngineerRepository> logger) : base(context)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<GetSiteEngineerDto> GetSiteEngineerById(int id)
@@ -52,27 +51,45 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
         public async Task<BaseResponse<string>> AddSiteEngineerAsync(AddSiteEngineerDto siteEngineerDto)
         {
-            var propertiesToCheck = new Dictionary<string, object?>
+            try
             {
-                { nameof(SiteEngineer.PhoneNumber), siteEngineerDto.PhoneNumber },
-                { nameof(SiteEngineer.Email), siteEngineerDto.Email },
-                { nameof(SiteEngineer.NationalNumber), siteEngineerDto.NationalNumber },
-            };
+                _logger.LogInformation("Adding a new site engineer: {EngineerName}", siteEngineerDto.FirstName);
+                var propertiesToCheck = new Dictionary<string, object?>
+                {
+                    { nameof(SiteEngineer.PhoneNumber), siteEngineerDto.PhoneNumber },
+                    { nameof(SiteEngineer.Email), siteEngineerDto.Email },
+                    { nameof(SiteEngineer.NationalNumber), siteEngineerDto.NationalNumber },
+                };
 
-            var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck);
+                var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck);
 
-            if (!duplicateCheck.Success)
-                return duplicateCheck;
+                if (!duplicateCheck.Success)
+                {
+                    _logger.LogWarning("Duplicate site engineer properties detected: {EngineerName}", siteEngineerDto.FirstName);
+                    return duplicateCheck;
+                }
 
-            var newSiteEngineer = siteEngineerDto.ToSiteEngineer();
-            await AddAsync(newSiteEngineer);
-            await _context.SaveChangesAsync();
+                var newSiteEngineer = siteEngineerDto.ToSiteEngineer();
+                await AddAsync(newSiteEngineer);
+                await _context.SaveChangesAsync();
 
-            return new BaseResponse<string>
+                _logger.LogInformation("Site engineer added successfully: {EngineerName}", siteEngineerDto.FirstName);
+                return new BaseResponse<string>
+                {
+                    Message = "تم إضافة المهندس بنجاح",
+                    Success = true
+                };
+            }
+            catch (Exception ex)
             {
-                Message = "تم إضافة المهندس بنجاح",
-                Success = true
-            };
+                _logger.LogError(ex, "Error occurred while adding a site engineer: {EngineerName}", siteEngineerDto.FirstName);
+                return new BaseResponse<string>
+                {
+                    Message = "حدث خطأ أثناء إضافة المهندس",
+                    Success = false,
+                    Errors = new List<string> { ex.Message }
+                };
+            }
         }
 
         public async Task<BaseResponse<string>> UpdateSiteEngineerAsync(UpdateSiteEngineerDto siteEngineerDto)

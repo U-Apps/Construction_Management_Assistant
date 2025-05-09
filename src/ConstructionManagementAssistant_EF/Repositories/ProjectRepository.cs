@@ -1,9 +1,18 @@
-﻿
+﻿using Microsoft.Extensions.Logging;
 
 namespace ConstructionManagementAssistant.EF.Repositories;
 
-public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(_context), IProjectRepository
+public class ProjectRepository : BaseRepository<Project>, IProjectRepository
 {
+    private readonly ILogger<ProjectRepository> _logger;
+    private readonly AppDbContext _context;
+
+    public ProjectRepository(AppDbContext context, ILogger<ProjectRepository> logger) : base(context)
+    {
+        _logger = logger;
+        _context = context;
+    }
+
     public async Task<GetProjectsDto> GetProjectById(int id)
     {
         return await FindWithSelectionAsync(
@@ -43,15 +52,25 @@ public class ProjectRepository(AppDbContext _context) : BaseRepository<Project>(
 
     public async Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto)
     {
-        var newProject = addProjectDto.ToProject();
-        await AddAsync(newProject);
-        await _context.SaveChangesAsync();
-
-        return new BaseResponse<string>
+        try
         {
-            Success = true,
-            Message = "تم إضافة المشروع بنجاح"
-        };
+            _logger.LogInformation("Adding a new project: {ProjectName}", addProjectDto.ProjectName);
+            var newProject = addProjectDto.ToProject();
+            await AddAsync(newProject);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Project added successfully: {ProjectName}", addProjectDto.ProjectName);
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم إضافة المشروع بنجاح"
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while adding a project: {ProjectName}", addProjectDto.ProjectName);
+            throw;
+        }
     }
 
     public async Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto)

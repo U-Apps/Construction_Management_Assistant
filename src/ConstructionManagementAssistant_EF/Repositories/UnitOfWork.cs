@@ -1,23 +1,41 @@
 ﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
-public class UnitOfWork(AppDbContext _appDbContext) : IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
-    public IClientRepository Clients { get; private set; } = new ClientRepository(_appDbContext);
-    public IProjectRepository Projects { get; private set; } = new ProjectRepository(_appDbContext);
-    public ISiteEngineerRepository SiteEngineers { get; private set; } = new SiteEngineerRepository(_appDbContext);
-    public IWorkerSpecialtyRepository WorkerSpecialties { get; private set; } = new WorkerSpecialtyRepository(_appDbContext);
-    public IWorkerRepository Workers { get; private set; } = new WorkerRepository(_appDbContext);
-    public IStageRepository Stages { get; } = new StageRepository(_appDbContext);
-    public ITaskRepository Tasks { get; } = new TaskRepository(_appDbContext);
+    public IClientRepository Clients { get; private set; }
+    public IProjectRepository Projects { get; private set; }
+    public ISiteEngineerRepository SiteEngineers { get; private set; }
+    public IWorkerSpecialtyRepository WorkerSpecialties { get; private set; }
+    public IWorkerRepository Workers { get; private set; }
+    public IStageRepository Stages { get; private set; }
+    public ITaskRepository Tasks { get; private set; }
 
+    private readonly AppDbContext _appDbContext;
+    private readonly ILogger<UnitOfWork> _logger;
+
+    public UnitOfWork(AppDbContext appDbContext, IServiceProvider serviceProvider)
+    {
+        _appDbContext = appDbContext;
+        _logger = serviceProvider.GetRequiredService<ILogger<UnitOfWork>>();
+
+        Clients = new ClientRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<ClientRepository>>());
+        Projects = new ProjectRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<ProjectRepository>>());
+        SiteEngineers = new SiteEngineerRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<SiteEngineerRepository>>());
+        WorkerSpecialties = new WorkerSpecialtyRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<WorkerSpecialtyRepository>>());
+        Workers = new WorkerRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<WorkerRepository>>());
+        Stages = new StageRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<StageRepository>>());
+        Tasks = new TaskRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskRepository>>());
+    }
 
     public void Dispose()
     {
+        _logger.LogInformation("Disposing UnitOfWork.");
         _appDbContext.Dispose();
     }
 
     public async Task<int> SaveAsync()
     {
+        _logger.LogInformation("Saving changes to the database.");
         return await _appDbContext.SaveChangesAsync();
     }
 }

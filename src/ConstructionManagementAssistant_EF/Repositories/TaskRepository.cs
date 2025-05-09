@@ -1,7 +1,16 @@
 ﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
-public class TaskRepository(AppDbContext _context) : BaseRepository<ConstructionManagementAssistant.Core.Entites.Task>(_context), ITaskRepository
+public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Core.Entites.Task>, ITaskRepository
 {
+    private readonly ILogger<TaskRepository> _logger;
+    private readonly AppDbContext _context;
+
+    public TaskRepository(AppDbContext context, ILogger<TaskRepository> logger) : base(context)
+    {
+        _logger = logger;
+        _context = context;
+    }
+
     public async Task<GetTaskDto> GetTaskById(int id)
     {
         return await FindWithSelectionAsync(
@@ -38,24 +47,36 @@ public class TaskRepository(AppDbContext _context) : BaseRepository<Construction
 
     public async Task<BaseResponse<string>> AddTaskAsync(AddTaskDto taskDto)
     {
-        if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
+        try
         {
+            _logger.LogInformation("Adding a new task: {TaskName}", taskDto.Name);
+            if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
+            {
+                _logger.LogWarning("Task name is not unique: {TaskName}", taskDto.Name);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "يوجد مهمة بنفس الاسم"
+                };
+            }
+
+            var newTask = taskDto.ToTask();
+            await AddAsync(newTask);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Task added successfully: {TaskName}", taskDto.Name);
             return new BaseResponse<string>
             {
-                Success = false,
-                Message = "يوجد مهمة بنفس الاسم"
+                Success = true,
+                Message = "تمت إضافة المهمة بنجاح"
             };
         }
-
-        var newTask = taskDto.ToTask();
-        await AddAsync(newTask);
-        await _context.SaveChangesAsync();
-
-        return new BaseResponse<string>
+        catch (Exception ex)
         {
-            Success = true,
-            Message = "تمت إضافة المهمة بنجاح"
-        };
+            _logger.LogError(ex, "Error occurred while adding a task: {TaskName}", taskDto.Name);
+            throw;
+        }
+
     }
 
     public async Task<BaseResponse<string>> UpdateTaskAsync(UpdateTaskDto taskDto)
