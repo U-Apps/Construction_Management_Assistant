@@ -35,4 +35,25 @@ public static class DisplayEnumeNameExtension
     }
 
 
+    public static TEnum? ToEnum<TEnum>(this string value) where TEnum : struct, Enum
+    {
+        if (Enum.TryParse<TEnum>(value, true, out var result))
+        {
+            return result;
+        }
+
+        foreach (var field in typeof(TEnum).GetFields())
+        {
+            var displayAttribute = field.GetCustomAttributes(typeof(DisplayAttribute), false)
+                                        .FirstOrDefault() as DisplayAttribute;
+
+            if (displayAttribute != null && displayAttribute.Name == value)
+            {
+                return (TEnum)field.GetValue(null);
+            }
+        }
+
+        return null;
+    }
+
 }

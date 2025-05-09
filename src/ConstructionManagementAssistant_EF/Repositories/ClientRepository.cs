@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.EF.Repositories;
+﻿using ConstructionManagementAssistant.Core.Extentions;
+
+namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _logger)
     : BaseRepository<Client>(_context), IClientRepository
@@ -72,7 +74,20 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
             return duplicateCheck;
         }
 
+        var clientType = clientDto.ClientType.ToEnum<ClientType>();
+        if (clientType == null)
+        {
+            _logger.LogWarning("Invalid ClientType provided: {ClientType}", clientDto.ClientType);
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "نوع العميل غير صالح"
+            };
+        }
+
         var newClient = clientDto.ToClient();
+        newClient.ClientType = clientType.Value;
+
         await AddAsync(newClient);
         await _context.SaveChangesAsync();
 

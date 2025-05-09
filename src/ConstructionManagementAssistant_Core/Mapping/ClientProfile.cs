@@ -1,7 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.DTOs;
-using ConstructionManagementAssistant.Core.Entites;
-using ConstructionManagementAssistant.Core.Extentions;
-using System.Linq.Expressions;
+﻿using ConstructionManagementAssistant.Core.Extentions;
 
 namespace ConstructionManagementAssistant.Core.Mapping;
 
@@ -26,7 +23,6 @@ public static class ClientProfile
             FullName = addClientDto.FullName,
             Email = addClientDto.Email,
             PhoneNumber = addClientDto.PhoneNumber,
-            ClientType = addClientDto.ClientType
         };
     }
 

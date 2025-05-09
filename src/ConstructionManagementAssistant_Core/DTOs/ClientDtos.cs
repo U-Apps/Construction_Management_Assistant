@@ -20,7 +20,7 @@ public class AddClientDto
     public required string PhoneNumber { get; set; }
 
     [Range(1, 2)]
-    public required ClientType ClientType { get; set; }
+    public required string ClientType { get; set; }
 }
 
 public class UpdateClientDto
