@@ -72,8 +72,8 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public string? CancellationReason { get; init; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public DateOnly? CancellationDate { get; init; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public int? CancelledAtStage { get; init; }
+        //[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        //public string? CancelledAtStage { get; init; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public DateOnly? CompletionDate { get; init; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

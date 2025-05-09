@@ -71,7 +71,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
             });
         }
 
-        return Ok(new BaseResponse<GetProjectsDto>
+        return Ok(new BaseResponse<ProjectDetailsDto>
         {
             Success = true,
             Message = "تم العثور على المشروع",

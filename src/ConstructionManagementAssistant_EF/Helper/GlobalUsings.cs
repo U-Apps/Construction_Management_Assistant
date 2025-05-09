@@ -16,3 +16,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using RepositoryWithUWO.EF.Repositories;
 global using System.Linq.Expressions;
+global using Microsoft.Extensions.Logging;

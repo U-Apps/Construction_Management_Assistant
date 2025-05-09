@@ -33,7 +33,28 @@ public static class ProjectProfile
             ExpectedEndDate = addProjectDto.ExpectedEndDate
         };
     }
+    public static Expression<Func<Project, ProjectDetailsDto>>  ToProjectDetails()
+    {
+        return Project => new ProjectDetailsDto
+        {
+            Id = Project.Id,
+            ProjectName = Project.Name,
+            Description = Project.Description,
+            SiteAddress = Project.SiteAddress,
+            GeographicalCoordinates = Project.GeographicalCoordinates,
+            SiteEngineerName = Project.SiteEngineer.GetFullName(),
+            ClientName = Project.Client.FullName,
+            StartDate = Project.StartDate,
+            ExpectedEndDate = Project.ExpectedEndDate,
+            ProjectStatus = Project.Status.GetDisplayName(),
 
+            CancellationReason = Project.CancelationReason,
+            CancellationDate = Project.CancelationDate,
+
+            CompletionDate = Project.CompletionDate,
+            HandoverDate = Project.HandoverDate,
+        };
+    }
     public static void UpdateProject(this Project project, UpdateProjectDto updateProjectDto)
     {
         project.Name = updateProjectDto.ProjectName;
