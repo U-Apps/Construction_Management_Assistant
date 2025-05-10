@@ -16,6 +16,26 @@ public static class TaskProfile
         };
     }
 
+
+    public static Expression<Func<Entites.Task, GetTaskDetailsDto>> ToGetTaskDetailsDto()
+    {
+        return task => new GetTaskDetailsDto
+        {
+            Id = task.Id,
+            StageId = task.StageId,
+            Name = task.Name,
+            Description = task.Description,
+            StartDate = task.StartDate,
+            EndDate = task.EndDate,
+            IsCompleted = task.IsCompleted,
+            Workers = task.TaskAssignments.Select(x => new WorkerNameDto
+            {
+                Id = x.Worker.Id,
+                FullName = x.Worker.GetFullName(),
+            }).ToList()
+        };
+    }
+
     public static Entites.Task ToTask(this AddTaskDto addTaskDto)
     {
         return new Entites.Task

@@ -18,7 +18,7 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// في حالة لم يتم تحديد نص بحثي أو التوافر سيتم الجلب حسب الصفحات 
     /// </remarks>
     /// <returns>قائمة المهندسين</returns>
-    [HttpGet(SystemApiRouts.SiteEngineer.GetAllSiteEngineer)]
+    [HttpGet(SystemApiRouts.SiteEngineers.GetAllSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetSiteEngineerDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllSiteEngineers(
         int pageNumber = 1,
@@ -49,7 +49,7 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="Id">معرف المهندس</param>
     /// <returns>تفاصيل المهندس</returns>
-    [HttpGet(SystemApiRouts.SiteEngineer.GetSiteEngineerById)]
+    [HttpGet(SystemApiRouts.SiteEngineers.GetSiteEngineerById)]
     [ProducesResponseType(typeof(BaseResponse<SiteEngineerDetailsDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<SiteEngineerDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSiteEngineerById(int Id)
@@ -80,7 +80,7 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// إنشاء مهندس جديد
     /// </summary>
     /// <param name="client">بيانات المهندس</param>
-    [HttpPost(SystemApiRouts.SiteEngineer.AddSiteEngineer)]
+    [HttpPost(SystemApiRouts.SiteEngineers.AddSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateSiteEngineer(AddSiteEngineerDto siteEngineer)
@@ -103,7 +103,7 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="siteEngineer">بيانات المهندس المحدثة</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpPut(SystemApiRouts.SiteEngineer.UpdateSiteEngineer)]
+    [HttpPut(SystemApiRouts.SiteEngineers.UpdateSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateSiteEngineer(UpdateSiteEngineerDto siteEngineer)
@@ -125,7 +125,7 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="id">معرف المهندس</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpDelete(SystemApiRouts.SiteEngineer.DeleteSiteEngineer)]
+    [HttpDelete(SystemApiRouts.SiteEngineers.DeleteSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]

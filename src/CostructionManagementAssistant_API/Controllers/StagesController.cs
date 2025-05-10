@@ -7,7 +7,7 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     /// اضافة مرحلة جديدة
     /// </summary>
     /// <param name="addStageDto">تفاصيل المرحلة</param>
-    [HttpPost(SystemApiRouts.Stage.AddStage)]
+    [HttpPost(SystemApiRouts.Stages.AddStage)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddStage([FromBody] AddStageDto addStageDto)
@@ -27,7 +27,7 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="Id">معرف المرحلة</param>
     /// <returns>Response message</returns>
-    [HttpDelete(SystemApiRouts.Stage.DeleteStage)]
+    [HttpDelete(SystemApiRouts.Stages.DeleteStage)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
@@ -44,18 +44,15 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     /// الحصول على جميع المراحل
     /// </summary>
     /// <param name="projectId">معرف المشروع, الزامي</param>
-    /// <param name="searchItem">بحث عن مرحلة</param>
-    /// <param name="startDateFilter">بحث من خلال تاريخ البداية</param>
-    /// <param name="endDateFilter">بحث من خلال تاريخ النهاية</param>
     /// <param name="pageNumber">رقم الصفحة</param>
     /// <param name="pageSize">حجم الصفحة</param>
     /// <returns>قائمة المراحل</returns>
-    [HttpGet(SystemApiRouts.Stage.GetAllStages)]
+    [HttpGet(SystemApiRouts.Stages.GetAllStages)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetAllStagesDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllStages([Required] int projectId, string? searchItem, DateOnly? startDateFilter, DateOnly? endDateFilter, int pageNumber = 1, int pageSize = 10)
+    public async Task<IActionResult> GetAllStages([Required] int projectId, int pageNumber = 1, int pageSize = 10)
     {
-        var result = await _unitOfWork.Stages.GetStagesByProjectIdAsync(projectId, searchItem!, startDateFilter, endDateFilter, pageNumber, pageSize);
+        var result = await _unitOfWork.Stages.GetStagesByProjectIdAsync(projectId, null, null, null, pageNumber, pageSize);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<GetAllStagesDto>>
@@ -78,7 +75,7 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="Id">معرف المرحلة</param>
     /// <returns>تفاصيل المرحلة</returns>
-    [HttpGet(SystemApiRouts.Stage.GetStageById)]
+    [HttpGet(SystemApiRouts.Stages.GetStageById)]
     [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetStageById(int Id)
@@ -103,7 +100,7 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     /// تحديث مرحلة
     /// </summary>
     /// <param name="updateStageDto">تفاصيل المرحلة</param>
-    [HttpPut(SystemApiRouts.Stage.UpdateStage)]
+    [HttpPut(SystemApiRouts.Stages.UpdateStage)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateStage([FromBody] UpdateStageDto updateStageDto)

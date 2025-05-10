@@ -19,7 +19,12 @@ namespace ConstructionManagementAssistant.EF.Data
         public DbSet<Task> Tasks { get; set; }
 
 
-
+        public DbSet<TaskAssignment> TaskAssignments { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Documnet> Tasks { get; set; }
+        public DbSet<TaskReport> Tasks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
         #endregion
 
         #region Constructors
@@ -40,6 +45,20 @@ namespace ConstructionManagementAssistant.EF.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TaskAssignment>()
+                .HasKey(ta => new { ta.TaskId, ta.WorkerId });
+
+            modelBuilder.Entity<TaskAssignment>()
+                .HasOne(ta => ta.Task)
+                .WithMany(t => t.TaskAssignments)
+                .HasForeignKey(ta => ta.TaskId);
+
+            modelBuilder.Entity<TaskAssignment>()
+                .HasOne(ta => ta.Worker)
+                .WithMany(w => w.TaskAssignments)
+                .HasForeignKey(ta => ta.WorkerId);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PersonConfiguration).Assembly);
         }
 

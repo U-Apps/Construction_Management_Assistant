@@ -20,7 +20,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     /// في حالة لم يتم تحديد نص بحثي أو التوافر سيتم الجلب حسب الصفحات 
     /// </remarks>
     /// <returns>قائمة العمال</returns>
-    [HttpGet(SystemApiRouts.Worker.GetAllWorkers)]
+    [HttpGet(SystemApiRouts.Workers.GetAllWorkers)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetWorkerDto>>), StatusCodes.Status200OK)]
     public async Task<ActionResult<BaseResponse<PagedResult<GetWorkerDto>>>> GetAllWorkers(int pageNumber = 1,
                                                                                            [Range(1, 50)] int pageSize = 10,
@@ -51,7 +51,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="Id">معرف العميل</param>
     /// <returns>تفاصيل العميل</returns>
-    [HttpGet(SystemApiRouts.Worker.GetWorkerById)]
+    [HttpGet(SystemApiRouts.Workers.GetWorkerById)]
     [ProducesResponseType(typeof(BaseResponse<WorkerDetailsDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<WorkerDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetWorkerById(int Id)
@@ -81,7 +81,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     /// إنشاء عامل جديد
     /// </summary>
     /// <param name="workerdto">بيانات العامل</param>
-    [HttpPost(SystemApiRouts.Worker.AddWorker)]
+    [HttpPost(SystemApiRouts.Workers.AddWorker)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResponse<string>>> CreateWorker(AddWorkerDto workerdto)
@@ -102,7 +102,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="workerdto">بيانات العامل المحدثة</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpPut(SystemApiRouts.Worker.UpdateWorker)]
+    [HttpPut(SystemApiRouts.Workers.UpdateWorker)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResponse<string>>> UpdateWorker(UpdateWorkerDto workerdto)
@@ -122,7 +122,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="id">معرف العامل</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpDelete(SystemApiRouts.Worker.DeleteWorker)]
+    [HttpDelete(SystemApiRouts.Workers.DeleteWorker)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]

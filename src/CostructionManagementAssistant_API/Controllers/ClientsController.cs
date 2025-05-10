@@ -25,7 +25,7 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// 2 - Company (شركة)       
     /// </remarks>
     /// <returns>قائمة العملاء</returns>
-    [HttpGet(SystemApiRouts.Client.GetAllCleint)]
+    [HttpGet(SystemApiRouts.Clients.GetAllCleint)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetClientDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllClients(
         int pageNumber = 1,
@@ -57,7 +57,7 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="Id">معرف العميل</param>
     /// <returns>تفاصيل العميل</returns>
-    [HttpGet(SystemApiRouts.Client.GetClientById)]
+    [HttpGet(SystemApiRouts.Clients.GetClientById)]
     [ProducesResponseType(typeof(BaseResponse<ClientDetailsDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<ClientDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetClientById(int Id)
@@ -87,7 +87,7 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// 1 - individual (فرد)
     /// 2 - Company (شركة)
     /// </remarks>
-    [HttpPost(SystemApiRouts.Client.AddClient)]
+    [HttpPost(SystemApiRouts.Clients.AddClient)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateClient(AddClientDto client)
@@ -109,7 +109,7 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="client">بيانات العميل المحدثة</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpPut(SystemApiRouts.Client.UpdateClient)]
+    [HttpPut(SystemApiRouts.Clients.UpdateClient)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateClient(UpdateClientDto client)
@@ -130,7 +130,7 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="id">معرف العميل</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpDelete(SystemApiRouts.Client.DeleteClient)]
+    [HttpDelete(SystemApiRouts.Clients.DeleteClient)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]

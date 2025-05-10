@@ -11,6 +11,21 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public bool IsCompleted { get; set; }
     }
 
+
+    public class GetTaskDetailsDto
+    {
+        public int Id { get; set; }
+        public int StageId { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public DateOnly? StartDate { get; set; }
+        public DateOnly? EndDate { get; set; }
+        public bool IsCompleted { get; set; }
+        public ICollection<WorkerNameDto> Workers { get; set; }
+
+    }
+
+
     public class TaskNameDto
     {
         public int Id { get; set; }
