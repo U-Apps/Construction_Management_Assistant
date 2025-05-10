@@ -4,7 +4,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
 {
     public interface IClientRepository : IBaseRepository<Client>
     {
-        public Task<ClientDetailsDto> GetClientById(int id);
+        public Task<ClientDetailsDto?> GetClientById(int id);
         public Task<PagedResult<GetClientDto>> GetAllClients(
             int pageNumber,
             int pageSize,

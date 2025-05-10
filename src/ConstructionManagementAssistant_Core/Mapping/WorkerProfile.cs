@@ -29,7 +29,7 @@ public static class WorkerProfile
             Address = worker.Address,
             Specialty = worker.Specialty.Name,
             IsAvailable = worker.IsAvailable,
-            //Tasks = worker.TaskAssignments.
+            Tasks = new List<TaskNameDto>(),
         };
     }
 

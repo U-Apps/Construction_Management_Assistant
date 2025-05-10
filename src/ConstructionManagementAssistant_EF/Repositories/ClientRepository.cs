@@ -6,7 +6,7 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
     : BaseRepository<Client>(_context), IClientRepository
 {
 
-    public async Task<ClientDetailsDto> GetClientById(int id)
+    public async Task<ClientDetailsDto?> GetClientById(int id)
     {
         _logger.LogInformation("Fetching client with ID: {Id}", id);
 
@@ -17,6 +17,8 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
         if (client == null)
         {
             _logger.LogWarning("Client with ID: {Id} not found", id);
+            return null;
+
         }
 
         return client;

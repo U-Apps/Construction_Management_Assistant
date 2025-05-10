@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace ConstructionManagementAssistant.EF.Repositories;
+﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class ProjectRepository : BaseRepository<Project>, IProjectRepository
 {
@@ -13,11 +11,19 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
         _context = context;
     }
 
-    public async Task<ProjectDetailsDto> GetProjectById(int id)
+    public async Task<ProjectDetailsDto?> GetProjectById(int id)
     {
-        return await FindWithSelectionAsync(
+        var project = await FindWithSelectionAsync(
             selector: ProjectProfile.ToProjectDetails(),
             criteria: x => x.Id == id);
+
+        if (project == null)
+        {
+            _logger.LogWarning("project with ID: {Id} not found", id);
+            return null;
+        }
+
+        return project;
     }
 
     public async Task<PagedResult<GetProjectsDto>> GetAllProjects(

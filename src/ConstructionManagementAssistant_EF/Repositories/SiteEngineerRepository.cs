@@ -19,6 +19,8 @@
             if (siteEngineer == null)
             {
                 _logger.LogWarning("siteEngineer with ID: {Id} not found", id);
+                return null;
+
             }
 
             return siteEngineer;

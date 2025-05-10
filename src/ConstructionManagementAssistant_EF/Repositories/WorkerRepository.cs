@@ -53,6 +53,8 @@
             if (worker == null)
             {
                 _logger.LogWarning("worker with ID: {Id} not found", id);
+                return null;
+
             }
 
             return worker;
