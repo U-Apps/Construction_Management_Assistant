@@ -1,15 +1,16 @@
 ﻿namespace ConstructionManagementAssistant.Core.Entites
 {
-    public class TaskReport
+    public class TaskReport : Documnet
     {
-        public int Id { get; set; }
-
+        #region Properties
         public int TaskId { get; set; }
+        public string? SiteEngineerId { get; set; }
+        #endregion
+        #region Navigation Properties
+        public ReportType ReportType { get; set; }
+        public Task? Task { get; set; }
 
-        public int ReportId { get; set; }
-
-        public string SiteEngineerId { get; set; }
-
-        public  { get; set;}
-}
+        public SiteEngineer? SiteEngineer { get; set; }
+        #endregion
+    }
 }
