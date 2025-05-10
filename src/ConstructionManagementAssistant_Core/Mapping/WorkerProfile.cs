@@ -13,7 +13,6 @@ public static class WorkerProfile
         };
     }
 
-    // ...existing code...
     public static Expression<Func<Worker, WorkerDetailsDto>> ToWorkerDetailsDto()
     {
         return worker => new WorkerDetailsDto
@@ -29,7 +28,12 @@ public static class WorkerProfile
             Address = worker.Address,
             Specialty = worker.Specialty.Name,
             IsAvailable = worker.IsAvailable,
-            Tasks = new List<TaskNameDto>(),
+            Tasks = worker.TaskAssignments.Select(x => new TaskNameDto
+            {
+                Id = x.TaskId,
+                Name = x.Task.Name,
+                ProjectId = x.Task.Stage.ProjectId
+            }).ToList()
         };
     }
 

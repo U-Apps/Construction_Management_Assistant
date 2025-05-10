@@ -11,11 +11,20 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
         _context = context;
     }
 
-    public async Task<GetTaskDto> GetTaskById(int id)
+    public async Task<GetTaskDetailsDto?> GetTaskById(int id)
     {
-        return await FindWithSelectionAsync(
-            selector: TaskProfile.ToGetTaskDto(),
+        var task = await FindWithSelectionAsync(
+            selector: TaskProfile.ToGetTaskDetailsDto(),
             criteria: x => x.Id == id);
+
+        if (task == null)
+        {
+            _logger.LogWarning("task with ID: {Id} not found", id);
+            return null;
+
+        }
+
+        return task;
     }
 
     public async Task<PagedResult<GetTaskDto>> GetAllTasks(

@@ -5,7 +5,7 @@
 public static class SystemApiRouts
 
 {
-    public static class Client
+    public static class Clients
     {
         public const string Base = "api/v1/Clients";
         public const string GetClientById = Base + "/{Id}";
@@ -15,7 +15,7 @@ public static class SystemApiRouts
         public const string DeleteClient = Base + "/{Id}";
     }
 
-    public static class SiteEngineer
+    public static class SiteEngineers
     {
         public const string Base = "api/v1/SiteEngineers";
         public const string GetSiteEngineerById = Base + "/{Id}";
@@ -25,7 +25,7 @@ public static class SystemApiRouts
         public const string DeleteSiteEngineer = Base + "/{Id}";
     }
 
-    public class WorkerSpecialty
+    public class WorkerSpecialties
     {
         public const string Base = "api/v1/WorkerSpecialties";
         public const string GetWorkerSpecialtyById = Base + "/{Id}";
@@ -36,7 +36,7 @@ public static class SystemApiRouts
 
     }
 
-    public class Worker
+    public class Workers
     {
         public const string Base = "api/v1/Workers";
         public const string GetWorkerById = Base + "/{Id}";
@@ -46,7 +46,7 @@ public static class SystemApiRouts
         public const string DeleteWorker = Base + "/{Id}";
     }
 
-    public static class Project
+    public static class Projects
     {
         public const string Base = "api/v1/Projects";
         public const string GetProjectById = Base + "/{id}";
@@ -62,7 +62,7 @@ public static class SystemApiRouts
         public const string AssignProjectToSiteEngineer = Base + "/AssignToSiteEngineer";
     }
 
-    public class Stage
+    public class Stages
     {
         public const string Base = "api/v1/Stages";
         public const string AddStage = Base;
@@ -71,7 +71,7 @@ public static class SystemApiRouts
         public const string UpdateStage = Base;
         public const string DeleteStage = Base + "/{Id}";
     }
-    public static class Task
+    public static class Tasks
     {
         public const string Base = "api/v1/Tasks";
         public const string GetTaskById = Base + "/{Id}";

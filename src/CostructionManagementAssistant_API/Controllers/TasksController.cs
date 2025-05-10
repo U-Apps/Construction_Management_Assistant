@@ -7,7 +7,7 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
     /// إضافة مهمة جديدة
     /// </summary>
     /// <param name="addTaskDto">تفاصيل المهمة</param>
-    [HttpPost(SystemApiRouts.Task.AddTask)]
+    [HttpPost(SystemApiRouts.Tasks.AddTask)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddTask([FromBody] AddTaskDto addTaskDto)
@@ -27,7 +27,7 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="Id">معرف المهمة</param>
     /// <returns>Response message</returns>
-    [HttpDelete(SystemApiRouts.Task.DeleteTask)]
+    [HttpDelete(SystemApiRouts.Tasks.DeleteTask)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
@@ -47,7 +47,7 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <param name="pageSize">حجم الصفحة</param>
     /// <param name="searchTerm">مصطلح البحث</param>
     /// <returns>قائمة المهام</returns>
-    [HttpGet(SystemApiRouts.Task.GetAllTasks)]
+    [HttpGet(SystemApiRouts.Tasks.GetAllTasks)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetTaskDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllTasks(int stageId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
@@ -75,20 +75,20 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </summary>
     /// <param name="Id">معرف المهمة</param>
     /// <returns>تفاصيل المهمة</returns>
-    [HttpGet(SystemApiRouts.Task.GetTaskById)]
-    [ProducesResponseType(typeof(BaseResponse<GetTaskDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<GetTaskDto>), StatusCodes.Status404NotFound)]
+    [HttpGet(SystemApiRouts.Tasks.GetTaskById)]
+    [ProducesResponseType(typeof(BaseResponse<GetTaskDetailsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<GetTaskDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTaskById(int Id)
     {
         var result = await _unitOfWork.Tasks.GetTaskById(Id);
         if (result is null)
-            return NotFound(new BaseResponse<GetTaskDto>()
+            return NotFound(new BaseResponse<GetTaskDetailsDto>()
             {
                 Success = false,
                 Message = "لا يوجد مهمة بهذا المعرف"
             });
 
-        return Ok(new BaseResponse<GetTaskDto>()
+        return Ok(new BaseResponse<GetTaskDetailsDto>()
         {
             Success = true,
             Message = "تم جلب المهمة بنجاح",
@@ -100,7 +100,7 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
     /// تحديث مهمة
     /// </summary>
     /// <param name="updateTaskDto">تفاصيل المهمة</param>
-    [HttpPut(SystemApiRouts.Task.UpdateTask)]
+    [HttpPut(SystemApiRouts.Tasks.UpdateTask)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskDto updateTaskDto)

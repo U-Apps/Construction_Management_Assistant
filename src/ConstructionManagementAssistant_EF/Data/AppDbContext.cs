@@ -10,6 +10,7 @@
         public DbSet<WorkerSpecialty> WorkerSpecialties { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<TaskAssignment> TaskAssignments { get; set; }
 
         #endregion
 
@@ -31,6 +32,20 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TaskAssignment>()
+                .HasKey(ta => new { ta.TaskId, ta.WorkerId });
+
+            modelBuilder.Entity<TaskAssignment>()
+                .HasOne(ta => ta.Task)
+                .WithMany(t => t.TaskAssignments)
+                .HasForeignKey(ta => ta.TaskId);
+
+            modelBuilder.Entity<TaskAssignment>()
+                .HasOne(ta => ta.Worker)
+                .WithMany(w => w.TaskAssignments)
+                .HasForeignKey(ta => ta.WorkerId);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PersonConfiguration).Assembly);
         }
 

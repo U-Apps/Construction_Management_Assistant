@@ -12,5 +12,7 @@ namespace ConstructionManagementAssistant.Core.Entites
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public Stage Stage { get; set; }
+
+        public ICollection<TaskAssignment> TaskAssignments = [];
     }
 }

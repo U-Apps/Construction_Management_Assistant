@@ -9,7 +9,7 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     /// الحصول على جميع تخصصات العامل
     /// </summary>
     /// <returns>قائمة تخصصات العامل</returns>
-    [HttpGet(SystemApiRouts.WorkerSpecialty.GetAllWorkerSpecialties)]
+    [HttpGet(SystemApiRouts.WorkerSpecialties.GetAllWorkerSpecialties)]
     [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BaseResponse<List<GetWorkerSpecialtyDto>>>> GetAllWorkerSpecialties()
@@ -33,7 +33,7 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     /// </summary>
     /// <param name="Id">معرف التخصص</param>
     /// <returns>اسم التخصص ورقم المعرف</returns>
-    [HttpGet(SystemApiRouts.WorkerSpecialty.GetWorkerSpecialtyById)]
+    [HttpGet(SystemApiRouts.WorkerSpecialties.GetWorkerSpecialtyById)]
     [ProducesResponseType(typeof(BaseResponse<GetWorkerSpecialtyDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<GetWorkerSpecialtyDto>), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BaseResponse<GetWorkerSpecialtyDto>>> GetWorkerSpecialtyById(int Id)
@@ -63,7 +63,7 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     /// انشاء تخصص عامل جديد
     /// </summary>
     /// <param name="WorkerSpecialty">بيانات التخصص</param>
-    [HttpPost(SystemApiRouts.WorkerSpecialty.AddWorkerSpecialty)]
+    [HttpPost(SystemApiRouts.WorkerSpecialties.AddWorkerSpecialty)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResponse<string>>> CreateWorkerSpecialty(AddWorkerSpecialtyDto WorkerSpecialty)
@@ -84,7 +84,7 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     /// </summary>
     /// <param name="WorkerSpecialty">بيانات التخصص المحدثة</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpPut(SystemApiRouts.WorkerSpecialty.UpdateWorkerSpecialty)]
+    [HttpPut(SystemApiRouts.WorkerSpecialties.UpdateWorkerSpecialty)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResponse<string>>> UpdateWorkerSpecialty(UpdateWorkerSpecialtyDto WorkerSpecialty)
@@ -104,7 +104,7 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     /// </summary>
     /// <param name="Id">معرف التخصص</param>
     /// <returns>لا يوجد محتوى</returns>
-    [HttpDelete(SystemApiRouts.WorkerSpecialty.DeleteWorkerSpecialty)]
+    [HttpDelete(SystemApiRouts.WorkerSpecialties.DeleteWorkerSpecialty)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
