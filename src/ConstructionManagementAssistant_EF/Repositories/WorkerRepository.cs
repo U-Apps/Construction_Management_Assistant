@@ -46,11 +46,13 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return pagedResult;
         }
 
-        public async Task<WorkerDetailsDto> GetWorkerById(int id)
+        public async Task<WorkerDetailsDto?> GetWorkerById(int id)
         {
             return await FindWithSelectionAsync(
                 selector: WorkerProfile.ToWorkerDetailsDto(),
                 criteria: x => x.Id == id);
+
+
         }
 
         public async Task<BaseResponse<string>> AddWorkerAsync(AddWorkerDto workerDto)

@@ -11,10 +11,10 @@
             _logger = logger;
         }
 
-        public async Task<GetSiteEngineerDto> GetSiteEngineerById(int id)
+        public async Task<SiteEngineerDetailsDto?> GetSiteEngineerById(int id)
         {
             return await FindWithSelectionAsync(
-                selector: SiteEngineerProfile.ToGetSiteEngineerDto(),
+                selector: SiteEngineerProfile.ToSiteEngineerDetailsDto(),
                 criteria: x => x.Id == id);
         }
 

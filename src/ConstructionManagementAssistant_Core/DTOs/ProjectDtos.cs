@@ -53,6 +53,13 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public required string ProjectStatus { get; init; }
     }
 
+
+    public class ProjectNameDto
+    {
+        public required int Id { get; init; }
+        public required string Name { get; init; }
+    }
+
     public class ProjectDetailsDto
     {
         public required int Id { get; init; }

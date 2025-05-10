@@ -16,6 +16,23 @@ public static class ClientProfile
         };
     }
 
+    public static Expression<Func<Client, ClientDetailsDto>> ToClientDetailsDto()
+    {
+        return client => new ClientDetailsDto
+        {
+            Id = client.Id,
+            FullName = client.FullName,
+            Email = client.Email,
+            PhoneNumber = client.PhoneNumber,
+            ClientType = client.ClientType.GetDisplayName(),
+            Projects = client.Projects.Select(p => new ProjectNameDto
+            {
+                Id = p.Id,
+                Name = p.Name
+            }).ToList()
+        };
+    }
+
     public static Client ToClient(this AddClientDto addClientDto)
     {
         return new Client

@@ -63,7 +63,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
         return await query.SingleOrDefaultAsync();
     }
 
-    public async Task<TResult> FindWithSelectionAsync<TResult>(
+    public async Task<TResult?> FindWithSelectionAsync<TResult>(
         Expression<Func<T, TResult>> selector,
         Expression<Func<T, bool>> criteria,
         params Expression<Func<T, object>>[] includes)

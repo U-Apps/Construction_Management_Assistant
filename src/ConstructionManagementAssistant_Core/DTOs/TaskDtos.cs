@@ -11,6 +11,13 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public bool IsCompleted { get; set; }
     }
 
+    public class TaskNameDto
+    {
+        public int Id { get; set; }
+        public int ProjectId { get; set; }
+        public string Name { get; set; }
+    }
+
     public class AddTaskDto
     {
         public required int StageId { get; set; }

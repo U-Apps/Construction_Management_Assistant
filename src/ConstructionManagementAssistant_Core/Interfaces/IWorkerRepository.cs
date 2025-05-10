@@ -1,5 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.DTOs;
-using ConstructionManagementAssistant.Core.Models.Response;
+﻿using ConstructionManagementAssistant.Core.Models.Response;
 
 namespace ConstructionManagementAssistant.Core.Interfaces
 {
@@ -10,7 +9,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
             int pageSize,
             string? searchTerm = null,
             bool? isAvailable = null);
-        Task<WorkerDetailsDto> GetWorkerById(int id);
+        Task<WorkerDetailsDto?> GetWorkerById(int id);
         public Task<BaseResponse<string>> AddWorkerAsync(AddWorkerDto workerInfo);
         public Task<BaseResponse<string>> UpdateWorkerAsync(UpdateWorkerDto workerInfo);
         public Task<BaseResponse<string>> DeleteWorkerAsync(int id);
