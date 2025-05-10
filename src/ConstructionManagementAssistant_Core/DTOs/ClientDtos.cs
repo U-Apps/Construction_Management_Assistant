@@ -9,6 +9,17 @@ public class GetClientDto
     public string ClientType { get; set; }
 }
 
+public class ClientDetailsDto
+{
+    public int Id { get; set; }
+    public string FullName { get; set; }
+    public string? Email { get; set; }
+    public string PhoneNumber { get; set; }
+    public string ClientType { get; set; }
+    public ICollection<ProjectNameDto> Projects { get; set; }
+}
+
+
 public class AddClientDto
 {
     public required string FullName { get; set; }

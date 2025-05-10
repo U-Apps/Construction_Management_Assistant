@@ -16,7 +16,7 @@ public interface IBaseRepository<T> where T : class
         Expression<Func<T, bool>> criteria,
         params Expression<Func<T, object>>[] includes);
 
-    Task<TResult> FindWithSelectionAsync<TResult>(
+    Task<TResult?> FindWithSelectionAsync<TResult>(
         Expression<Func<T, TResult>> selector,
         Expression<Func<T, bool>> criteria,
         params Expression<Func<T, object>>[] includes);

@@ -1,7 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.DTOs;
-using System.Linq.Expressions;
-
-namespace ConstructionManagementAssistant.Core.Mapping;
+﻿namespace ConstructionManagementAssistant.Core.Mapping;
 
 public static class WorkerProfile
 {
@@ -16,18 +13,23 @@ public static class WorkerProfile
         };
     }
 
+    // ...existing code...
     public static Expression<Func<Worker, WorkerDetailsDto>> ToWorkerDetailsDto()
     {
         return worker => new WorkerDetailsDto
         {
             Id = worker.Id,
-            FullName = worker.GetFullName(),
+            FirstName = worker.FirstName,
+            SecondName = worker.SecondName,
+            ThirdName = worker.ThirdName,
+            LastName = worker.LastName,
             Email = worker.Email,
             PhoneNumber = worker.PhoneNumber,
             NationalNumber = worker.NationalNumber,
             Address = worker.Address,
             Specialty = worker.Specialty.Name,
             IsAvailable = worker.IsAvailable,
+            Tasks = new List<TaskNameDto>(),
         };
     }
 

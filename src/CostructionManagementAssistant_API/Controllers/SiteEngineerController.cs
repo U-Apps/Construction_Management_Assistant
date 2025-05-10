@@ -50,19 +50,19 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <param name="Id">معرف المهندس</param>
     /// <returns>تفاصيل المهندس</returns>
     [HttpGet(SystemApiRouts.SiteEngineer.GetSiteEngineerById)]
-    [ProducesResponseType(typeof(BaseResponse<GetSiteEngineerDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<GetSiteEngineerDto>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(BaseResponse<SiteEngineerDetailsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<SiteEngineerDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSiteEngineerById(int Id)
     {
         var result = await _unitOfWork.SiteEngineers.GetSiteEngineerById(Id);
         if (result is null)
-            return NotFound(new BaseResponse<GetSiteEngineerDto>
+            return NotFound(new BaseResponse<SiteEngineerDetailsDto>
             {
                 Message = "لا يوجد مهندس بهذا المعرف",
                 Success = false
             });
 
-        return Ok(new BaseResponse<GetSiteEngineerDto>
+        return Ok(new BaseResponse<SiteEngineerDetailsDto>
         {
             Data = result,
             Message = "تم جلب المهندس بنجاح ",

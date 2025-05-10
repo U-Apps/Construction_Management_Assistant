@@ -1,5 +1,4 @@
-﻿
-namespace ConstructionManagementAssistant.EF.Repositories
+﻿namespace ConstructionManagementAssistant.EF.Repositories
 {
     public class WorkerRepository : BaseRepository<Worker>, IWorkerRepository
     {
@@ -46,11 +45,19 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return pagedResult;
         }
 
-        public async Task<WorkerDetailsDto> GetWorkerById(int id)
+        public async Task<WorkerDetailsDto?> GetWorkerById(int id)
         {
-            return await FindWithSelectionAsync(
+            var worker = await FindWithSelectionAsync(
                 selector: WorkerProfile.ToWorkerDetailsDto(),
                 criteria: x => x.Id == id);
+            if (worker == null)
+            {
+                _logger.LogWarning("worker with ID: {Id} not found", id);
+                return null;
+
+            }
+
+            return worker;
         }
 
         public async Task<BaseResponse<string>> AddWorkerAsync(AddWorkerDto workerDto)

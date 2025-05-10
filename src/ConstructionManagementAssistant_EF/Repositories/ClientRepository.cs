@@ -6,17 +6,19 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
     : BaseRepository<Client>(_context), IClientRepository
 {
 
-    public async Task<GetClientDto> GetClientById(int id)
+    public async Task<ClientDetailsDto?> GetClientById(int id)
     {
         _logger.LogInformation("Fetching client with ID: {Id}", id);
 
         var client = await FindWithSelectionAsync(
-            selector: ClientProfile.ToGetClientDto(),
+            selector: ClientProfile.ToClientDetailsDto(),
             criteria: x => x.Id == id);
 
         if (client == null)
         {
             _logger.LogWarning("Client with ID: {Id} not found", id);
+            return null;
+
         }
 
         return client;

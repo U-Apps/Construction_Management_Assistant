@@ -58,19 +58,19 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <param name="Id">معرف العميل</param>
     /// <returns>تفاصيل العميل</returns>
     [HttpGet(SystemApiRouts.Client.GetClientById)]
-    [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(BaseResponse<ClientDetailsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<ClientDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetClientById(int Id)
     {
         var result = await _unitOfWork.Clients.GetClientById(Id);
         if (result is null)
-            return NotFound(new BaseResponse<GetClientDto>()
+            return NotFound(new BaseResponse<ClientDetailsDto>()
             {
                 Success = false,
                 Message = "لا يوجد عميل بهذا المعرف"
             });
 
-        return Ok(new BaseResponse<GetClientDto>()
+        return Ok(new BaseResponse<ClientDetailsDto>()
         {
             Success = true,
             Message = "تم جلب العميل بنجاح",

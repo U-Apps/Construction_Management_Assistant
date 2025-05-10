@@ -1,5 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.Enums;
-using ConstructionManagementAssistant.Core.Extentions;
+﻿using ConstructionManagementAssistant.Core.Extentions;
 
 namespace ConstructionManagementAssistant.API.Controllers;
 
@@ -23,10 +22,10 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     [HttpGet(SystemApiRouts.Project.GetAllProjects)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<object>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllProjects(int pageNumber = 1,
-        [Range(1, 50)] int pageSize = 10, 
-        ProjectStatus? status = null, string?searchTerm = null)
+        [Range(1, 50)] int pageSize = 10,
+        ProjectStatus? status = null, string? searchTerm = null)
     {
-        var result = await _unitOfWork.Projects.GetAllProjects(pageNumber, pageSize,status, searchTerm);
+        var result = await _unitOfWork.Projects.GetAllProjects(pageNumber, pageSize, status, searchTerm);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<GetProjectsDto>>
@@ -57,14 +56,14 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <response code="200">تم العثور على المشروع</response>
     /// <response code="404">لم يتم العثور على المشروع</response>
     [HttpGet(SystemApiRouts.Project.GetProjectById)]
-    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(BaseResponse<ProjectDetailsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<ProjectDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProjectById(int id)
     {
         var project = await _unitOfWork.Projects.GetProjectById(id);
         if (project == null)
         {
-            return NotFound(new BaseResponse<GetProjectsDto>
+            return NotFound(new BaseResponse<ProjectDetailsDto>
             {
                 Success = false,
                 Message = "لم يتم العثور على المشروع",

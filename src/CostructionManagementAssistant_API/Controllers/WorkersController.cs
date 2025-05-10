@@ -21,7 +21,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </remarks>
     /// <returns>قائمة العمال</returns>
     [HttpGet(SystemApiRouts.Worker.GetAllWorkers)]
-    [ProducesResponseType(typeof(BaseResponse<PagedResult<GetClientDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<PagedResult<GetWorkerDto>>), StatusCodes.Status200OK)]
     public async Task<ActionResult<BaseResponse<PagedResult<GetWorkerDto>>>> GetAllWorkers(int pageNumber = 1,
                                                                                            [Range(1, 50)] int pageSize = 10,
                                                                                            string? searchTerm = null,
@@ -52,8 +52,8 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <param name="Id">معرف العميل</param>
     /// <returns>تفاصيل العميل</returns>
     [HttpGet(SystemApiRouts.Worker.GetWorkerById)]
-    [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(BaseResponse<WorkerDetailsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<WorkerDetailsDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetWorkerById(int Id)
     {
         var result = await _unitOfWork.Workers.GetWorkerById(Id);

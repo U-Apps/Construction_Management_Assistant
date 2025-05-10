@@ -1,8 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.DTOs;
-using ConstructionManagementAssistant.Core.Entites;
-using System.Linq.Expressions;
-
-namespace ConstructionManagementAssistant.Core.Mapping;
+﻿namespace ConstructionManagementAssistant.Core.Mapping;
 
 public static class SiteEngineerProfile
 {
@@ -25,6 +21,28 @@ public static class SiteEngineerProfile
         };
     }
 
+    public static Expression<Func<SiteEngineer, SiteEngineerDetailsDto>> ToSiteEngineerDetailsDto()
+    {
+        return siteEngineer => new SiteEngineerDetailsDto
+        {
+            Id = siteEngineer.Id,
+            FirstName = siteEngineer.FirstName,
+            SecondName = siteEngineer.SecondName,
+            ThirdName = siteEngineer.ThirdName,
+            LastName = siteEngineer.LastName,
+            Email = siteEngineer.Email,
+            PhoneNumber = siteEngineer.PhoneNumber,
+            NationalNumber = siteEngineer.NationalNumber,
+            Address = siteEngineer.Address,
+            HireDate = siteEngineer.HireDate,
+            IsAvailable = siteEngineer.IsAvailable,
+            Projects = siteEngineer.Projects.Select(s => new ProjectNameDto
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToList()
+        };
+    }
 
     public static SiteEngineer ToSiteEngineer(this AddSiteEngineerDto addSiteEngineerDto)
     {
