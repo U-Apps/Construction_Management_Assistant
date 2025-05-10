@@ -13,9 +13,16 @@
 
         public async Task<SiteEngineerDetailsDto?> GetSiteEngineerById(int id)
         {
-            return await FindWithSelectionAsync(
+            var siteEngineer = await FindWithSelectionAsync(
                 selector: SiteEngineerProfile.ToSiteEngineerDetailsDto(),
                 criteria: x => x.Id == id);
+            if (siteEngineer == null)
+            {
+                _logger.LogWarning("siteEngineer with ID: {Id} not found", id);
+            }
+
+            return siteEngineer;
+
         }
 
         public async Task<PagedResult<GetSiteEngineerDto>> GetAllSiteEngineers(
