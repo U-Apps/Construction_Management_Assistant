@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.EF.Data
+﻿using Task = ConstructionManagementAssistant.Core.Entites.Task;
+
+namespace ConstructionManagementAssistant.EF.Data
 {
     public class AppDbContext : DbContext
     {
@@ -10,6 +12,9 @@
         public DbSet<WorkerSpecialty> WorkerSpecialties { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+
 
         #endregion
 
