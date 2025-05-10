@@ -8,7 +8,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         Task<BaseResponse<string>> AddStageAsync(AddStageDto stageInfo);
         public Task<BaseResponse<string>> UpdateStageAsync(UpdateStageDto stageInfo);
         Task<BaseResponse<string>> DeleteStageAsync(int id);
-        Task<PagedResult<GetAllStagesDto>> GetStagesByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10);
+        Task<PagedResult<GetAllStagesDto>> GetStagesByProjectIdAsync(int projectId, string searchItem, DateOnly? startDateFilter, DateOnly? endDateFilter, int pageNumber = 1, int pageSize = 10);
         Task<GetStageDto> GetStageByIdAsync(int Id);
 
     }

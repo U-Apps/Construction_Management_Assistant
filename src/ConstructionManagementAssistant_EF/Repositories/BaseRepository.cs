@@ -78,7 +78,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
             }
         }
 
-        return await query.Select(selector).SingleOrDefaultAsync();
+        return await query.Select(selector).FirstOrDefaultAsync();
     }
 
     #endregion

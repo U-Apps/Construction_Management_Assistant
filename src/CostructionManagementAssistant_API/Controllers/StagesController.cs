@@ -44,15 +44,18 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     /// الحصول على جميع المراحل
     /// </summary>
     /// <param name="projectId">معرف المشروع, الزامي</param>
+    /// <param name="searchItem">بحث عن مرحلة</param>
+    /// <param name="startDateFilter">بحث من خلال تاريخ البداية</param>
+    /// <param name="endDateFilter">بحث من خلال تاريخ النهاية</param>
     /// <param name="pageNumber">رقم الصفحة</param>
     /// <param name="pageSize">حجم الصفحة</param>
     /// <returns>قائمة المراحل</returns>
     [HttpGet(SystemApiRouts.Stage.GetAllStages)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetAllStagesDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllStages([Required] int projectId, int pageNumber = 1, int pageSize = 10)
+    public async Task<IActionResult> GetAllStages([Required] int projectId, string? searchItem, DateOnly? startDateFilter, DateOnly? endDateFilter, int pageNumber = 1, int pageSize = 10)
     {
-        var result = await _unitOfWork.Stages.GetStagesByProjectIdAsync(projectId, pageNumber, pageSize);
+        var result = await _unitOfWork.Stages.GetStagesByProjectIdAsync(projectId, searchItem!, startDateFilter, endDateFilter, pageNumber, pageSize);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<GetAllStagesDto>>
