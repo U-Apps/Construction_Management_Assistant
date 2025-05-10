@@ -12,6 +12,7 @@ public class Project : IEntity, ISoftDeletable
     public ProjectStatus Status { get; set; }
     public int? SiteEngineerId { get; set; }
     public int ClientId { get; set; }
+
     public string? SiteAddress { get; set; }
     public string? GeographicalCoordinates { get; set; }
     public bool IsDeleted { get; set; }
@@ -28,8 +29,9 @@ public class Project : IEntity, ISoftDeletable
     #region Navigation Properties
 
     public SiteEngineer? SiteEngineer { get; set; }
-    public Client Client { get; set; }
-    public ICollection<Stage> Stages { get; set; }
+    public Client? Client { get; set; }
+    public ICollection<Documnet> Documents { get; set; }
+    public ICollection<Stage>? Stages { get; set; }
 
     #endregion
 }

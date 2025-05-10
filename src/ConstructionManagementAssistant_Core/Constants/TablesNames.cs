@@ -11,5 +11,10 @@
         public const string Stages = "Stages";
         public const string Tasks = "Tasks";
         public const string TaskAssignments = "TaskAssignments";
+        public const string Documents = "Documents";
+        public const string DocumentClassification = "DocumentClassifications";
+
+
+
     }
 }

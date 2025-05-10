@@ -25,6 +25,8 @@ namespace ConstructionManagementAssistant.EF.Data.EntitesConfiguration
 
 
             builder.HasData(SeedData.SeedTasks());
+            builder.HasMany(x => x.Documents).WithOne(x => x.Task).HasForeignKey(x => x.TaskId);
+
         }
     }
 }

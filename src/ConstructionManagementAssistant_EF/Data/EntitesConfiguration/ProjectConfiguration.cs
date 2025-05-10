@@ -49,6 +49,8 @@ namespace ConstructionManagementAssistant.EF.Data.Configuration
             builder.HasQueryFilter(e => !e.IsDeleted);
 
             builder.HasData(SeedData.SeedProjects());
+
+            builder.HasMany(x => x.Documents).WithOne(x => x.Project).HasForeignKey(x => x.ProjectId);
         }
     }
 }
