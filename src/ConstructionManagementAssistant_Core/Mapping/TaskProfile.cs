@@ -55,8 +55,8 @@ public static class TaskProfile
     {
         task.Name = updateTaskDto.Name;
         task.Description = updateTaskDto.Description;
-        task.StartDate = updateTaskDto.StartDate;
-        task.EndDate = updateTaskDto.EndDate;
+        //task.StartDate = updateTaskDto.StartDate;
+        //task.EndDate = updateTaskDto.EndDate;
         task.ModifiedDate = DateTime.Now;
     }
 }
