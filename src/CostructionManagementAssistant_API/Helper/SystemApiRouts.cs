@@ -77,6 +77,27 @@ public static class SystemApiRouts
         public const string UpdateStage = Base;
         public const string DeleteStage = Base + "/{Id}";
     }
+
+    public static class Equipment
+    {
+        public const string Base = "api/v1/Equipment";
+        public const string GetAllEquipment = Base;
+        public const string GetEquipmentById = Base + "/{id}";
+        public const string AddEquipment = Base;
+        public const string UpdateEquipment = Base;
+        public const string SetStatus = Base + "/SetStatus";
+        public const string DeleteEquipment = Base + "/{id}";
+    }
+
+    public static class EquipmentAssignments
+    {
+        public const string Base = "api/v1/EquipmentAssignments";
+        public const string Assign = Base + "/Assign";
+        public const string Unassign = Base + "/Unassign/{assignmentId}";
+        public const string GetByEquipment = Base + "/ByEquipment/{equipmentId}";
+        public const string GetByProject = Base + "/ByProject/{projectId}";
+    }
+
     public static class Tasks
     {
         public const string Base = "api/v1/Tasks";

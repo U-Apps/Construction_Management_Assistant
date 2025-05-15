@@ -1,20 +1,14 @@
 ﻿namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
-public class TaskAssignmentsController : ControllerBase
+public class TaskAssignmentsController(IUnitOfWork unitOfWork) : ControllerBase
 {
-    private readonly ITaskAssignmentRepository _taskAssignmentRepository;
-
-    public TaskAssignmentsController(ITaskAssignmentRepository taskAssignmentRepository)
-    {
-        _taskAssignmentRepository = taskAssignmentRepository;
-    }
 
     [HttpGet]
     [Route(SystemApiRouts.TaskAssignments.GetByTaskId)]
     public async Task<IActionResult> GetByTaskId(int taskId)
     {
-        var assignments = await _taskAssignmentRepository.GetAssignmentsByTaskId(taskId);
+        var assignments = await unitOfWork.TaskAssignments.GetAssignmentsByTaskId(taskId);
         return Ok(new BaseResponse<IEnumerable<GetTaskAssignmentDto>>
         {
             Success = true,
@@ -27,7 +21,7 @@ public class TaskAssignmentsController : ControllerBase
     [Route(SystemApiRouts.TaskAssignments.GetByWorkerId)]
     public async Task<IActionResult> GetByWorkerId(int workerId)
     {
-        var assignments = await _taskAssignmentRepository.GetAssignmentsByWorkerId(workerId);
+        var assignments = await unitOfWork.TaskAssignments.GetAssignmentsByWorkerId(workerId);
         return Ok(new BaseResponse<IEnumerable<GetTaskAssignmentDto>>
         {
             Success = true,
@@ -41,7 +35,7 @@ public class TaskAssignmentsController : ControllerBase
     [Route(SystemApiRouts.TaskAssignments.AssignWorkersToTask)]
     public async Task<IActionResult> AssignWorkersToTask([FromBody] AddTaskAssignmentDto dto)
     {
-        var result = await _taskAssignmentRepository.AssignWorkersToTask(dto.TaskId, dto.WorkerIds);
+        var result = await unitOfWork.TaskAssignments.AssignWorkersToTask(dto.TaskId, dto.WorkerIds);
         if (result.Success)
             return Ok(result);
         return BadRequest(result);

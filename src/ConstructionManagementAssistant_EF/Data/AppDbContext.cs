@@ -203,7 +203,7 @@ namespace ConstructionManagementAssistant.EF.Data
                 builder.ToTable(TablesNames.EquipmentAssignments);
                 builder.HasKey(ea => ea.Id);
 
-                builder.Property(ea => ea.CheckoutDate).IsRequired();
+                builder.Property(ea => ea.BookDate).IsRequired();
                 builder.Property(ea => ea.ExpectedReturnDate).IsRequired();
 
                 builder.HasOne(ea => ea.Equipment)
