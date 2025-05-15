@@ -32,6 +32,7 @@ public static class TaskProfile
             {
                 Id = x.Worker.Id,
                 FullName = x.Worker.GetFullName(),
+                AssignmentDate = x.AssignedDate
 
             }).ToList()
         };

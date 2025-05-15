@@ -97,7 +97,9 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
         if (task == null)
             return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
 
-        var existingWorkerIds = task.TaskAssignments.Select(ta => ta.WorkerId).ToHashSet();
+        var existingWorkerIds = task.TaskAssignments
+            .Select(ta => ta.WorkerId)
+            .ToHashSet();
 
         var newAssignments = workerIds
             .Where(workerId => !existingWorkerIds.Contains(workerId))
@@ -105,7 +107,7 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
             {
                 TaskId = taskId,
                 WorkerId = workerId,
-                AssignedDate = DateTime.Now
+                AssignedDate = DateOnly.FromDateTime(DateTime.Now)
             })
             .ToList();
 

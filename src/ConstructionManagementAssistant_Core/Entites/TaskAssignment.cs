@@ -8,7 +8,5 @@ public class TaskAssignment
     public int WorkerId { get; set; }
     public Worker Worker { get; set; }
 
-    public DateOnly Date { get; set; }
-
-    public DateTime AssignedDate { get; set; } = DateTime.Now;
+    public DateOnly AssignedDate { get; set; }
 }
