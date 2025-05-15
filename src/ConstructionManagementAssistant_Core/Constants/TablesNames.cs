@@ -13,8 +13,8 @@
         public const string TaskAssignments = "TaskAssignments";
         public const string Documents = "Documents";
         public const string DocumentClassification = "DocumentClassifications";
-
-
+        public const string Equipments = "Equipments";
+        public const string EquipmentAssignments = "EquipmentAssignments";
 
     }
 }
