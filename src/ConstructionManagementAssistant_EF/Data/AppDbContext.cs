@@ -17,10 +17,7 @@ namespace ConstructionManagementAssistant.EF.Data
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<Documnet> Documnets { get; set; }
         public DbSet<DocumentClassification> DocumentClassifications { get; set; }
-
-
-
-
+        public DbSet<TaskReport> TaskReports { get; set; }
         #endregion
 
         #region Constructors

@@ -32,7 +32,7 @@ public static class WorkerProfile
             {
                 Id = x.TaskId,
                 Name = x.Task.Name,
-                ProjectId = x.Task.Stage.ProjectId
+                ProjectName = x.Task.Stage.Project.Name
             }).ToList()
         };
     }
