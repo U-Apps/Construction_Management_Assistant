@@ -27,15 +27,6 @@ public static class EquipmentProfile
             Status = equipment.Status.ToString(),
             PurchaseDate = equipment.PurchaseDate,
             Notes = equipment.Notes,
-            Assignments = equipment.Assignments.Select(a => new GetEquipmentAssignmentDto
-            {
-                Id = a.Id,
-                ProjectId = a.ProjectId,
-                ProjectName = a.Project.Name,
-                BookDate = a.BookDate,
-                ExpectedReturnDate = a.ExpectedReturnDate,
-                ActualReturnDate = a.ActualReturnDate
-            }).ToList()
         };
     }
 
