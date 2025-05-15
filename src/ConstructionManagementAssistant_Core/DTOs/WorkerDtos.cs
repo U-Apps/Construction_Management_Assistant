@@ -23,7 +23,7 @@
         public int Id { get; init; }
         public required string FullName { get; init; }
         public string? Specialty { get; init; }
-        public bool IsAvailable { get; init; }
+        public bool IsAvailable { get; init; } // todo : delete
     }
 
 
@@ -45,7 +45,7 @@
         public string? NationalNumber { get; set; }
         public string? Address { get; set; }
         public string? Specialty { get; set; }
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } // todo : delete
         public ICollection<TaskNameDto> Tasks { get; set; }
 
     }

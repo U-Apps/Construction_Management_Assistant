@@ -15,8 +15,6 @@ internal class WorkerSpecialtyConfiguration : IEntityTypeConfiguration<WorkerSpe
         builder.HasIndex(e => e.Name, "UniqueSpecialtyName")
         .IsUnique(true);
 
-        builder.HasQueryFilter(e => !e.IsDeleted);
-
         builder.HasData(SeedData.SeedWorkerSpecialties());
 
     }

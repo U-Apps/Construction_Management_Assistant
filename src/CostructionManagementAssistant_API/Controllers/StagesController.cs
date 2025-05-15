@@ -48,21 +48,21 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <param name="pageSize">حجم الصفحة</param>
     /// <returns>قائمة المراحل</returns>
     [HttpGet(SystemApiRouts.Stages.GetAllStages)]
-    [ProducesResponseType(typeof(BaseResponse<PagedResult<GetAllStagesDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<PagedResult<GetStageDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllStages([Required] int projectId, int pageNumber = 1, int pageSize = 10)
     {
         var result = await _unitOfWork.Stages.GetStagesByProjectIdAsync(projectId, null, null, null, pageNumber, pageSize);
         if (result.Items == null || result.Items.Count == 0)
         {
-            return NotFound(new BaseResponse<PagedResult<GetAllStagesDto>>
+            return NotFound(new BaseResponse<PagedResult<GetStageDto>>
             {
                 Success = false,
                 Message = "لم يتم العثور على المراحل",
             });
         }
 
-        return Ok(new BaseResponse<PagedResult<GetAllStagesDto>>
+        return Ok(new BaseResponse<PagedResult<GetStageDto>>
         {
             Success = true,
             Message = "تم جلب المراحل بنجاح",
@@ -82,13 +82,13 @@ public class StagesController(IUnitOfWork _unitOfWork) : ControllerBase
     {
         var result = await _unitOfWork.Stages.GetStageByIdAsync(Id);
         if (result is null)
-            return NotFound(new BaseResponse<GetStageDto>()
+            return NotFound(new BaseResponse<GetStageDetailsDto>()
             {
                 Success = false,
                 Message = "لا يوجد مرحلة بهذا المعرف"
             });
 
-        return Ok(new BaseResponse<GetStageDto>()
+        return Ok(new BaseResponse<GetStageDetailsDto>()
         {
             Success = true,
             Message = "تم جلب المرحلة بنجاح",

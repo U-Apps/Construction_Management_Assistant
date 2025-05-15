@@ -8,7 +8,7 @@ namespace ConstructionManagementAssistant.Core.Entites
         public string Name { get; set; }
         public string? Description { get; set; }
         public DateOnly? StartDate { get; set; }
-        public DateOnly? EndDate { get; set; }
+        public DateOnly? ExpectedEndDate { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public int ProjectId { get; set; }

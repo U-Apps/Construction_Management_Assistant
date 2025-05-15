@@ -467,70 +467,60 @@ public static class SeedData
                 Id = 1,
                 Name = "نجار",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 2,
                 Name = "حداد",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 3,
                 Name = "سباك",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 4,
                 Name = "كهربائي",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 5,
                 Name = "بناء",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 6,
                 Name = "دهان",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 7,
                 Name = "مبلط",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 8,
                 Name = "مقاول",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 9,
                 Name = "مهندس معماري",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             },
             new WorkerSpecialty
             {
                 Id = 10,
                 Name = "مهندس مدني",
                 CreatedDate = new DateTime(2023, 10, 1),
-                IsDeleted = false
             }
         };
     }
@@ -890,7 +880,7 @@ public static class SeedData
                     Description = "بناء مدرسة ابتدائية في المدينة",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
         ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 21,
                     ClientId = 1,
                     SiteAddress = "المدينة، شارع 1",
@@ -905,7 +895,7 @@ public static class SeedData
                     Description = "بناء مستشفى عام في المدينة",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
         ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 22,
                     ClientId = 2,
                     SiteAddress = "المدينة، شارع 2",
@@ -920,7 +910,7 @@ public static class SeedData
                     Description = "بناء مجمع سكني فاخر",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 23,
                     ClientId = 3,
                     SiteAddress = "المدينة، شارع 3",
@@ -935,7 +925,7 @@ public static class SeedData
                     Description = "بناء جسر يربط بين منطقتين",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 24,
                     ClientId = 4,
                     SiteAddress = "المدينة، شارع 4",
@@ -950,7 +940,7 @@ public static class SeedData
                     Description = "بناء مصنع لإنتاج المواد الغذائية",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 25,
                     ClientId = 5,
                     SiteAddress = "المدينة، شارع 5",
@@ -965,7 +955,7 @@ public static class SeedData
                     Description = "بناء فندق خمس نجوم",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 26,
                     ClientId = 6,
                     SiteAddress = "المدينة، شارع 6",
@@ -980,7 +970,7 @@ public static class SeedData
                     Description = "بناء محطة قطار حديثة",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                         ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 27,
                     ClientId = 7,
                     SiteAddress = "المدينة، شارع 7",
@@ -995,7 +985,7 @@ public static class SeedData
                     Description = "بناء مركز تجاري ضخم",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 28,
                     ClientId = 8,
                     SiteAddress = "المدينة، شارع 8",
@@ -1010,7 +1000,7 @@ public static class SeedData
                     Description = "بناء جامعة حديثة",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 29,
                     ClientId = 9,
                     SiteAddress = "المدينة، شارع 9",
@@ -1025,7 +1015,7 @@ public static class SeedData
                     Description = "بناء حديقة عامة كبيرة",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 30,
                     ClientId = 10,
                     SiteAddress = "المدينة، شارع 10",
@@ -1040,7 +1030,7 @@ public static class SeedData
                     Description = "بناء مكتبة عامة في المدينة",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
                      ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 31,
                     ClientId = 11,
                     SiteAddress = "المدينة، شارع 11",
@@ -1055,7 +1045,7 @@ public static class SeedData
                     Description = "بناء ملعب رياضي حديث",
                     StartDate = new DateOnly(2022, 10, 1), // Static date
         ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 32,
                     ClientId = 12,
                     SiteAddress = "المدينة، شارع 12",
@@ -1070,7 +1060,7 @@ public static class SeedData
                     Description = "بناء محطة وقود حديثة",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2022, 11, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 33,
                     ClientId = 13,
                     SiteAddress = "المدينة، شارع 13",
@@ -1085,7 +1075,7 @@ public static class SeedData
                     Description = "بناء مركز صحي في المدينة",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 34,
                     ClientId = 14,
                     SiteAddress = "المدينة، شارع 14",
@@ -1100,7 +1090,7 @@ public static class SeedData
                     Description = "بناء مجمع تجاري ضخم",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 35,
                     ClientId = 15,
                     SiteAddress = "المدينة، شارع 15",
@@ -1115,7 +1105,7 @@ public static class SeedData
                     Description = "بناء محطة كهرباء حديثة",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 36,
                     ClientId = 16,
                     SiteAddress = "المدينة، شارع 16",
@@ -1130,7 +1120,7 @@ public static class SeedData
                     Description = "بناء محطة مياه حديثة",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 37,
                     ClientId = 17,
                     SiteAddress = "المدينة، شارع 17",
@@ -1145,7 +1135,7 @@ public static class SeedData
                     Description = "بناء مركز شرطة حديث",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 38,
                     ClientId = 18,
                     SiteAddress = "المدينة، شارع 18",
@@ -1160,7 +1150,7 @@ public static class SeedData
                     Description = "بناء محطة إطفاء حديثة",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 39,
                     ClientId = 19,
                     SiteAddress = "المدينة، شارع 19",
@@ -1175,7 +1165,7 @@ public static class SeedData
                     Description = "بناء مركز ثقافي حديث",
                     StartDate = new DateOnly(2022, 10, 1),
                     ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.InProgress,
+                    Status = ProjectStatus.Active,
                     SiteEngineerId = 40,
                     ClientId = 20,
                     SiteAddress = "المدينة، شارع 20",
@@ -1193,105 +1183,105 @@ public static class SeedData
         return new List<Stage>
         {
             // Stages for Project 1
-            new Stage { Id = 1, Name = "تصميم", Description = "مرحلة تصميم المدرسة", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 1 },
-            new Stage { Id = 2, Name = "بناء", Description = "مرحلة بناء المدرسة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 1 },
-            new Stage { Id = 3, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 1 },
+            new Stage { Id = 1, Name = "تصميم", Description = "مرحلة تصميم المدرسة", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 1 },
+            new Stage { Id = 2, Name = "بناء", Description = "مرحلة بناء المدرسة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 1 },
+            new Stage { Id = 3, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 1 },
 
             // Stages for Project 2
-            new Stage { Id = 4, Name = "تصميم", Description = "مرحلة تصميم المستشفى", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 2 },
-            new Stage { Id = 5, Name = "بناء", Description = "مرحلة بناء المستشفى", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 2 },
-            new Stage { Id = 6, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 2 },
+            new Stage { Id = 4, Name = "تصميم", Description = "مرحلة تصميم المستشفى", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 2 },
+            new Stage { Id = 5, Name = "بناء", Description = "مرحلة بناء المستشفى", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 2 },
+            new Stage { Id = 6, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 2 },
 
             // Stages for Project 3
-            new Stage { Id = 7, Name = "تصميم", Description = "مرحلة تصميم المجمع السكني", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 3 },
-            new Stage { Id = 8, Name = "بناء", Description = "مرحلة بناء المجمع السكني", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 3 },
-            new Stage { Id = 9, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1),  CreatedDate = new DateTime(2023, 10, 1),EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 3 },
+            new Stage { Id = 7, Name = "تصميم", Description = "مرحلة تصميم المجمع السكني", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 3 },
+            new Stage { Id = 8, Name = "بناء", Description = "مرحلة بناء المجمع السكني", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 3 },
+            new Stage { Id = 9, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1),  CreatedDate = new DateTime(2023, 10, 1),ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 3 },
 
             // Stages for Project 4
-            new Stage { Id = 10, Name = "تصميم", Description = "مرحلة تصميم الجسر", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 4 },
-            new Stage { Id = 11, Name = "بناء", Description = "مرحلة بناء الجسر", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 4 },
-            new Stage { Id = 12, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1),  CreatedDate = new DateTime(2023, 10, 1),EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 4 },
+            new Stage { Id = 10, Name = "تصميم", Description = "مرحلة تصميم الجسر", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 4 },
+            new Stage { Id = 11, Name = "بناء", Description = "مرحلة بناء الجسر", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 4 },
+            new Stage { Id = 12, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1),  CreatedDate = new DateTime(2023, 10, 1),ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 4 },
 
             // Stages for Project 5
-            new Stage { Id = 13, Name = "تصميم", Description = "مرحلة تصميم المصنع", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 5 },
-            new Stage { Id = 14, Name = "بناء", Description = "مرحلة بناء المصنع", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 5 },
-            new Stage { Id = 15, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1) ,  CreatedDate = new DateTime(2023, 10, 1),EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 5 },
+            new Stage { Id = 13, Name = "تصميم", Description = "مرحلة تصميم المصنع", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 5 },
+            new Stage { Id = 14, Name = "بناء", Description = "مرحلة بناء المصنع", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 5 },
+            new Stage { Id = 15, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1) ,  CreatedDate = new DateTime(2023, 10, 1),ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 5 },
 
             // Stages for Project 6
-            new Stage { Id = 16, Name = "تصميم", Description = "مرحلة تصميم الفندق", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 6 },
-            new Stage { Id = 17, Name = "بناء", Description = "مرحلة بناء الفندق", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 6 },
-            new Stage { Id = 18, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 6 },
+            new Stage { Id = 16, Name = "تصميم", Description = "مرحلة تصميم الفندق", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 6 },
+            new Stage { Id = 17, Name = "بناء", Description = "مرحلة بناء الفندق", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 6 },
+            new Stage { Id = 18, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 6 },
 
             // Stages for Project 7
-            new Stage { Id = 19, Name = "تصميم", Description = "مرحلة تصميم محطة القطار", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 7 },
-            new Stage { Id = 20, Name = "بناء", Description = "مرحلة بناء محطة القطار", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 7 },
-            new Stage { Id = 21, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 7 },
+            new Stage { Id = 19, Name = "تصميم", Description = "مرحلة تصميم محطة القطار", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 7 },
+            new Stage { Id = 20, Name = "بناء", Description = "مرحلة بناء محطة القطار", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 7 },
+            new Stage { Id = 21, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 7 },
 
             // Stages for Project 8
-            new Stage { Id = 22, Name = "تصميم", Description = "مرحلة تصميم المركز التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 8 },
-            new Stage { Id = 23, Name = "بناء", Description = "مرحلة بناء المركز التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 8 },
-            new Stage { Id = 24, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 8 },
+            new Stage { Id = 22, Name = "تصميم", Description = "مرحلة تصميم المركز التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 8 },
+            new Stage { Id = 23, Name = "بناء", Description = "مرحلة بناء المركز التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 8 },
+            new Stage { Id = 24, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 8 },
 
             // Stages for Project 9
-            new Stage { Id = 25, Name = "تصميم", Description = "مرحلة تصميم الجامعة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 9 },
-            new Stage { Id = 26, Name = "بناء", Description = "مرحلة بناء الجامعة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 9 },
-            new Stage { Id = 27, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 9 },
+            new Stage { Id = 25, Name = "تصميم", Description = "مرحلة تصميم الجامعة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 9 },
+            new Stage { Id = 26, Name = "بناء", Description = "مرحلة بناء الجامعة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 9 },
+            new Stage { Id = 27, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 9 },
 
             // Stages for Project 10
-            new Stage { Id = 28, Name = "تصميم", Description = "مرحلة تصميم الحديقة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 10 },
-            new Stage { Id = 29, Name = "بناء", Description = "مرحلة بناء الحديقة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 10 },
-            new Stage { Id = 30, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 10 },
+            new Stage { Id = 28, Name = "تصميم", Description = "مرحلة تصميم الحديقة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 10 },
+            new Stage { Id = 29, Name = "بناء", Description = "مرحلة بناء الحديقة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 10 },
+            new Stage { Id = 30, Name = "تشطيب", Description = "مرحلة التشطيب النهائية", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1) ,ProjectId = 10 },
 
 
             // Stages for Project 11
-            new Stage { Id = 31, Name = "التخطيط", Description = "مرحلة التخطيط للمكتبة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 11 },
-            new Stage { Id = 32, Name = "التنفيذ", Description = "مرحلة بناء المكتبة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 11 },
-            new Stage { Id = 33, Name = "الفحص النهائي", Description = "الفحص النهائي للمكتبة قبل الافتتاح", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 11 },
+            new Stage { Id = 31, Name = "التخطيط", Description = "مرحلة التخطيط للمكتبة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 11 },
+            new Stage { Id = 32, Name = "التنفيذ", Description = "مرحلة بناء المكتبة العامة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 11 },
+            new Stage { Id = 33, Name = "الفحص النهائي", Description = "الفحص النهائي للمكتبة قبل الافتتاح", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 11 },
 
             // Stages for Project 12
-            new Stage { Id = 34, Name = "التخطيط", Description = "مرحلة التخطيط للملعب الرياضي", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 12 },
-            new Stage { Id = 35, Name = "التنفيذ", Description = "مرحلة بناء الملعب الرياضي", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 12 },
-            new Stage { Id = 36, Name = "الفحص النهائي", Description = "الفحص النهائي للملعب الرياضي", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate = new DateOnly(2022, 11, 1), ProjectId = 12 },
+            new Stage { Id = 34, Name = "التخطيط", Description = "مرحلة التخطيط للملعب الرياضي", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 12 },
+            new Stage { Id = 35, Name = "التنفيذ", Description = "مرحلة بناء الملعب الرياضي", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 12 },
+            new Stage { Id = 36, Name = "الفحص النهائي", Description = "الفحص النهائي للملعب الرياضي", StartDate = new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate = new DateOnly(2022, 11, 1), ProjectId = 12 },
 
             // Stages for Project 13
-            new Stage { Id = 37, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة الوقود", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 13 },
-            new Stage { Id = 38, Name = "التنفيذ", Description = "مرحلة بناء محطة الوقود", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 13 },
-            new Stage { Id = 39, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة الوقود", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 13 },
+            new Stage { Id = 37, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة الوقود", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 13 },
+            new Stage { Id = 38, Name = "التنفيذ", Description = "مرحلة بناء محطة الوقود", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 13 },
+            new Stage { Id = 39, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة الوقود", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 13 },
 
             // Stages for Project 14
-            new Stage { Id = 40, Name = "التخطيط", Description = "مرحلة التخطيط للمركز الصحي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 14 },
-            new Stage { Id = 41, Name = "التنفيذ", Description = "مرحلة بناء المركز الصحي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 14 },
-            new Stage { Id = 42, Name = "الفحص النهائي", Description = "الفحص النهائي للمركز الصحي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 14 },
+            new Stage { Id = 40, Name = "التخطيط", Description = "مرحلة التخطيط للمركز الصحي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 14 },
+            new Stage { Id = 41, Name = "التنفيذ", Description = "مرحلة بناء المركز الصحي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 14 },
+            new Stage { Id = 42, Name = "الفحص النهائي", Description = "الفحص النهائي للمركز الصحي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 14 },
 
             // Stages for Project 15
-            new Stage { Id = 43, Name = "التخطيط", Description = "مرحلة التخطيط للمجمع التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 15 },
-            new Stage { Id = 44, Name = "التنفيذ", Description = "مرحلة بناء المجمع التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 15 },
-            new Stage { Id = 45, Name = "الفحص النهائي", Description = "الفحص النهائي للمجمع التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1) ,EndDate =  new DateOnly(2022, 11, 1), ProjectId = 15 },
+            new Stage { Id = 43, Name = "التخطيط", Description = "مرحلة التخطيط للمجمع التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 15 },
+            new Stage { Id = 44, Name = "التنفيذ", Description = "مرحلة بناء المجمع التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 15 },
+            new Stage { Id = 45, Name = "الفحص النهائي", Description = "الفحص النهائي للمجمع التجاري", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1) ,ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 15 },
 
             // Stages for Project 16
-            new Stage { Id = 46, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة الكهرباء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 16 },
-            new Stage { Id = 47, Name = "التنفيذ", Description = "مرحلة بناء محطة الكهرباء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 16 },
-            new Stage { Id = 48, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة الكهرباء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 16 },
+            new Stage { Id = 46, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة الكهرباء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 16 },
+            new Stage { Id = 47, Name = "التنفيذ", Description = "مرحلة بناء محطة الكهرباء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 16 },
+            new Stage { Id = 48, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة الكهرباء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 16 },
 
             // Stages for Project 17
-            new Stage { Id = 49, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة المياه", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 17 },
-            new Stage { Id = 50, Name = "التنفيذ", Description = "مرحلة بناء محطة المياه", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 17 },
-            new Stage { Id = 51, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة المياه", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 17 },
+            new Stage { Id = 49, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة المياه", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 17 },
+            new Stage { Id = 50, Name = "التنفيذ", Description = "مرحلة بناء محطة المياه", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 17 },
+            new Stage { Id = 51, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة المياه", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 17 },
 
             // Stages for Project 18
-            new Stage { Id = 52, Name = "التخطيط", Description = "مرحلة التخطيط لمركز الشرطة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 18 },
-            new Stage { Id = 53, Name = "التنفيذ", Description = "مرحلة بناء مركز الشرطة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 18 },
-            new Stage { Id = 54, Name = "الفحص النهائي", Description = "الفحص النهائي لمركز الشرطة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 18 },
+            new Stage { Id = 52, Name = "التخطيط", Description = "مرحلة التخطيط لمركز الشرطة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 18 },
+            new Stage { Id = 53, Name = "التنفيذ", Description = "مرحلة بناء مركز الشرطة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 18 },
+            new Stage { Id = 54, Name = "الفحص النهائي", Description = "الفحص النهائي لمركز الشرطة", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 18 },
 
             // Stages for Project 19
-            new Stage { Id = 55, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة الإطفاء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 19 },
-            new Stage { Id = 56, Name = "التنفيذ", Description = "مرحلة بناء محطة الإطفاء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 19 },
-            new Stage { Id = 57, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة الإطفاء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 19 },
+            new Stage { Id = 55, Name = "التخطيط", Description = "مرحلة التخطيط لمحطة الإطفاء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 19 },
+            new Stage { Id = 56, Name = "التنفيذ", Description = "مرحلة بناء محطة الإطفاء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 19 },
+            new Stage { Id = 57, Name = "الفحص النهائي", Description = "الفحص النهائي لمحطة الإطفاء", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 19 },
 
             // Stages for Project 20
-            new Stage { Id = 58, Name = "التخطيط", Description = "مرحلة التخطيط للمركز الثقافي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 20 },
-            new Stage { Id = 59, Name = "التنفيذ", Description = "مرحلة بناء المركز الثقافي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  EndDate =  new DateOnly(2022, 11, 1), ProjectId = 20 },
-            new Stage { Id = 60, Name = "الفحص النهائي", Description = "الفحص النهائي للمركز الثقافي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1) ,EndDate =  new DateOnly(2022, 11, 1), ProjectId = 20 }
+            new Stage { Id = 58, Name = "التخطيط", Description = "مرحلة التخطيط للمركز الثقافي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 20 },
+            new Stage { Id = 59, Name = "التنفيذ", Description = "مرحلة بناء المركز الثقافي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1),  ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 20 },
+            new Stage { Id = 60, Name = "الفحص النهائي", Description = "الفحص النهائي للمركز الثقافي", StartDate =  new DateOnly(2022, 11, 1), CreatedDate = new DateTime(2023, 10, 1) ,ExpectedEndDate =  new DateOnly(2022, 11, 1), ProjectId = 20 }
         };
     }
 

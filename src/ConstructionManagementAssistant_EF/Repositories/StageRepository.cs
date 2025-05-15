@@ -68,14 +68,14 @@ public class StageRepository : BaseRepository<Stage>, IStageRepository
         };
     }
 
-    public async Task<GetStageDto> GetStageByIdAsync(int Id)
+    public async Task<GetStageDetailsDto> GetStageByIdAsync(int Id)
     {
         return await FindWithSelectionAsync(
         selector: StageProfile.ToGetStageDto(),
         criteria: x => x.Id == Id);
     }
 
-    public async Task<PagedResult<GetAllStagesDto>> GetStagesByProjectIdAsync(int projectId, string searchItem, DateOnly? startDateFilter, DateOnly? endDateFilter, int pageNumber = 1, int pageSize = 10)
+    public async Task<PagedResult<GetStageDto>> GetStagesByProjectIdAsync(int projectId, string searchItem, DateOnly? startDateFilter, DateOnly? endDateFilter, int pageNumber = 1, int pageSize = 10)
     {
 
         Expression<Func<Stage, bool>> filter = s => s.ProjectId == projectId;
@@ -87,7 +87,7 @@ public class StageRepository : BaseRepository<Stage>, IStageRepository
         {
             if (startDateFilter.Value > endDateFilter.Value)
             {
-                return new PagedResult<GetAllStagesDto> { Items = null };
+                return new PagedResult<GetStageDto> { Items = null };
             }
         }
         if (startDateFilter.HasValue)
@@ -96,7 +96,7 @@ public class StageRepository : BaseRepository<Stage>, IStageRepository
         }
         if (endDateFilter.HasValue)
         {
-            filter = filter.AndAlso(s => s.EndDate <= endDateFilter.Value);
+            filter = filter.AndAlso(s => s.ExpectedEndDate <= endDateFilter.Value);
         }
         var pagedResult = await GetPagedDataWithSelectionAsync(
             orderBy: s => s.Name,
@@ -120,14 +120,14 @@ public class StageRepository : BaseRepository<Stage>, IStageRepository
             };
         }
 
-        if (!await IsStageNameUniqueAsync(stageDto.Name, stageDto.ProjectId))
-        {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "يوجد مرحلة بنفس الاسم"
-            };
-        }
+        //if (!await IsStageNameUniqueAsync(stageDto.Name, stageDto.ProjectId))
+        //{
+        //    return new BaseResponse<string>
+        //    {
+        //        Success = false,
+        //        Message = "يوجد مرحلة بنفس الاسم"
+        //    };
+        //}
 
         stage.UpdateStage(stageDto);
         Update(stage);

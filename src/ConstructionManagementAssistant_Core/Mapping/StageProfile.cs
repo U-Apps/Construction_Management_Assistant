@@ -9,7 +9,7 @@ public static class StageProfile
             Name = addStageDto.Name,
             Description = addStageDto.Description,
             StartDate = addStageDto.StartDate,
-            EndDate = addStageDto.EndDate,
+            ExpectedEndDate = addStageDto.ExpectedEndDate,
             ProjectId = addStageDto.ProjectId
         };
     }
@@ -19,23 +19,10 @@ public static class StageProfile
         stage.Name = updateStageDto.Name;
         stage.Description = updateStageDto.Description;
         stage.StartDate = updateStageDto.StartDate;
-        stage.EndDate = updateStageDto.EndDate;
-        stage.ProjectId = updateStageDto.ProjectId;
+        stage.ExpectedEndDate = updateStageDto.ExpectedEndDate;
         stage.ModifiedDate = DateTime.Now;
     }
-    public static Expression<Func<Stage, GetAllStagesDto>> ToGetAllStagesDto()
-    {
-        return stage => new GetAllStagesDto
-        {
-            Id = stage.Id,
-            Name = stage.Name,
-            Description = stage.Description,
-            StartDate = stage.StartDate,
-            EndDate = stage.EndDate,
-        };
-    }
-
-    public static Expression<Func<Stage, GetStageDto>> ToGetStageDto()
+    public static Expression<Func<Stage, GetStageDto>> ToGetAllStagesDto()
     {
         return stage => new GetStageDto
         {
@@ -43,7 +30,22 @@ public static class StageProfile
             Name = stage.Name,
             Description = stage.Description,
             StartDate = stage.StartDate,
-            EndDate = stage.EndDate,
+            ExpectedEndDate = stage.ExpectedEndDate,
+            Progress = stage.Tasks.Count == 0
+                ? 0
+                : (int)Math.Round(stage.Tasks.Count(x => x.IsCompleted) * 100.0 / stage.Tasks.Count)
+        };
+    }
+
+    public static Expression<Func<Stage, GetStageDetailsDto>> ToGetStageDto()
+    {
+        return stage => new GetStageDetailsDto
+        {
+            Id = stage.Id,
+            Name = stage.Name,
+            Description = stage.Description,
+            StartDate = stage.StartDate,
+            ExpectedEndDate = stage.ExpectedEndDate,
             ProjectName = stage.Project.Name
         };
     }

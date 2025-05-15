@@ -4,15 +4,15 @@
 public enum ProjectStatus
 {
 
-    [Display(Name = "لم يبدأ")]
+    [Display(Name = "لم يبدأ")]  // todo : delete
     NotStarted,
 
 
     [Display(Name = "قيد التنفيذ")]
-    InProgress,
+    Active,
 
     [Display(Name = "معلق")]
-    OnHold,
+    Pending,
 
     [Display(Name = "مكتمل")]
     Completed,

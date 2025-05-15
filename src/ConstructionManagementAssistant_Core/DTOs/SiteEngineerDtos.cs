@@ -6,8 +6,8 @@
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
         public string? Email { get; set; }
-        public string Address { get; set; }
-        public bool IsAvailable { get; set; }
+        public string Address { get; set; } // todo : delete
+        public bool IsAvailable { get; set; } // todo : delete
 
     }
 
@@ -23,7 +23,7 @@
         public string? NationalNumber { get; set; }
         public string? Address { get; set; }
         public DateOnly HireDate { get; set; }
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } // todo : delete
 
         public ICollection<ProjectNameDto> Projects { get; set; }
 
@@ -46,7 +46,7 @@
         public required string PhoneNumber { get; set; }
         public string NationalNumber { get; set; }
         public string Address { get; set; }
-        public DateOnly HireDate { get; set; }
+        public DateOnly HireDate { get; set; } // todo : delete
 
     }
 
@@ -67,6 +67,6 @@
         public required string PhoneNumber { get; set; }
         public string NationalNumber { get; set; }
         public string Address { get; set; }
-        public DateOnly HireDate { get; set; }
+        public DateOnly HireDate { get; set; } // todo : delete
     }
 }
