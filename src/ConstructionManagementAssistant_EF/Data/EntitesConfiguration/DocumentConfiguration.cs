@@ -10,7 +10,7 @@ namespace ConstructionManagementAssistant.EF.Data.Configuration
 
             builder.HasKey(t => t.Id);
 
-            builder.Property(e => e.Title)
+            builder.Property(e => e.Name)
                 .HasMaxLength(50);
 
             builder.Property(e => e.Description)
@@ -25,7 +25,7 @@ namespace ConstructionManagementAssistant.EF.Data.Configuration
 
             builder.HasIndex(e => e.Path, "UniquePath")
                 .IsUnique();
-            builder.HasIndex(e => e.Title, "UniqueTitle")
+            builder.HasIndex(e => e.Name, "UniqueTitle")
                 .IsUnique();
         }
     }

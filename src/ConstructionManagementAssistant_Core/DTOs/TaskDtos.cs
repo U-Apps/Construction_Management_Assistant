@@ -21,7 +21,7 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public DateOnly? StartDate { get; set; }
         public DateOnly? EndDate { get; set; }
         public bool IsCompleted { get; set; }
-        public ICollection<WorkerNameDto> Workers { get; set; }
+        public List<WorkerNameDto> Workers { get; set; } = [];
 
     }
 

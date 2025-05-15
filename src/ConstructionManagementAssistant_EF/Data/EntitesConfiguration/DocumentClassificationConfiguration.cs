@@ -10,13 +10,15 @@ namespace ConstructionManagementAssistant.EF.Data.Configuration
 
             builder.HasKey(t => t.Id);
 
-            builder.Property(e => e.DocumentType)
+            builder.Property(e => e.Type)
                 .HasMaxLength(50);
 
             builder.HasMany(x => x.Documnets).WithOne(x => x.Classification).HasForeignKey(x => x.ClassificationId);
 
-            builder.HasIndex(e => e.DocumentType, "UniqueType")
+            builder.HasIndex(e => e.Type, "UniqueType")
                 .IsUnique();
+
+            builder.HasData();
         }
     }
 }
