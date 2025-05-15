@@ -13,6 +13,8 @@ public static class SystemApiRouts
         public const string AddClient = Base;
         public const string UpdateClient = Base;
         public const string DeleteClient = Base + "/{Id}";
+        public const string GetClientNames = Base + "/Names";
+
     }
 
     public static class SiteEngineers
@@ -23,6 +25,8 @@ public static class SystemApiRouts
         public const string AddSiteEngineer = Base;
         public const string UpdateSiteEngineer = Base;
         public const string DeleteSiteEngineer = Base + "/{Id}";
+        public const string GetSiteEngineerNames = Base + "/Names";
+
     }
 
     public class WorkerSpecialties
@@ -44,6 +48,8 @@ public static class SystemApiRouts
         public const string AddWorker = Base;
         public const string UpdateWorker = Base;
         public const string DeleteWorker = Base + "/{Id}";
+        public const string GetWorkerNames = Base + "/Names";
+
     }
 
     public static class Projects
@@ -83,4 +89,5 @@ public static class SystemApiRouts
         public const string UnCheckTask = Base + "/UnCheckTask/{Id}";
         public const string AssignWorkersToTask = Base + "/AssignWorkersToTask";
     }
+
 }

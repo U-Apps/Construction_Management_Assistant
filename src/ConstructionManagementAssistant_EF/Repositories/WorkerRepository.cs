@@ -44,6 +44,12 @@
 
             return pagedResult;
         }
+        public async Task<List<WorkerNameDto>> GetWorkersNames()
+        {
+            return await GetAllDataWithSelectionAsync(
+                orderBy: x => x.FirstName,
+                selector: WorkerProfile.ToGetWorkerNameDto());
+        }
 
         public async Task<WorkerDetailsDto?> GetWorkerById(int id)
         {

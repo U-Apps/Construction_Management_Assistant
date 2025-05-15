@@ -29,7 +29,18 @@
 
     }
 
+    public class SiteEngineerNameDto
+    {
+        public int Id { get; init; }
+        public required string FullName { get; init; }
+    }
 
+    public class SiteEngineerAssignmentDto
+    {
+        public int Id { get; init; }
+        public required string FullName { get; init; }
+        public DateOnly AssignmentDate { get; set; }
+    }
     public class AddSiteEngineerDto
     {
         [Length(3, 20)]

@@ -52,6 +52,24 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     }
 
 
+
+    /// <summary>
+    /// الحصول على أسماء جميع العملاء
+    /// </summary>
+    [HttpGet(SystemApiRouts.Clients.GetClientNames)]
+    [ProducesResponseType(typeof(BaseResponse<List<ClientNameDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetClientNames()
+    {
+        var result = await _unitOfWork.Clients.GetClientsNames();
+        return Ok(new BaseResponse<List<ClientNameDto>>
+        {
+            Success = true,
+            Message = "تم جلب أسماء العملاء بنجاح",
+            Data = result
+        });
+    }
+
+
     /// <summary>
     /// الحصول على عميل بواسطة المعرف
     /// </summary>

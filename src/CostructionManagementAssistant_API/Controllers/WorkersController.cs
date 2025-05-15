@@ -45,6 +45,23 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
 
     }
 
+    /// <summary>
+    /// الحصول على أسماء جميع العمال
+    /// </summary>
+    [HttpGet(SystemApiRouts.Workers.GetWorkerNames)]
+    [ProducesResponseType(typeof(BaseResponse<List<WorkerNameDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetWorkerNames()
+    {
+        var result = await _unitOfWork.Workers.GetWorkersNames();
+        return Ok(new BaseResponse<List<WorkerNameDto>>
+        {
+            Success = true,
+            Message = "تم جلب أسماء العمال بنجاح",
+            Data = result
+        });
+    }
+
+
 
     /// <summary>
     /// الحصول على عميل بواسطة المعرف

@@ -33,6 +33,13 @@
         public required string FullName { get; init; }
     }
 
+    public class WorkerAssignmentDto
+    {
+        public int Id { get; init; }
+        public required string FullName { get; init; }
+        public DateOnly AssignmentDate { get; set; }
+    }
+
     public class WorkerDetailsDto
     {
         public int Id { get; set; }

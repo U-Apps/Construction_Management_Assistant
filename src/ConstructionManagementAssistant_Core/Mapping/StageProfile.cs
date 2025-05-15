@@ -18,8 +18,8 @@ public static class StageProfile
     {
         stage.Name = updateStageDto.Name;
         stage.Description = updateStageDto.Description;
-        stage.StartDate = updateStageDto.StartDate;
-        stage.ExpectedEndDate = updateStageDto.ExpectedEndDate;
+        //stage.StartDate = updateStageDto.StartDate;
+        //stage.ExpectedEndDate = updateStageDto.ExpectedEndDate;
         stage.ModifiedDate = DateTime.Now;
     }
     public static Expression<Func<Stage, GetStageDto>> ToGetAllStagesDto()

@@ -45,6 +45,24 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
 
 
     /// <summary>
+    /// الحصول على أسماء جميع المهندسين
+    /// </summary>
+    [HttpGet(SystemApiRouts.SiteEngineers.GetSiteEngineerNames)]
+    [ProducesResponseType(typeof(BaseResponse<List<SiteEngineerNameDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSiteEngineerNames()
+    {
+        var result = await _unitOfWork.SiteEngineers.GetSiteEngineersNames();
+        return Ok(new BaseResponse<List<SiteEngineerNameDto>>
+        {
+            Success = true,
+            Message = "تم جلب أسماء المهندسين بنجاح",
+            Data = result
+        });
+    }
+
+
+
+    /// <summary>
     /// الحصول على مهندس بواسطة المعرف
     /// </summary>
     /// <param name="Id">معرف المهندس</param>

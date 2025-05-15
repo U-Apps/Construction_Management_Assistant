@@ -41,9 +41,9 @@ public class UpdateStageDto
     public string? Description { get; set; }
 
     //[PastOrPresentDate(ErrorMessage = "Start date must be in the past or present.")]
-    public DateOnly? StartDate { get; set; }
+    //public DateOnly? StartDate { get; set; }
 
     //[FutureDate(nameof(StartDate), ErrorMessage = "End date must be after the start date.")]
-    public DateOnly? ExpectedEndDate { get; set; }
+    //public DateOnly? ExpectedEndDate { get; set; }
 }
 

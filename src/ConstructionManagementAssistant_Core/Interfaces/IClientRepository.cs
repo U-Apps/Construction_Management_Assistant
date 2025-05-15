@@ -10,6 +10,8 @@ namespace ConstructionManagementAssistant.Core.Interfaces
             int pageSize,
             string? searchTerm = null,
             ClientType? clientType = null);
+
+        public Task<List<ClientNameDto>> GetClientsNames();
         public Task<BaseResponse<string>> AddClientAsync(AddClientDto clientDto);
         public Task<BaseResponse<string>> UpdateClientAsync(UpdateClientDto clientDto);
         public Task<BaseResponse<string>> DeleteClientAsync(int id);

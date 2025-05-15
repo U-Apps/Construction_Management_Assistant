@@ -176,4 +176,15 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
             Message = "تم حذف العميل بنجاح"
         };
     }
+
+    public async Task<List<ClientNameDto>> GetClientsNames()
+    {
+        var pagedResult = await GetAllDataWithSelectionAsync(
+                 orderBy: x => x.FullName,
+                 selector: ClientProfile.ToGetClientNameDto());
+
+        _logger.LogInformation("Fetched clients names", pagedResult);
+
+        return pagedResult;
+    }
 }

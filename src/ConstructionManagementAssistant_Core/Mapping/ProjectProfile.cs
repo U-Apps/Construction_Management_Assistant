@@ -1,7 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.DTOs;
-using ConstructionManagementAssistant.Core.Entites;
-using ConstructionManagementAssistant.Core.Extentions;
-using System.Linq.Expressions;
+﻿using ConstructionManagementAssistant.Core.Extentions;
 
 namespace ConstructionManagementAssistant.Core.Mapping;
 
@@ -23,17 +20,17 @@ public static class ProjectProfile
     {
         return new Project
         {
-            Name=addProjectDto.ProjectName,
+            Name = addProjectDto.ProjectName,
             Description = addProjectDto.Description,
             SiteAddress = addProjectDto.SiteAddress,
             GeographicalCoordinates = addProjectDto.GeographicalCoordinates,
             SiteEngineerId = addProjectDto.SiteEngineerId,
-            ClientId= addProjectDto.ClientId,
+            ClientId = addProjectDto.ClientId,
             StartDate = addProjectDto.StartDate,
             ExpectedEndDate = addProjectDto.ExpectedEndDate
         };
     }
-    public static Expression<Func<Project, ProjectDetailsDto>>  ToProjectDetails()
+    public static Expression<Func<Project, ProjectDetailsDto>> ToProjectDetails()
     {
         return Project => new ProjectDetailsDto
         {
@@ -61,10 +58,10 @@ public static class ProjectProfile
         project.Description = updateProjectDto.Description;
         project.SiteAddress = updateProjectDto.SiteAddress;
         project.GeographicalCoordinates = updateProjectDto.GeographicalCoordinates;
-        if (updateProjectDto.ProjectStatus != null)
-            project.Status =(ProjectStatus) updateProjectDto.ProjectStatus.ToEnumByDisplayName<ProjectStatus>();
-        if (updateProjectDto.SiteEngineerId != null)
-            project.SiteEngineerId = updateProjectDto.SiteEngineerId;
+        //if (updateProjectDto.ProjectStatus != null)
+        //    project.Status =(ProjectStatus) updateProjectDto.ProjectStatus.ToEnumByDisplayName<ProjectStatus>();
+        //if (updateProjectDto.SiteEngineerId != null)
+        //    project.SiteEngineerId = updateProjectDto.SiteEngineerId;
         project.ModifiedDate = DateTime.Now;
     }
 }

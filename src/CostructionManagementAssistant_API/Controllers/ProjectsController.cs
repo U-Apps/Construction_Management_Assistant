@@ -1,6 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.Extentions;
-
-namespace ConstructionManagementAssistant.API.Controllers;
+﻿namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
 public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
@@ -227,7 +225,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
             Id = project.Id,
             ProjectName = project.ProjectName,
             SiteAddress = project.SiteAddress,
-            ProjectStatus = ProjectStatus.Completed.GetDisplayName()
+            //ProjectStatus = ProjectStatus.Completed.GetDisplayName()
         };
 
         var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);
@@ -276,7 +274,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
             Id = project.Id,
             ProjectName = project.ProjectName,
             SiteAddress = project.SiteAddress,
-            ProjectStatus = ProjectStatus.Cancelled.GetDisplayName()
+            //ProjectStatus = ProjectStatus.Cancelled.GetDisplayName()
         };
 
         var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);
@@ -335,7 +333,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
             Id = project.Id,
             ProjectName = project.ProjectName,
             SiteAddress = project.SiteAddress,
-            SiteEngineerId = siteEngineerId
+            //SiteEngineerId = siteEngineerId
         };
 
         var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);

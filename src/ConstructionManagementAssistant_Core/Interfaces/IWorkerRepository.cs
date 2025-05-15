@@ -9,6 +9,8 @@ namespace ConstructionManagementAssistant.Core.Interfaces
             int pageSize,
             string? searchTerm = null,
             bool? isAvailable = null);
+        Task<List<WorkerNameDto>> GetWorkersNames();
+
         Task<WorkerDetailsDto?> GetWorkerById(int id);
         public Task<BaseResponse<string>> AddWorkerAsync(AddWorkerDto workerInfo);
         public Task<BaseResponse<string>> UpdateWorkerAsync(UpdateWorkerDto workerInfo);

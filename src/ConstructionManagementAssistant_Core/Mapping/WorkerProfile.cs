@@ -13,6 +13,16 @@ public static class WorkerProfile
         };
     }
 
+    public static Expression<Func<Worker, WorkerNameDto>> ToGetWorkerNameDto()
+    {
+        return worker => new WorkerNameDto
+        {
+            Id = worker.Id,
+            FullName = worker.GetFullName()
+        };
+    }
+
+
     public static Expression<Func<Worker, WorkerDetailsDto>> ToWorkerDetailsDto()
     {
         return worker => new WorkerDetailsDto

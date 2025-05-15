@@ -28,10 +28,11 @@ public static class TaskProfile
             StartDate = task.StartDate,
             EndDate = task.EndDate,
             IsCompleted = task.IsCompleted,
-            Workers = task.TaskAssignments.Where(x => x.TaskId == task.Id).Select(x => new WorkerNameDto
+            Workers = task.TaskAssignments.Where(x => x.TaskId == task.Id).Select(x => new WorkerAssignmentDto
             {
                 Id = x.Worker.Id,
                 FullName = x.Worker.GetFullName(),
+
             }).ToList()
         };
     }

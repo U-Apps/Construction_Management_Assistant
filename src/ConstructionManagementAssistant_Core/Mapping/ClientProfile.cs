@@ -16,6 +16,16 @@ public static class ClientProfile
         };
     }
 
+
+    public static Expression<Func<Client, ClientNameDto>> ToGetClientNameDto()
+    {
+        return client => new ClientNameDto
+        {
+            Id = client.Id,
+            FullName = client.FullName
+        };
+    }
+
     public static Expression<Func<Client, ClientDetailsDto>> ToClientDetailsDto()
     {
         return client => new ClientDetailsDto
@@ -42,6 +52,8 @@ public static class ClientProfile
             PhoneNumber = addClientDto.PhoneNumber,
         };
     }
+
+
 
     public static void UpdateClient(this Client client, UpdateClientDto updateClientDto)
     {

@@ -58,6 +58,13 @@
                 pageSize: pageSize);
         }
 
+        public async Task<List<SiteEngineerNameDto>> GetSiteEngineersNames()
+        {
+            return await GetAllDataWithSelectionAsync(
+                orderBy: x => x.FirstName,
+                selector: SiteEngineerProfile.ToGetSiteEngineerNameDto());
+        }
+
         public async Task<BaseResponse<string>> AddSiteEngineerAsync(AddSiteEngineerDto siteEngineerDto)
         {
             try

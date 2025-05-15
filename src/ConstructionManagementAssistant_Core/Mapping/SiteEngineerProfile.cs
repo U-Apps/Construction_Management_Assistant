@@ -21,6 +21,20 @@ public static class SiteEngineerProfile
         };
     }
 
+
+    public static Expression<Func<SiteEngineer, SiteEngineerNameDto>> ToGetSiteEngineerNameDto()
+    {
+        return siteEngineer => new SiteEngineerNameDto
+        {
+            Id = siteEngineer.Id,
+            FullName = siteEngineer.FirstName
+                       + (string.IsNullOrEmpty(siteEngineer.SecondName) ? "" : " " + siteEngineer.SecondName)
+                       + (string.IsNullOrEmpty(siteEngineer.ThirdName) ? "" : " " + siteEngineer.ThirdName)
+                       + " " + siteEngineer.LastName
+        };
+    }
+
+
     public static Expression<Func<SiteEngineer, SiteEngineerDetailsDto>> ToSiteEngineerDetailsDto()
     {
         return siteEngineer => new SiteEngineerDetailsDto
