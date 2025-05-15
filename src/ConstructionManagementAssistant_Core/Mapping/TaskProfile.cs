@@ -45,19 +45,16 @@ public static class TaskProfile
             Description = addTaskDto.Description,
             StartDate = addTaskDto.StartDate,
             EndDate = addTaskDto.EndDate,
-            IsCompleted = addTaskDto.IsCompleted,
             CreatedDate = DateTime.Now
         };
     }
 
     public static void UpdateTask(this Entites.Task task, UpdateTaskDto updateTaskDto)
     {
-        task.StageId = updateTaskDto.StageId;
         task.Name = updateTaskDto.Name;
         task.Description = updateTaskDto.Description;
         task.StartDate = updateTaskDto.StartDate;
         task.EndDate = updateTaskDto.EndDate;
-        task.IsCompleted = updateTaskDto.IsCompleted;
         task.ModifiedDate = DateTime.Now;
     }
 }

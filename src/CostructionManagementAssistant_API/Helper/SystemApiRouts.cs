@@ -79,5 +79,8 @@ public static class SystemApiRouts
         public const string AddTask = Base;
         public const string UpdateTask = Base;
         public const string DeleteTask = Base + "/{Id}";
+        public const string CompleteTask = Base + "/CompleteTask/{Id}";
+        public const string UnCheckTask = Base + "/UnCheckTask/{Id}";
+        public const string AssignWorkersToTask = Base + "/AssignWorkersToTask";
     }
 }

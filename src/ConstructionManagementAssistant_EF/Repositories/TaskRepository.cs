@@ -88,20 +88,55 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
 
     }
 
+    public async Task<BaseResponse<string>> AssignWorkersToTask(int taskId, List<int> workerIds)
+    {
+        var task = await _context.Tasks
+            .Include(t => t.TaskAssignments)
+            .FirstOrDefaultAsync(t => t.Id == taskId);
+
+        if (task == null)
+            return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
+
+        var existingWorkerIds = task.TaskAssignments.Select(ta => ta.WorkerId).ToHashSet();
+
+        var newAssignments = workerIds
+            .Where(workerId => !existingWorkerIds.Contains(workerId))
+            .Select(workerId => new TaskAssignment
+            {
+                TaskId = taskId,
+                WorkerId = workerId,
+                AssignedDate = DateTime.Now
+            })
+            .ToList();
+
+        if (newAssignments.Count == 0)
+            return new BaseResponse<string> { Success = false, Message = "جميع العمال محددون بالفعل لهذه المهمة" };
+
+        await _context.TaskAssignments.AddRangeAsync(newAssignments);
+        await _context.SaveChangesAsync();
+
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تعيين العمال للمهمة بنجاح"
+        };
+    }
+
+
     public async Task<BaseResponse<string>> UpdateTaskAsync(UpdateTaskDto taskDto)
     {
         var task = await GetByIdAsync(taskDto.Id);
         if (task is null)
             return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
 
-        if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
-        {
-            return new BaseResponse<string>
-            {
-                Success = false,
-                Message = "يوجد مهمة بنفس الاسم"
-            };
-        }
+        //if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
+        //{
+        //    return new BaseResponse<string>
+        //    {
+        //        Success = false,
+        //        Message = "يوجد مهمة بنفس الاسم"
+        //    };
+        //}
 
         task.UpdateTask(taskDto);
         await _context.SaveChangesAsync();
@@ -138,5 +173,35 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
     private async Task<bool> IsTaskNameUniqueAsync(string name, int stageId)
     {
         return !await AnyAsync(s => s.Name == name && s.StageId == stageId);
+    }
+
+    public async Task<BaseResponse<string>> CompleteTaskAsync(int taskId)
+    {
+        var task = await GetByIdAsync(taskId);
+        if (task is null)
+            return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
+
+        task.IsCompleted = true;
+        await _context.SaveChangesAsync();
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تحديث المهمة بنجاح"
+        };
+    }
+
+    public async Task<BaseResponse<string>> UnCheckTaskAsync(int taskId)
+    {
+        var task = await GetByIdAsync(taskId);
+        if (task is null)
+            return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
+
+        task.IsCompleted = false;
+        await _context.SaveChangesAsync();
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تحديث المهمة بنجاح"
+        };
     }
 }

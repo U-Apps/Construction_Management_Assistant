@@ -114,4 +114,48 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut(SystemApiRouts.Tasks.CompleteTask)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CompleteTask(int Id)
+    {
+        var response = await _unitOfWork.Tasks.CompleteTaskAsync(Id);
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost(SystemApiRouts.Tasks.AssignWorkersToTask)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AssignWorkersToTask([FromBody] AssignWorkersDto dto)
+    {
+        var response = await _unitOfWork.Tasks.AssignWorkersToTask(dto.TaskId, dto.WorkerIds);
+
+        if (!response.Success)
+            return BadRequest(response);
+
+        return Ok(response);
+    }
+
+
+    [HttpPut(SystemApiRouts.Tasks.UnCheckTask)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UnCheckTask(int Id)
+    {
+        var response = await _unitOfWork.Tasks.CompleteTaskAsync(Id);
+
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
 }
