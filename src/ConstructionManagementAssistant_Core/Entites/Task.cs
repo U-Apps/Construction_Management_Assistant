@@ -2,6 +2,7 @@ namespace ConstructionManagementAssistant.Core.Entites
 {
     public class Task : IEntity
     {
+        #region Properties
         public int Id { get; set; }
         public int StageId { get; set; }
         public string Name { get; set; }
@@ -11,8 +12,13 @@ namespace ConstructionManagementAssistant.Core.Entites
         public bool IsCompleted { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
-        public Stage Stage { get; set; }
+        #endregion
+
+        #region Navigation Properties
+        public Stage? Stage { get; set; }
 
         public ICollection<TaskAssignment> TaskAssignments = [];
+        public ICollection<Documnet>? Documents { get; set; }
+        #endregion
     }
 }
