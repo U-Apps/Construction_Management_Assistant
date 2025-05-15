@@ -16,8 +16,6 @@ public static class SiteEngineerProfile
                        + " " + siteEngineer.LastName,
             Email = siteEngineer.Email,
             PhoneNumber = siteEngineer.PhoneNumber,
-            Address = siteEngineer.Address,
-            IsAvailable = siteEngineer.IsAvailable
         };
     }
 
@@ -49,7 +47,6 @@ public static class SiteEngineerProfile
             NationalNumber = siteEngineer.NationalNumber,
             Address = siteEngineer.Address,
             HireDate = siteEngineer.HireDate,
-            IsAvailable = siteEngineer.IsAvailable,
             Projects = siteEngineer.Projects.Select(s => new ProjectNameDto
             {
                 Id = s.Id,
@@ -70,9 +67,8 @@ public static class SiteEngineerProfile
             PhoneNumber = addSiteEngineerDto.PhoneNumber,
             NationalNumber = addSiteEngineerDto.NationalNumber,
             Address = addSiteEngineerDto.Address,
-            HireDate = addSiteEngineerDto.HireDate,
+            HireDate = DateOnly.FromDateTime(DateTime.Now),
             CreatedDate = DateTime.Now,
-            IsAvailable = true
         };
     }
     public static void UpdateSiteEngineer(this SiteEngineer siteEngineer, UpdateSiteEngineerDto updateSiteEngineerDto)
@@ -86,7 +82,6 @@ public static class SiteEngineerProfile
         siteEngineer.PhoneNumber = updateSiteEngineerDto.PhoneNumber;
         siteEngineer.NationalNumber = updateSiteEngineerDto.NationalNumber;
         siteEngineer.Address = updateSiteEngineerDto.Address;
-        siteEngineer.HireDate = updateSiteEngineerDto.HireDate;
         siteEngineer.ModifiedDate = DateTime.Now;
     }
 }

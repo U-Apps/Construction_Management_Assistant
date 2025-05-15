@@ -22,8 +22,9 @@
     {
         public int Id { get; init; }
         public required string FullName { get; init; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
         public string? Specialty { get; init; }
-        public bool IsAvailable { get; init; } // todo : delete
     }
 
 
@@ -33,12 +34,7 @@
         public required string FullName { get; init; }
     }
 
-    public class WorkerAssignmentDto
-    {
-        public int Id { get; init; }
-        public required string FullName { get; init; }
-        public DateOnly AssignmentDate { get; set; }
-    }
+
 
     public class WorkerDetailsDto
     {
@@ -52,8 +48,7 @@
         public string? NationalNumber { get; set; }
         public string? Address { get; set; }
         public string? Specialty { get; set; }
-        public bool IsAvailable { get; set; } // todo : delete
-        public ICollection<TaskNameDto> Tasks { get; set; }
+        //public ICollection<TaskNameDto> Tasks { get; set; }
 
     }
 

@@ -222,7 +222,6 @@ public static class SeedData
                 PhoneNumber = "01553456789",
                 Email = "ahmed.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -234,7 +233,6 @@ public static class SeedData
                 PhoneNumber = "0987654321",
                 Email = "sara.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -246,7 +244,6 @@ public static class SeedData
                 PhoneNumber = "0112233445",
                 Email = "mohamed.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -258,7 +255,6 @@ public static class SeedData
                 PhoneNumber = "0223344556",
                 Email = "leila.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -270,7 +266,6 @@ public static class SeedData
                 PhoneNumber = "0334455667",
                 Email = "ali.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -282,7 +277,6 @@ public static class SeedData
                 PhoneNumber = "0445566778",
                 Email = "fatima.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -294,7 +288,6 @@ public static class SeedData
                 PhoneNumber = "0556677889",
                 Email = "khaled.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1 ),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -306,7 +299,6 @@ public static class SeedData
                 PhoneNumber = "0667788990",
                 Email = "mariam.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -318,7 +310,6 @@ public static class SeedData
                 PhoneNumber = "0778899001",
                 Email = "youssef.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -330,7 +321,6 @@ public static class SeedData
                 PhoneNumber = "0889900112",
                 Email = "nora.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -342,7 +332,6 @@ public static class SeedData
                 PhoneNumber = "0990011223",
                 Email = "hassan.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -354,7 +343,6 @@ public static class SeedData
                 PhoneNumber = "0106622334",
                 Email = "mona.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -366,7 +354,6 @@ public static class SeedData
                 PhoneNumber = "00025533445",
                 Email = "omar.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -378,7 +365,6 @@ public static class SeedData
                 PhoneNumber = "01113446656",
                 Email = "huda.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -390,7 +376,6 @@ public static class SeedData
                 PhoneNumber = "0222005667",
                 Email = "yasser.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -402,7 +387,6 @@ public static class SeedData
                 PhoneNumber = "4445555778",
                 Email = "nadia.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -414,7 +398,6 @@ public static class SeedData
                 PhoneNumber = "0566677889",
                 Email = "majed.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -426,7 +409,6 @@ public static class SeedData
                 PhoneNumber = "0688898990",
                 Email = "salma.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -438,7 +420,6 @@ public static class SeedData
                 PhoneNumber = "01118800001",
                 Email = "ziad.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             },
@@ -450,7 +431,6 @@ public static class SeedData
                 PhoneNumber = "06900112",
                 Email = "noor.engineer@example.com",
                 HireDate = new DateOnly(2019, 8, 1),
-                IsAvailable = true,
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
             }
@@ -542,7 +522,6 @@ public static class SeedData
                 Address = "شارع 10, الرياض",
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 1
             },
             new Worker
@@ -558,7 +537,6 @@ public static class SeedData
                 Address = "شارع 20, جدة",
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false,
-                IsAvailable = false,
                 SpecialtyId = 2
             },
             new Worker
@@ -574,7 +552,6 @@ public static class SeedData
                 Address = "شارع 30, مكة",
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 3
             },
             new Worker
@@ -591,7 +568,6 @@ public static class SeedData
                 IsDeleted = false,
                 CreatedDate = new DateTime(2023, 10, 1),
 
-                IsAvailable = true,
                 SpecialtyId = 4
             },
             new Worker
@@ -608,7 +584,6 @@ public static class SeedData
                 Email = "yas4ser@example.com",
                 Address = "شارع 50, الدمام",
                 IsDeleted = false,
-                IsAvailable = false,
                 SpecialtyId = 5
             },
             new Worker
@@ -625,7 +600,6 @@ public static class SeedData
 
                 Address = "شارع 60, الخبر",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 6
             },
             new Worker
@@ -642,7 +616,6 @@ public static class SeedData
                 CreatedDate = new DateTime(2023, 10, 1),
 
                 IsDeleted = false,
-                IsAvailable = false,
                 SpecialtyId = 7
             },
             new Worker
@@ -659,7 +632,6 @@ public static class SeedData
                 IsDeleted = false,
                 CreatedDate = new DateTime(2023, 10, 1),
 
-                IsAvailable = true,
                 SpecialtyId = 8
             },
             new Worker
@@ -676,7 +648,6 @@ public static class SeedData
                 Email = "omar@examp2le.com",
                 Address = "شارع 90, بريدة",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 9
             },
             new Worker
@@ -693,7 +664,6 @@ public static class SeedData
                 IsDeleted = false,
                 CreatedDate = new DateTime(2023, 10, 1),
 
-                IsAvailable = false,
                 SpecialtyId = 10
             },
             new Worker
@@ -710,7 +680,6 @@ public static class SeedData
                 Email = "fahad@exam2ple.com",
                 Address = "شارع 110, الرياض",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 1
             },
             new Worker
@@ -727,7 +696,6 @@ public static class SeedData
                 Email = "nasse2r@example.com",
                 Address = "شارع 120, جدة",
                 IsDeleted = false,
-                IsAvailable = false,
                 SpecialtyId = 2
             },
             new Worker
@@ -744,7 +712,6 @@ public static class SeedData
                 Email = "faidsal@example.com",
                 Address = "شارع 130, مكة",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 3
             },
             new Worker
@@ -759,7 +726,6 @@ public static class SeedData
                 Email = "rashed@example.com",
                 Address = "شارع 140, المدينة",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 4,
                 CreatedDate = new DateTime(2023, 10, 1),
 
@@ -778,7 +744,6 @@ public static class SeedData
                 CreatedDate = new DateTime(2023, 10, 1),
 
                 IsDeleted = false,
-                IsAvailable = false,
                 SpecialtyId = 5
             },
             new Worker
@@ -795,7 +760,6 @@ public static class SeedData
                 Email = "abdullah@example.com",
                 Address = "شارع 160, الخبر",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 6
             },
             new Worker
@@ -812,7 +776,6 @@ public static class SeedData
                 Email = "abdulrahman@example.com",
                 Address = "شارع 170, الطائف",
                 IsDeleted = false,
-                IsAvailable = false,
                 SpecialtyId = 7
             },
             new Worker
@@ -829,7 +792,6 @@ public static class SeedData
                 Email = "abdulaziz@example.com",
                 Address = "شارع 180, تبوك",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 8
             },
             new Worker
@@ -846,7 +808,6 @@ public static class SeedData
                 Email = "salman@example.com",
                 Address = "شارع 190, بريدة",
                 IsDeleted = false,
-                IsAvailable = true,
                 SpecialtyId = 9
             },
             new Worker
@@ -863,7 +824,6 @@ public static class SeedData
                 Email = "abdulmohsen@example.com",
                 Address = "شارع 200, حائل",
                 IsDeleted = false,
-                IsAvailable = false,
                 SpecialtyId = 10
             }
         };
@@ -1728,26 +1688,26 @@ public static class SeedData
     }
 
 
-    public static List<TaskAssignment> SeedTaskAssignments()
-    {
-        var random = new Random();
-        var assignments = new List<TaskAssignment>();
+    //public static List<TaskAssignment> SeedTaskAssignments()
+    //{
+    //    var random = new Random();
+    //    var assignments = new List<TaskAssignment>();
 
-        for (int taskId = 1; taskId <= 300; taskId++)
-        {
-            var assignment = new TaskAssignment
-            {
-                TaskId = taskId,
-                WorkerId = random.Next(1, 21), // WorkerId from 1 to 20
-                AssignedDate = DateOnly.FromDateTime(
-                    DateTime.Today.AddDays(-random.Next(0, 365))) // Random date within past year
-            };
+    //    for (int taskId = 1; taskId <= 300; taskId++)
+    //    {
+    //        var assignment = new TaskAssignment
+    //        {
+    //            TaskId = taskId,
+    //            WorkerId = random.Next(1, 21), // WorkerId from 1 to 20
+    //            AssignedDate = DateOnly.FromDateTime(
+    //                DateTime.Today.AddDays(-random.Next(0, 365))) // Random date within past year
+    //        };
 
-            assignments.Add(assignment);
-        }
+    //        assignments.Add(assignment);
+    //    }
 
-        return assignments;
-    }
+    //    return assignments;
+    //}
 
 
     public static List<DocumentClassification> SeedDocumentClassifications()
@@ -1949,66 +1909,66 @@ public static class SeedData
         };
     }
 
-    public static List<EquipmentAssignment> SeedEquipmentAssignments()
-    {
-        var random = new Random();
-        var assignments = new List<EquipmentAssignment>();
-        var currentDate = DateTime.Now.Date;
+    //public static List<EquipmentAssignment> SeedEquipmentAssignments()
+    //{
+    //    var random = new Random();
+    //    var assignments = new List<EquipmentAssignment>();
+    //    var currentDate = DateTime.Now.Date;
 
-        // Create active assignments (not yet returned)
-        for (int i = 1; i <= 15; i++)
-        {
-            var checkoutDate = currentDate.AddDays(-random.Next(1, 30));
-            var expectedReturn = checkoutDate.AddDays(random.Next(7, 60));
+    //    // Create active assignments (not yet returned)
+    //    for (int i = 1; i <= 15; i++)
+    //    {
+    //        var checkoutDate = currentDate.AddDays(-random.Next(1, 30));
+    //        var expectedReturn = checkoutDate.AddDays(random.Next(7, 60));
 
-            assignments.Add(new EquipmentAssignment
-            {
-                Id = i,
-                EquipmentId = random.Next(1, 31),
-                ProjectId = random.Next(1, 21),
-                CheckoutDate = checkoutDate,
-                ExpectedReturnDate = expectedReturn,
-                ActualReturnDate = null
-            });
-        }
+    //        assignments.Add(new EquipmentAssignment
+    //        {
+    //            Id = i,
+    //            EquipmentId = random.Next(1, 31),
+    //            ProjectId = random.Next(1, 21),
+    //            CheckoutDate = checkoutDate,
+    //            ExpectedReturnDate = expectedReturn,
+    //            ActualReturnDate = null
+    //        });
+    //    }
 
-        // Create completed assignments (already returned)
-        for (int i = 16; i <= 30; i++)
-        {
-            var checkoutDate = currentDate.AddDays(-random.Next(30, 180));
-            var expectedReturn = checkoutDate.AddDays(random.Next(7, 60));
-            var actualReturn = expectedReturn.AddDays(random.Next(-5, 10)); // May be early or late
+    //    // Create completed assignments (already returned)
+    //    for (int i = 16; i <= 30; i++)
+    //    {
+    //        var checkoutDate = currentDate.AddDays(-random.Next(30, 180));
+    //        var expectedReturn = checkoutDate.AddDays(random.Next(7, 60));
+    //        var actualReturn = expectedReturn.AddDays(random.Next(-5, 10)); // May be early or late
 
-            assignments.Add(new EquipmentAssignment
-            {
-                Id = i,
-                EquipmentId = random.Next(1, 31),
-                ProjectId = random.Next(1, 21),
-                CheckoutDate = checkoutDate,
-                ExpectedReturnDate = expectedReturn,
-                ActualReturnDate = actualReturn
-            });
-        }
+    //        assignments.Add(new EquipmentAssignment
+    //        {
+    //            Id = i,
+    //            EquipmentId = random.Next(1, 31),
+    //            ProjectId = random.Next(1, 21),
+    //            CheckoutDate = checkoutDate,
+    //            ExpectedReturnDate = expectedReturn,
+    //            ActualReturnDate = actualReturn
+    //        });
+    //    }
 
-        // Create some overdue assignments
-        for (int i = 31; i <= 35; i++)
-        {
-            var checkoutDate = currentDate.AddDays(-random.Next(60, 120));
-            var expectedReturn = checkoutDate.AddDays(random.Next(7, 30));
+    //    // Create some overdue assignments
+    //    for (int i = 31; i <= 35; i++)
+    //    {
+    //        var checkoutDate = currentDate.AddDays(-random.Next(60, 120));
+    //        var expectedReturn = checkoutDate.AddDays(random.Next(7, 30));
 
-            assignments.Add(new EquipmentAssignment
-            {
-                Id = i,
-                EquipmentId = random.Next(1, 31),
-                ProjectId = random.Next(1, 21),
-                CheckoutDate = checkoutDate,
-                ExpectedReturnDate = expectedReturn,
-                ActualReturnDate = null
-            });
-        }
+    //        assignments.Add(new EquipmentAssignment
+    //        {
+    //            Id = i,
+    //            EquipmentId = random.Next(1, 31),
+    //            ProjectId = random.Next(1, 21),
+    //            CheckoutDate = checkoutDate,
+    //            ExpectedReturnDate = expectedReturn,
+    //            ActualReturnDate = null
+    //        });
+    //    }
 
-        return assignments;
-    }
+    //    return assignments;
+    //}
 
 
 }

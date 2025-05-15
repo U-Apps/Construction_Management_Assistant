@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
     public IWorkerRepository Workers { get; private set; }
     public IStageRepository Stages { get; private set; }
     public ITaskRepository Tasks { get; private set; }
+    public ITaskAssignmentRepository TaskAssignments { get; private set; }
 
     private readonly AppDbContext _appDbContext;
     private readonly ILogger<UnitOfWork> _logger;
@@ -25,6 +26,7 @@ public class UnitOfWork : IUnitOfWork
         Workers = new WorkerRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<WorkerRepository>>());
         Stages = new StageRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<StageRepository>>());
         Tasks = new TaskRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskRepository>>());
+        TaskAssignments = new TaskAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskAssignmentRepository>>());
     }
 
     public void Dispose()

@@ -31,9 +31,6 @@
                     w.Address.Contains(searchTerm));
             }
 
-            if (isAvailable.HasValue)
-                filter = filter.AndAlso(w => w.IsAvailable == isAvailable.Value);
-
 
             var pagedResult = await GetPagedDataWithSelectionAsync(
                 orderBy: x => x.FirstName,

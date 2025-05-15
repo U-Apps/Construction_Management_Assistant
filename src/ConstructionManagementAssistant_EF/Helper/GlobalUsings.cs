@@ -6,7 +6,6 @@ global using ConstructionManagementAssistant.Core.Interfaces;
 global using ConstructionManagementAssistant.Core.Mapping;
 global using ConstructionManagementAssistant.Core.Models.Response;
 global using ConstructionManagementAssistant.EF.Data;
-global using ConstructionManagementAssistant.EF.Data.Configuration;
 global using ConstructionManagementAssistant.EF.Extensions;
 global using ConstructionManagementAssistant.EF.Repositories;
 global using Microsoft.EntityFrameworkCore;

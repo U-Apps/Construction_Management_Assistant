@@ -47,9 +47,6 @@
                     se.Address.Contains(searchTerm));
             }
 
-            if (isAvailable.HasValue)
-                filter = filter.AndAlso(se => se.IsAvailable == isAvailable.Value);
-
             return await GetPagedDataWithSelectionAsync(
                 orderBy: x => x.FirstName,
                 selector: SiteEngineerProfile.ToGetSiteEngineerDto(),

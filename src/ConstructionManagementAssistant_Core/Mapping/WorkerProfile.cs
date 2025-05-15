@@ -8,8 +8,9 @@ public static class WorkerProfile
         {
             Id = worker.Id,
             FullName = worker.GetFullName(),
+            Email = worker.Email,
+            PhoneNumber = worker.PhoneNumber,
             Specialty = worker.Specialty.Name,
-            IsAvailable = worker.IsAvailable,
         };
     }
 
@@ -37,13 +38,6 @@ public static class WorkerProfile
             NationalNumber = worker.NationalNumber,
             Address = worker.Address,
             Specialty = worker.Specialty.Name,
-            IsAvailable = worker.IsAvailable,
-            Tasks = worker.TaskAssignments.Select(x => new TaskNameDto
-            {
-                Id = x.TaskId,
-                Name = x.Task.Name,
-                ProjectName = x.Task.Stage.Project.Name
-            }).ToList()
         };
     }
 
@@ -60,7 +54,6 @@ public static class WorkerProfile
             NationalNumber = addWorkerDto.NationalNumber,
             Address = addWorkerDto.Address,
             SpecialtyId = addWorkerDto.SpecialtyId,
-            IsAvailable = true
         };
     }
 

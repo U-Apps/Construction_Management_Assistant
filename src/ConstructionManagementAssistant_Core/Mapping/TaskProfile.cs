@@ -28,13 +28,6 @@ public static class TaskProfile
             StartDate = task.StartDate,
             ExpectedEndDate = task.ExpectedEndDate,
             IsCompleted = task.IsCompleted,
-            Workers = task.TaskAssignments.Where(x => x.TaskId == task.Id).Select(x => new WorkerAssignmentDto
-            {
-                Id = x.Worker.Id,
-                FullName = x.Worker.GetFullName(),
-                AssignmentDate = x.AssignedDate
-
-            }).ToList()
         };
     }
 

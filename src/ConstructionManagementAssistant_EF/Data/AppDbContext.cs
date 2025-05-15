@@ -22,8 +22,6 @@ namespace ConstructionManagementAssistant.EF.Data
         public DbSet<EquipmentAssignment> EquipmentAssignments { get; set; }
         #endregion
 
-        #region Constructors
-
         public AppDbContext()
         {
         }
@@ -153,7 +151,7 @@ namespace ConstructionManagementAssistant.EF.Data
                     .WithMany(w => w.TaskAssignments)
                     .HasForeignKey(ta => ta.WorkerId);
 
-                builder.HasData(SeedData.SeedTaskAssignments());
+                //builder.HasData(SeedData.SeedTaskAssignments());
             });
             #endregion
 
@@ -194,6 +192,8 @@ namespace ConstructionManagementAssistant.EF.Data
                     .WithOne(a => a.Equipment)
                     .HasForeignKey(a => a.EquipmentId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasData(SeedData.SeedEquipment());
             });
             #endregion
 
@@ -215,11 +215,13 @@ namespace ConstructionManagementAssistant.EF.Data
                     .WithMany(p => p.EquipmentAssignments)
                     .HasForeignKey(ea => ea.ProjectId)
                     .OnDelete(DeleteBehavior.Cascade);
-            });
 
+                //builder.HasData(SeedData.SeedEquipmentAssignments());
+
+            });
+            #endregion
         }
 
-        #endregion
     }
 }
 

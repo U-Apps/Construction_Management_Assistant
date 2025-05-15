@@ -11,11 +11,9 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public bool IsCompleted { get; set; }
     }
 
-    public class AssignWorkersDto
-    {
-        public required int TaskId { get; set; }
-        public required List<int> WorkerIds { get; set; }
-    }
+
+
+
     public class GetTaskDetailsDto
     {
         public int Id { get; set; }
@@ -25,7 +23,7 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public DateOnly? StartDate { get; set; }
         public DateOnly? ExpectedEndDate { get; set; }
         public bool IsCompleted { get; set; }
-        public List<WorkerAssignmentDto> Workers { get; set; } = [];
+        //public List<TaskAssignmentDto> Workers { get; set; } = [];
 
     }
 
