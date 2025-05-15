@@ -7,7 +7,7 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public string Name { get; set; }
         public string? Description { get; set; }
         public DateOnly? StartDate { get; set; }
-        public DateOnly? EndDate { get; set; }
+        public DateOnly? ExpectedEndDate { get; set; }
         public bool IsCompleted { get; set; }
     }
 
@@ -23,7 +23,7 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public string Name { get; set; }
         public string? Description { get; set; }
         public DateOnly? StartDate { get; set; }
-        public DateOnly? EndDate { get; set; }
+        public DateOnly? ExpectedEndDate { get; set; }
         public bool IsCompleted { get; set; }
         public List<WorkerAssignmentDto> Workers { get; set; } = [];
 
@@ -43,7 +43,7 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public required string Name { get; set; }
         public string? Description { get; set; }
         public DateOnly? StartDate { get; set; }
-        public DateOnly? EndDate { get; set; }
+        public DateOnly? ExpectedEndDate { get; set; }
     }
 
     public class UpdateTaskDto

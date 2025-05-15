@@ -11,7 +11,7 @@ public static class TaskProfile
             Name = task.Name,
             Description = task.Description,
             StartDate = task.StartDate,
-            EndDate = task.EndDate,
+            ExpectedEndDate = task.ExpectedEndDate,
             IsCompleted = task.IsCompleted
         };
     }
@@ -26,7 +26,7 @@ public static class TaskProfile
             Name = task.Name,
             Description = task.Description,
             StartDate = task.StartDate,
-            EndDate = task.EndDate,
+            ExpectedEndDate = task.ExpectedEndDate,
             IsCompleted = task.IsCompleted,
             Workers = task.TaskAssignments.Where(x => x.TaskId == task.Id).Select(x => new WorkerAssignmentDto
             {
@@ -46,7 +46,7 @@ public static class TaskProfile
             Name = addTaskDto.Name,
             Description = addTaskDto.Description,
             StartDate = addTaskDto.StartDate,
-            EndDate = addTaskDto.EndDate,
+            ExpectedEndDate = addTaskDto.ExpectedEndDate,
             CreatedDate = DateTime.Now
         };
     }

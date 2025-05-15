@@ -3,11 +3,6 @@
 
 public enum ProjectStatus
 {
-
-    [Display(Name = "لم يبدأ")]  // todo : delete
-    NotStarted,
-
-
     [Display(Name = "قيد التنفيذ")]
     Active,
 
