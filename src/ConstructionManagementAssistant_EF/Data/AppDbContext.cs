@@ -162,6 +162,7 @@ namespace ConstructionManagementAssistant.EF.Data
                 builder.Property(e => e.Name).HasMaxLength(50);
                 builder.Property(e => e.Description).HasMaxLength(255);
                 builder.Property(e => e.Path).HasMaxLength(255);
+                builder.Property(e => e.FileType).HasMaxLength(10);
 
                 builder.HasIndex(e => e.Path, "UniquePath").IsUnique();
                 builder.HasIndex(e => e.Name, "UniqueTitle").IsUnique();

@@ -9,6 +9,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
     public class DocumentRepository(AppDbContext _context, ILogger<DocumentRepository> _logger, Supabase.Client supabase)
                         : BaseRepository<Documnet>(_context), IDocumentRepository
     {
+        private const string StoragePath = @"https://efpizvhwkfiqsrhpflcn.supabase.co/storage/v1/object/public/";
         public async Task<BaseResponse<string>> AddDocumentAsync(UploadFileRequest document)
         {
             _logger.LogInformation("Adding document: {DocumentName}", document.File.FileName);
@@ -38,6 +39,8 @@ namespace ConstructionManagementAssistant.EF.Repositories
                     };
                 }
                 doc.Path = Path;
+                doc.FileType = extension;
+                doc.Path = StoragePath + Path;
                 await AddAsync(doc);
                 await _context.SaveChangesAsync();
                 return new BaseResponse<string>()
@@ -63,9 +66,18 @@ namespace ConstructionManagementAssistant.EF.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Documnet> GetDocumentByIdAsync(int id)
+        public async Task<DocumentDetailsResponse> GetDocumentByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var doc = await FindWithSelectionAsync(
+            selector: DocumentProfile.ToDocumentDetailsResponse(),
+            criteria: d => d.Id == id);
+
+            if (doc == null)
+            {
+                _logger.LogWarning("document with ID: {Id} not found", id);
+                return null;
+            }
+            return doc;
         }
 
         public async Task<PagedResult<DocumentResponse>> GetDocumentsByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, int? ClassificationId = null)
