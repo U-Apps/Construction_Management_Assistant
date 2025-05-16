@@ -8,6 +8,25 @@ namespace ConstructionManagementAssistant.Core.Mapping
 {
     public static class DocumentProfile
     {
+        public static Expression<Func<Documnet, DocumentResponse>> ToDocumentResponse()
+        {
+            return document =>
+             new DocumentResponse() {
+
+
+                 Id = document.Id,
+                 Name = document.Name,
+                 Description = document.Description,
+                 TaskId = document.TaskId,
+                 TaskName = document.Task != null ? document.Task.Name : null,
+                 ProjectId = document.ProjectId,
+                 ProjectName = document.Project.Name,
+                 ClassificationId = document.ClassificationId,
+                 ClassificationName = document.Classification != null ? document.Classification.Type : string.Empty,
+                 CreatedDate = document.CreatedDate
+             };
+
+        }
         public static DocumentResponse ToDocumentResponse(this Documnet document)
         {
             var r = new DocumentResponse();
