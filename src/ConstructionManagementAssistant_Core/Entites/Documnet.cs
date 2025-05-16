@@ -6,6 +6,7 @@
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
+        public string FileType { get; set; }
         public string? Path { get; set; }
         public int? TaskId { get; set; }
         public int ProjectId { get; set; }

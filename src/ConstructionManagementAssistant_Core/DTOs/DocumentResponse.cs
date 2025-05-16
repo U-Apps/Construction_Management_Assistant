@@ -22,4 +22,10 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public string ClassificationName { get; set; }
         public DateTime CreatedDate { get; set; }
     }
+
+    public class DocumentDetailsResponse : DocumentResponse
+    {
+        public string? FileUrl { get; set; }
+        public string? FileType { get; set; }
+    }
 }
