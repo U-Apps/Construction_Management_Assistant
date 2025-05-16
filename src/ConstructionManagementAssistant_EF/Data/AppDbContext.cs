@@ -166,6 +166,8 @@ namespace ConstructionManagementAssistant.EF.Data
 
                 builder.HasIndex(e => e.Path, "UniquePath").IsUnique();
                 builder.HasIndex(e => e.Name, "UniqueTitle").IsUnique();
+
+                builder.HasQueryFilter(e => !e.IsDeleted);
             });
             #endregion
 
