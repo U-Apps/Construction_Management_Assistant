@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     public ITaskAssignmentRepository TaskAssignments { get; private set; }
     public IEquipmentRepository Equipment { get; private set; }
     public IEquipmentAssignmentRepository EquipmentAssignments { get; private set; }
+    public IDocumentRepository Documents { get; private set; }
 
     private readonly AppDbContext _appDbContext;
     private readonly ILogger<UnitOfWork> _logger;
@@ -31,6 +32,7 @@ public class UnitOfWork : IUnitOfWork
         TaskAssignments = new TaskAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskAssignmentRepository>>());
         Equipment = new EquipmentRepository(_appDbContext);
         EquipmentAssignments = new EquipmentAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentAssignmentRepository>>());
+        Documents = new DocumentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>());
     }
 
     public void Dispose()
