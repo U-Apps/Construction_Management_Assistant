@@ -1,7 +1,7 @@
 using ConstructionManagementAssistant.Core.Models.Response;
 namespace ConstructionManagementAssistant.Core.Interfaces;
 
-public interface ITaskRepository : IBaseRepository<Task>
+public interface ITaskRepository : IBaseRepository<ProjectTask>
 {
     Task<GetTaskDetailsDto?> GetTaskById(int id);
     Task<PagedResult<GetTaskDto>> GetAllTasks(int stageId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null);

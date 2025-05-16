@@ -1,6 +1,6 @@
 ﻿using ConstructionManagementAssistant.Core.Constants;
 using ConstructionManagementAssistant.EF.Data.Seading;
-using Task = ConstructionManagementAssistant.Core.Entites.Task;
+using ProjectTask = ConstructionManagementAssistant.Core.Entites.ProjectTask;
 
 namespace ConstructionManagementAssistant.EF.Data
 {
@@ -15,7 +15,7 @@ namespace ConstructionManagementAssistant.EF.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Stage> Stages { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<ProjectTask> Tasks { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<Documnet> Documnets { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
@@ -129,7 +129,7 @@ namespace ConstructionManagementAssistant.EF.Data
             #endregion
 
             #region Task Configuration
-            modelBuilder.Entity<Task>(builder =>
+            modelBuilder.Entity<ProjectTask>(builder =>
             {
                 builder.ToTable(TablesNames.Tasks);
                 builder.Property(t => t.Name).HasMaxLength(200);
