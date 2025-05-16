@@ -61,9 +61,26 @@ namespace ConstructionManagementAssistant.EF.Repositories
             }
         }
 
-        public Task DeleteDocumentAsync(int id)
+        public async Task<BaseResponse<string>> DeleteDocumentAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var doc = await GetByIdAsync(id);
+            if (doc is null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "المستند غير موجود"
+                };
+            }
+
+            Delete(doc);
+            await _context.SaveChangesAsync();
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم حذف المستند بنجاح"
+            };
         }
 
         public async Task<DocumentDetailsResponse> GetDocumentByIdAsync(Guid id)
@@ -80,7 +97,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return doc;
         }
 
-        public async Task<PagedResult<DocumentResponse>> GetDocumentsByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, int? ClassificationId = null)
+        public async Task<PagedResult<DocumentResponse>> GetDocumentsByProjectIdAsync(int projectId, int? TaskId = null, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, int? ClassificationId = null)
         {
             Expression<Func<Documnet, bool>> filter = x => true;
 
@@ -88,6 +105,9 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
             if (ClassificationId is not null)
                 filter = filter.AndAlso(d => d.ClassificationId == ClassificationId);
+
+            if (TaskId is not null)
+                filter = filter.AndAlso(d => d.TaskId == TaskId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -108,11 +128,6 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
             return pagedResult;
             
-        }
-
-        public Task<IEnumerable<Documnet>> GetDocumentsByTaskIdAsync(int taskId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
-        {
-            throw new NotImplementedException();
         }
 
         public Task UpdateDocumentAsync(Documnet document)

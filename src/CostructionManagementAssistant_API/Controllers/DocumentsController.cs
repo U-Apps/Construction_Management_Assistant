@@ -26,12 +26,13 @@ namespace ConstructionManagementAssistant.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAllDocs(int projectId,
+                                                    int? TaskId = null,
                                                     int pageNumber = 1,
-                                                    [Range(10, 50)]int pageSize = 10,
+                                                    [Range(10, 50)] int pageSize = 10,
                                                     string? searchTerm = null,
                                                     int? ClassificationId = null)
         {
-            var result = await _unitOfWork.Documents.GetDocumentsByProjectIdAsync(projectId, pageNumber, pageSize, searchTerm, ClassificationId);
+            var result = await _unitOfWork.Documents.GetDocumentsByProjectIdAsync(projectId, TaskId, pageNumber, pageSize, searchTerm, ClassificationId);
             if (result.Items == null || result.Items.Count == 0)
             {
                 return NotFound(new BaseResponse<PagedResult<DocumentResponse>>
@@ -66,6 +67,15 @@ namespace ConstructionManagementAssistant.API.Controllers
                 Message = "تم جلب المستند بنجاح",
                 Data = result
             });
+        }
+
+        [HttpDelete("{Id:guid}")]
+        public async Task<IActionResult> DeleteDocument(Guid Id)
+        {
+            var result = await _unitOfWork.Documents.DeleteDocumentAsync(Id);
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(result);
         }
     }
 }

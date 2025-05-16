@@ -1,6 +1,6 @@
 ﻿namespace ConstructionManagementAssistant.Core.Entites
 {
-    public class Documnet
+    public class Documnet : ISoftDeletable
     {
         #region Properties
         public Guid Id { get; set; }
@@ -14,6 +14,8 @@
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         //public string UploadedBy { get; set; }  // refernces Users table
+        public bool IsDeleted { get; set;}
+        public DateTime? DeletedDate { get; set; }
 
         #endregion
 
