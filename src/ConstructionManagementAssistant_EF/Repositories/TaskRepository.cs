@@ -1,6 +1,6 @@
 ﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
-public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Core.Entites.Task>, ITaskRepository
+public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Core.Entites.ProjectTask>, ITaskRepository
 {
     private readonly ILogger<TaskRepository> _logger;
     private readonly AppDbContext _context;
@@ -33,7 +33,7 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
         int pageSize = 10,
         string? searchTerm = null)
     {
-        Expression<Func<ConstructionManagementAssistant.Core.Entites.Task, bool>> filter = x => x.StageId == stageId;
+        Expression<Func<ConstructionManagementAssistant.Core.Entites.ProjectTask, bool>> filter = x => x.StageId == stageId;
 
         if (!string.IsNullOrEmpty(searchTerm))
         {

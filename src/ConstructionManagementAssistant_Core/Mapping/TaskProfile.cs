@@ -2,7 +2,7 @@
 
 public static class TaskProfile
 {
-    public static Expression<Func<Entites.Task, GetTaskDto>> ToGetTaskDto()
+    public static Expression<Func<Entites.ProjectTask, GetTaskDto>> ToGetTaskDto()
     {
         return task => new GetTaskDto
         {
@@ -17,7 +17,7 @@ public static class TaskProfile
     }
 
 
-    public static Expression<Func<Entites.Task, GetTaskDetailsDto>> ToGetTaskDetailsDto()
+    public static Expression<Func<Entites.ProjectTask, GetTaskDetailsDto>> ToGetTaskDetailsDto()
     {
         return task => new GetTaskDetailsDto
         {
@@ -31,9 +31,9 @@ public static class TaskProfile
         };
     }
 
-    public static Entites.Task ToTask(this AddTaskDto addTaskDto)
+    public static Entites.ProjectTask ToTask(this AddTaskDto addTaskDto)
     {
-        return new Entites.Task
+        return new Entites.ProjectTask
         {
             StageId = addTaskDto.StageId,
             Name = addTaskDto.Name,
@@ -44,7 +44,7 @@ public static class TaskProfile
         };
     }
 
-    public static void UpdateTask(this Entites.Task task, UpdateTaskDto updateTaskDto)
+    public static void UpdateTask(this Entites.ProjectTask task, UpdateTaskDto updateTaskDto)
     {
         task.Name = updateTaskDto.Name;
         task.Description = updateTaskDto.Description;

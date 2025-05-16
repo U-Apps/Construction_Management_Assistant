@@ -15,7 +15,7 @@ namespace ConstructionManagementAssistant.Core.Entites
         public Project Project { get; set; }
 
         #region Navigation Properties
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<ProjectTask> Tasks { get; set; }
         #endregion
 
     }

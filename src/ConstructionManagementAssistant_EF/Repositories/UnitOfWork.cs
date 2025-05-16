@@ -32,7 +32,7 @@ public class UnitOfWork : IUnitOfWork
         TaskAssignments = new TaskAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskAssignmentRepository>>());
         Equipment = new EquipmentRepository(_appDbContext);
         EquipmentAssignments = new EquipmentAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentAssignmentRepository>>());
-        Documents = new DocumentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>());
+        Documents = new DocumentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>(), serviceProvider.GetRequiredService<Supabase.Client>());
     }
 
     public void Dispose()

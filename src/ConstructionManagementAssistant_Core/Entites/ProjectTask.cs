@@ -1,6 +1,6 @@
 namespace ConstructionManagementAssistant.Core.Entites
 {
-    public class Task : IEntity
+    public class ProjectTask : IEntity
     {
         #region Properties
         public int Id { get; set; }
