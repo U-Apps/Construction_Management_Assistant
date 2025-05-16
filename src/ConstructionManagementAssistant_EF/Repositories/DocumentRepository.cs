@@ -1,6 +1,8 @@
 ﻿
 using Azure.Core;
 using ConstructionManagementAssistant.Core.Entites;
+using ConstructionManagementAssistant.Core.Enums;
+using Supabase.Functions.Responses;
 
 namespace ConstructionManagementAssistant.EF.Repositories
 {
@@ -35,6 +37,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                         Message = "unknown error occured while uploading file"
                     };
                 }
+                doc.Path = Path;
                 await AddAsync(doc);
                 await _context.SaveChangesAsync();
                 return new BaseResponse<string>()
@@ -65,9 +68,34 @@ namespace ConstructionManagementAssistant.EF.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Documnet>> GetDocumentsByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, int? ClassificationId = null)
+        public async Task<PagedResult<DocumentResponse>> GetDocumentsByProjectIdAsync(int projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, int? ClassificationId = null)
         {
-            throw new NotImplementedException();
+            Expression<Func<Documnet, bool>> filter = x => true;
+
+            filter = filter.AndAlso(d => d.ProjectId == projectId);
+
+            if (ClassificationId is not null)
+                filter = filter.AndAlso(d => d.ClassificationId == ClassificationId);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                filter = filter.AndAlso(d =>
+                    d.Name.Contains(searchTerm) ||
+                    d.Description.Contains(searchTerm));
+            }
+
+
+            var pagedResult = await GetPagedDataWithSelectionAsync(
+                    orderBy: x => x.CreatedDate,
+                    selector: DocumentProfile.ToDocumentResponse(),
+                    criteria: filter,
+                    pageNumber: pageNumber,
+                    pageSize: pageSize);
+
+            _logger.LogInformation("Fetched {Count} docs", pagedResult.Items.Count);
+
+            return pagedResult;
+            
         }
 
         public Task<IEnumerable<Documnet>> GetDocumentsByTaskIdAsync(int taskId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
