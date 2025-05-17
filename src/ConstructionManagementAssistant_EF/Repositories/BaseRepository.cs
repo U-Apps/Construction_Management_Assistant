@@ -193,7 +193,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
         if (entity is ISoftDeletable softDeletableEntity)
         {
             softDeletableEntity.IsDeleted = true;
-            softDeletableEntity.DeletedDate = DateTime.UtcNow;
+            softDeletableEntity.DeletedDate = DateTime.Now;
         }
         else
         {
