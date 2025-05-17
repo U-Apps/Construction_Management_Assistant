@@ -69,6 +69,15 @@ namespace ConstructionManagementAssistant.API.Controllers
             });
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateClient(UpdateDocumentRequest payload)
+        {
+            var result = await _unitOfWork.Documents.UpdateDocumentAsync(payload);
+            if (!result.Success)
+                return BadRequest(result);
+            return Ok(result);
+        }
+
         [HttpDelete("{Id:guid}")]
         public async Task<IActionResult> DeleteDocument(Guid Id)
         {

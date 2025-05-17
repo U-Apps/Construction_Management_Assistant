@@ -129,10 +129,26 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return pagedResult;
             
         }
-
-        public Task UpdateDocumentAsync(Documnet document)
+        public async Task<BaseResponse<string>> UpdateDocumentAsync(UpdateDocumentRequest payload)
         {
-            throw new NotImplementedException();
+            var doc = await GetByIdAsync(payload.Id);
+            if (doc is null)
+            {
+                _logger.LogWarning("Document with ID: {Id} not found", payload.Id);
+                return new BaseResponse<string> { Success = false, Message = "المستند غير موجود" };
+            }
+
+            doc.Name = payload.Name;
+            doc.Description = payload.Description;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Document updated successfully: {Id}", payload.Id);
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم تحديث المستند بنجاح"
+            };
         }
     }
 }
