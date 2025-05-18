@@ -13,7 +13,7 @@ public class Equipment : IEntity
     public DateTime? ModifiedDate { get; set; }
 
 
-    public List<EquipmentAssignment> Assignments { get; set; }
+    public List<EquipmentReservation> Assignments { get; set; }
 }
 
 

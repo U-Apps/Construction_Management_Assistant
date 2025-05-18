@@ -91,12 +91,12 @@ public static class SystemApiRouts
         public const string DeleteEquipment = Base + "/{id}";
     }
 
-    public static class EquipmentAssignments
+    public static class EquipmentReservations
     {
-        public const string Base = "api/v1/EquipmentAssignments";
+        public const string Base = "api/v1/EquipmentReservations";
         public const string GetAll = Base + "/All";
-        public const string Assign = Base + "/Assign";
-        public const string Unassign = Base + "/Unassign/{assignmentId}";
+        public const string Reserve = Base + "/Reserve";
+        public const string RemoveReservation = Base + "/RemoveReservation/{reservationId}";
         public const string GetByEquipment = Base + "/ByEquipment/{equipmentId}";
         public const string GetByProject = Base + "/ByProject/{projectId}";
     }

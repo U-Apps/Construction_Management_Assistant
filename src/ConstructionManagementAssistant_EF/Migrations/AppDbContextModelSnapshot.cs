@@ -808,7 +808,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.EquipmentAssignment", b =>
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.EquipmentReservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -837,7 +837,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("EquipmentAssignments", (string)null);
+                    b.ToTable("EquipmentReservations", (string)null);
                 });
 
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Person", b =>
@@ -5964,7 +5964,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.EquipmentAssignment", b =>
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.EquipmentReservation", b =>
                 {
                     b.HasOne("ConstructionManagementAssistant.Core.Entites.Equipment", "Equipment")
                         .WithMany("Assignments")
@@ -5973,7 +5973,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .IsRequired();
 
                     b.HasOne("ConstructionManagementAssistant.Core.Entites.Project", "Project")
-                        .WithMany("EquipmentAssignments")
+                        .WithMany("EquipmentReservations")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -6084,7 +6084,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 {
                     b.Navigation("Documents");
 
-                    b.Navigation("EquipmentAssignments");
+                    b.Navigation("EquipmentReservations");
 
                     b.Navigation("Stages");
                 });

@@ -4,8 +4,8 @@
     {
         [Display(Name = "متاح")]
         Available,
-        [Display(Name = "قيد الاستخدام")]
-        InUse,
+        [Display(Name = "محجوز")]
+        Reserved,
         [Display(Name = "تحت الصيانة")]
         UnderMaintenance,
         [Display(Name = "خارج الخدمة")]

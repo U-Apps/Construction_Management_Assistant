@@ -14,7 +14,7 @@
         public const string Documents = "Documents";
         public const string DocumentClassification = "DocumentClassifications";
         public const string Equipments = "Equipments";
-        public const string EquipmentAssignments = "EquipmentAssignments";
+        public const string EquipmentReservations = "EquipmentReservations";
 
     }
 }

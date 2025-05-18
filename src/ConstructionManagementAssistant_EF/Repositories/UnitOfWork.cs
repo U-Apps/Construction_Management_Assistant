@@ -11,7 +11,7 @@ public class UnitOfWork : IUnitOfWork
     public ITaskRepository Tasks { get; private set; }
     public ITaskAssignmentRepository TaskAssignments { get; private set; }
     public IEquipmentRepository Equipment { get; private set; }
-    public IEquipmentAssignmentRepository EquipmentAssignments { get; private set; }
+    public IEquipmentReservationRepository EquipmentReservations { get; private set; }
     public IDocumentRepository Documents { get; private set; }
 
     public IDocClassRepository DocumentClassifications { get; private set; }
@@ -33,7 +33,7 @@ public class UnitOfWork : IUnitOfWork
         Tasks = new TaskRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskRepository>>());
         TaskAssignments = new TaskAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskAssignmentRepository>>());
         Equipment = new EquipmentRepository(_appDbContext);
-        EquipmentAssignments = new EquipmentAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentAssignmentRepository>>());
+        EquipmentReservations = new EquipmentReservationRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentReservationRepository>>());
         Documents = new DocumentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>(), serviceProvider.GetRequiredService<Supabase.Client>());
         DocumentClassifications = new DocumentClassificationRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>());
     }

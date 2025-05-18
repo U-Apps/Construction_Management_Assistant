@@ -19,7 +19,7 @@ namespace ConstructionManagementAssistant.EF.Data
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<Documnet> Documnets { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
-        public DbSet<EquipmentAssignment> EquipmentAssignments { get; set; }
+        public DbSet<EquipmentReservation> EquipmentReservations { get; set; }
         #endregion
 
         public AppDbContext()
@@ -215,14 +215,14 @@ namespace ConstructionManagementAssistant.EF.Data
             });
             #endregion
 
-            #region EquipmentAssignment Configuration
-            modelBuilder.Entity<EquipmentAssignment>(builder =>
+            #region EquipmentReservation Configuration
+            modelBuilder.Entity<EquipmentReservation>(builder =>
             {
-                builder.ToTable(TablesNames.EquipmentAssignments);
+                builder.ToTable(TablesNames.EquipmentReservations);
                 builder.HasKey(ea => ea.Id);
 
-                builder.Property(ea => ea.BookDate).IsRequired();
-                builder.Property(ea => ea.ExpectedReturnDate).IsRequired();
+                builder.Property(ea => ea.StartDate).IsRequired();
+                builder.Property(ea => ea.EndDate).IsRequired();
 
                 builder.HasOne(ea => ea.Equipment)
                     .WithMany(e => e.Assignments)
@@ -230,11 +230,11 @@ namespace ConstructionManagementAssistant.EF.Data
                     .OnDelete(DeleteBehavior.Cascade);
 
                 builder.HasOne(ea => ea.Project)
-                    .WithMany(p => p.EquipmentAssignments)
+                    .WithMany(p => p.EquipmentReservations)
                     .HasForeignKey(ea => ea.ProjectId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                //builder.HasData(SeedData.SeedEquipmentAssignments());
+                //builder.HasData(SeedData.SeedEquipmentReservations());
 
             });
             #endregion

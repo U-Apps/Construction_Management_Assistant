@@ -1,102 +1,92 @@
 namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
-public class EquipmentAssignmentController(IUnitOfWork _unitOfWork) : ControllerBase
+public class EquipmentReservationController(IUnitOfWork _unitOfWork) : ControllerBase
 {
     /// <summary>
-    /// Assigns a piece of equipment to a project.
+    /// Reserves a piece of equipment for a project.
     /// </summary>
-    /// <param name="dto">The assignment details including equipment ID, project ID, and expected return date.</param>
+    /// <param name="dto">The reservation details including equipment ID, project ID, start date, and end date.</param>
     /// <returns>
-    /// Returns <see cref="OkObjectResult"/> with a success message if the assignment is successful,
-    /// or <see cref="BadRequestObjectResult"/> with an error message if the assignment fails.
+    /// Returns <see cref="OkObjectResult"/> with a success message if the reservation is successful,
+    /// or <see cref="BadRequestObjectResult"/> with an error message if the reservation fails.
     /// </returns>
-    /// <response code="200">Assignment was successful.</response>
-    /// <response code="400">Assignment failed due to invalid data or business rules.</response>
-    [HttpPost(SystemApiRouts.EquipmentAssignments.Assign)]
+    /// <response code="200">Reservation was successful.</response>
+    /// <response code="400">Reservation failed due to invalid data or business rules.</response>
+    [HttpPost(SystemApiRouts.EquipmentReservations.Reserve)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AssignEquipmentToProject([FromBody] AssignEquipmentDto dto)
+    public async Task<IActionResult> ReserveEquipmentForProject([FromBody] ReserveEquipmentDto dto)
     {
-        var result = await _unitOfWork.EquipmentAssignments.AssignEquipmentToProjectAsync(
-            dto.EquipmentId, dto.ProjectId, dto.ExpectedReturnDate);
+        var result = await _unitOfWork.EquipmentReservations.ReserveEquipmentForProjectAsync(
+            dto.EquipmentId, dto.ProjectId, dto.StartDate, dto.EndDate);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);
     }
 
     /// <summary>
-    /// Unassigns a piece of equipment from a project.
+    /// Removes a reservation for a piece of equipment from a project.
     /// </summary>
-    /// <param name="assignmentId">The unique identifier of the equipment assignment to remove.</param>
+    /// <param name="reservationId">The unique identifier of the equipment reservation to remove.</param>
     /// <returns>
-    /// Returns <see cref="OkObjectResult"/> with a success message if the unassignment is successful,
-    /// or <see cref="BadRequestObjectResult"/> with an error message if the unassignment fails.
+    /// Returns <see cref="OkObjectResult"/> with a success message if the removal is successful,
+    /// or <see cref="BadRequestObjectResult"/> with an error message if the removal fails.
     /// </returns>
-    /// <response code="200">Unassignment was successful.</response>
-    /// <response code="400">Unassignment failed due to invalid assignment ID or business rules.</response>
-    [HttpDelete(SystemApiRouts.EquipmentAssignments.Unassign)]
+    /// <response code="200">Removal was successful.</response>
+    /// <response code="400">Removal failed due to invalid reservation ID or business rules.</response>
+    [HttpDelete(SystemApiRouts.EquipmentReservations.RemoveReservation)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UnassignEquipmentFromProject(int assignmentId)
+    public async Task<IActionResult> RemoveEquipmentReservation(int reservationId)
     {
-        var result = await _unitOfWork.EquipmentAssignments.UnassignEquipmentFromProjectAsync(assignmentId);
+        var result = await _unitOfWork.EquipmentReservations.RemoveEquipmentReservationAsync(reservationId);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);
     }
 
-
-
-
-
-
     /// <summary>
-    /// Retrieves all equipment assignments.
+    /// Retrieves all equipment reservations.
     /// </summary>
-    /// <returns>Returns a list of all equipment assignments.</returns>
-    [HttpGet(SystemApiRouts.EquipmentAssignments.GetAll)]
-    [ProducesResponseType(typeof(List<GetEquipmentAssignmentDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllAssignments()
+    /// <returns>Returns a list of all equipment reservations.</returns>
+    [HttpGet(SystemApiRouts.EquipmentReservations.GetAll)]
+    [ProducesResponseType(typeof(List<GetEquipmentReservationDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllReservations()
     {
-        var result = await _unitOfWork.EquipmentAssignments.GetAllAssignmentsAsync();
+        var result = await _unitOfWork.EquipmentReservations.GetAllEquipmentReservationsAsync();
         return Ok(result);
     }
 
-
-
-
-
-
     /// <summary>
-    /// Retrieves all equipment assignments for a specific equipment item.
+    /// Retrieves all equipment reservations for a specific equipment item.
     /// </summary>
     /// <param name="equipmentId">The unique identifier of the equipment.</param>
     /// <returns>
-    /// Returns <see cref="OkObjectResult"/> with a list of equipment assignments for the specified equipment.
+    /// Returns <see cref="OkObjectResult"/> with a list of equipment reservations for the specified equipment.
     /// </returns>
-    /// <response code="200">Returns the list of assignments for the equipment.</response>
-    [HttpGet(SystemApiRouts.EquipmentAssignments.GetByEquipment)]
-    [ProducesResponseType(typeof(List<GetEquipmentAssignmentDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAssignmentsByEquipmentId(int equipmentId)
+    /// <response code="200">Returns the list of reservations for the equipment.</response>
+    [HttpGet(SystemApiRouts.EquipmentReservations.GetByEquipment)]
+    [ProducesResponseType(typeof(List<GetEquipmentReservationDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetReservationsByEquipmentId(int equipmentId)
     {
-        var result = await _unitOfWork.EquipmentAssignments.GetAssignmentsByEquipmentIdAsync(equipmentId);
+        var result = await _unitOfWork.EquipmentReservations.GetEquipmentReservationsByEquipmentIdAsync(equipmentId);
         return Ok(result);
     }
 
     /// <summary>
-    /// Retrieves all equipment assignments for a specific project.
+    /// Retrieves all equipment reservations for a specific project.
     /// </summary>
     /// <param name="projectId">The unique identifier of the project.</param>
     /// <returns>
-    /// Returns <see cref="OkObjectResult"/> with a list of equipment assignments for the specified project.
+    /// Returns <see cref="OkObjectResult"/> with a list of equipment reservations for the specified project.
     /// </returns>
-    /// <response code="200">Returns the list of assignments for the project.</response>
-    [HttpGet(SystemApiRouts.EquipmentAssignments.GetByProject)]
-    [ProducesResponseType(typeof(List<GetEquipmentAssignmentDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAssignmentsByProjectId(int projectId)
+    /// <response code="200">Returns the list of reservations for the project.</response>
+    [HttpGet(SystemApiRouts.EquipmentReservations.GetByProject)]
+    [ProducesResponseType(typeof(List<GetEquipmentReservationDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetReservationsByProjectId(int projectId)
     {
-        var result = await _unitOfWork.EquipmentAssignments.GetAssignmentsByProjectIdAsync(projectId);
+        var result = await _unitOfWork.EquipmentReservations.GetEquipmentReservationsByProjectIdAsync(projectId);
         return Ok(result);
     }
 }

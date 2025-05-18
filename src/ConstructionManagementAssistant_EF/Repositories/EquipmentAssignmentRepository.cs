@@ -1,39 +1,19 @@
 ﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
-public class EquipmentAssignmentRepository : IEquipmentAssignmentRepository
+public class EquipmentReservationRepository : IEquipmentReservationRepository
 {
     private readonly AppDbContext _context;
-    private readonly ILogger<EquipmentAssignmentRepository> _logger;
+    private readonly ILogger<EquipmentReservationRepository> _logger;
 
-    public EquipmentAssignmentRepository(AppDbContext context, ILogger<EquipmentAssignmentRepository> logger)
+    public EquipmentReservationRepository(AppDbContext context, ILogger<EquipmentReservationRepository> logger)
     {
         _context = context;
         _logger = logger;
     }
 
-
-    public async Task<List<GetEquipmentAssignmentDto>> GetAllAssignmentsAsync()
+    public async Task<BaseResponse<string>> ReserveEquipmentForProjectAsync(int equipmentId, int projectId, DateTime startDate, DateTime endDate)
     {
-        return await _context.EquipmentAssignments
-            .Select(a => new GetEquipmentAssignmentDto
-            {
-                Id = a.Id,
-                ProjectId = a.ProjectId,
-                ProjectName = a.Project.Name,
-                EquipmentId = a.Equipment.Id,
-                EquipmentName = a.Equipment.Name,
-                BookDate = a.BookDate,
-                ExpectedReturnDate = a.ExpectedReturnDate,
-                ActualReturnDate = a.ActualReturnDate
-            }).ToListAsync();
-    }
-
-
-
-
-    public async Task<BaseResponse<string>> AssignEquipmentToProjectAsync(int equipmentId, int projectId, DateTime expectedReturnDate)
-    {
-        _logger.LogInformation("Assigning equipment {EquipmentId} to project {ProjectId}", equipmentId, projectId);
+        _logger.LogInformation("Reserving equipment {EquipmentId} for project {ProjectId}", equipmentId, projectId);
 
         var equipment = await _context.Equipments.FindAsync(equipmentId);
         if (equipment == null)
@@ -46,77 +26,111 @@ public class EquipmentAssignmentRepository : IEquipmentAssignmentRepository
         if (equipment.Status != EquipmentStatus.Available)
             return new BaseResponse<string> { Success = false, Message = "المعدة غير متاحة للحجز" };
 
-        var assignment = new EquipmentAssignment
+        // Overlap prevention: check for conflicting reservations
+        bool hasConflict = await _context.EquipmentReservations
+            .AnyAsync(r =>
+                r.EquipmentId == equipmentId &&
+                !r.IsCompleted &&
+                (
+                    (startDate < r.EndDate && endDate > r.StartDate)
+                )
+            );
+
+        if (hasConflict)
+            return new BaseResponse<string> { Success = false, Message = "هناك حجز آخر متداخل لهذه المعدة في الفترة المحددة" };
+
+        var reservation = new EquipmentReservation
         {
             EquipmentId = equipmentId,
             ProjectId = projectId,
-            BookDate = DateTime.Now,
-            ExpectedReturnDate = expectedReturnDate
+            StartDate = startDate,
+            EndDate = endDate,
+            IsCompleted = false
         };
 
-        equipment.Status = EquipmentStatus.InUse;
+        equipment.Status = EquipmentStatus.Reserved;
         equipment.ModifiedDate = DateTime.Now;
-        _context.EquipmentAssignments.Add(assignment);
+        _context.EquipmentReservations.Add(reservation);
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Equipment {EquipmentId} assigned to project {ProjectId}", equipmentId, projectId);
+        _logger.LogInformation("Equipment {EquipmentId} reserved for project {ProjectId}", equipmentId, projectId);
 
         return new BaseResponse<string> { Success = true, Message = "تم حجز المعدة للمشروع بنجاح" };
     }
 
-    public async Task<BaseResponse<string>> UnassignEquipmentFromProjectAsync(int equipmentAssignmentId)
+    public async Task<BaseResponse<string>> RemoveEquipmentReservationAsync(int equipmentReservationId)
     {
-        _logger.LogInformation("Unassigning equipment assignment {AssignmentId}", equipmentAssignmentId);
+        _logger.LogInformation("Removing equipment reservation {ReservationId}", equipmentReservationId);
 
-        var assignment = await _context.EquipmentAssignments
+        var reservation = await _context.EquipmentReservations
             .Include(a => a.Equipment)
-            .FirstOrDefaultAsync(a => a.Id == equipmentAssignmentId);
+            .FirstOrDefaultAsync(a => a.Id == equipmentReservationId);
 
-        if (assignment == null)
+        if (reservation == null)
             return new BaseResponse<string> { Success = false, Message = "الحجز غير موجود" };
 
-        assignment.Equipment.Status = EquipmentStatus.Available;
-        assignment.Equipment.ModifiedDate = DateTime.Now;
-        assignment.ActualReturnDate = DateTime.Now;
-        //_context.EquipmentAssignments.Remove(assignment);
+        reservation.Equipment.Status = EquipmentStatus.Available;
+        reservation.Equipment.ModifiedDate = DateTime.Now;
+        reservation.IsCompleted = true;
+        // If you have ActualReturnDate, set it here:
+        // reservation.ActualReturnDate = DateTime.Now;
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Equipment assignment {AssignmentId} removed", equipmentAssignmentId);
+        _logger.LogInformation("Equipment reservation {ReservationId} removed", equipmentReservationId);
 
         return new BaseResponse<string> { Success = true, Message = "تم إلغاء حجز المعدة بنجاح" };
     }
 
-    public async Task<List<GetEquipmentAssignmentDto>> GetAssignmentsByEquipmentIdAsync(int equipmentId)
+    public async Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByEquipmentIdAsync(int equipmentId)
     {
-        return await _context.EquipmentAssignments
+        return await _context.EquipmentReservations
             .Where(a => a.EquipmentId == equipmentId)
-            .Select(a => new GetEquipmentAssignmentDto
+            .Select(a => new GetEquipmentReservationDto
             {
                 Id = a.Id,
                 ProjectId = a.ProjectId,
                 ProjectName = a.Project.Name,
                 EquipmentId = a.Equipment.Id,
                 EquipmentName = a.Equipment.Name,
-                BookDate = a.BookDate,
-                ExpectedReturnDate = a.ExpectedReturnDate,
-                ActualReturnDate = a.ActualReturnDate
+                StartDate = a.StartDate,
+                EndDate = a.EndDate,
+                IsCompleted = a.IsCompleted
+                // If you have ActualReturnDate, map it here
             }).ToListAsync();
     }
 
-    public async Task<List<GetEquipmentAssignmentDto>> GetAssignmentsByProjectIdAsync(int projectId)
+    public async Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByProjectIdAsync(int projectId)
     {
-        return await _context.EquipmentAssignments
+        return await _context.EquipmentReservations
             .Where(a => a.ProjectId == projectId)
-            .Select(a => new GetEquipmentAssignmentDto
+            .Select(a => new GetEquipmentReservationDto
             {
                 Id = a.Id,
                 ProjectId = a.ProjectId,
                 ProjectName = a.Project.Name,
                 EquipmentId = a.Equipment.Id,
                 EquipmentName = a.Equipment.Name,
-                BookDate = a.BookDate,
-                ExpectedReturnDate = a.ExpectedReturnDate,
-                ActualReturnDate = a.ActualReturnDate
+                StartDate = a.StartDate,
+                EndDate = a.EndDate,
+                IsCompleted = a.IsCompleted
+                // If you have ActualReturnDate, map it here
+            }).ToListAsync();
+    }
+
+    public async Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync()
+    {
+        return await _context.EquipmentReservations
+            .Select(a => new GetEquipmentReservationDto
+            {
+                Id = a.Id,
+                ProjectId = a.ProjectId,
+                ProjectName = a.Project.Name,
+                EquipmentId = a.Equipment.Id,
+                EquipmentName = a.Equipment.Name,
+                StartDate = a.StartDate,
+                EndDate = a.EndDate,
+                IsCompleted = a.IsCompleted
+                // If you have ActualReturnDate, map it here
             }).ToListAsync();
     }
 }

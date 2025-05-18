@@ -30,7 +30,7 @@ public class Project : IEntity, ISoftDeletable
 
     public SiteEngineer? SiteEngineer { get; set; }
     public Client? Client { get; set; }
-    public ICollection<EquipmentAssignment> EquipmentAssignments { get; set; }
+    public ICollection<EquipmentReservation> EquipmentReservations { get; set; }
     public ICollection<Documnet> Documents { get; set; }
     public ICollection<Stage>? Stages { get; set; }
 

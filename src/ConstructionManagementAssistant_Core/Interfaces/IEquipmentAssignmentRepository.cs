@@ -1,11 +1,11 @@
 using ConstructionManagementAssistant.Core.Models.Response;
 
-public interface IEquipmentAssignmentRepository
+public interface IEquipmentReservationRepository
 {
-    Task<BaseResponse<string>> AssignEquipmentToProjectAsync(int equipmentId, int projectId, DateTime expectedReturnDate);
-    Task<BaseResponse<string>> UnassignEquipmentFromProjectAsync(int equipmentAssignmentId);
-    Task<List<GetEquipmentAssignmentDto>> GetAssignmentsByEquipmentIdAsync(int equipmentId);
-    Task<List<GetEquipmentAssignmentDto>> GetAssignmentsByProjectIdAsync(int projectId);
-    Task<List<GetEquipmentAssignmentDto>> GetAllAssignmentsAsync();
+    Task<BaseResponse<string>> ReserveEquipmentForProjectAsync(int equipmentId, int projectId, DateTime startDate, DateTime endDate);
+    Task<BaseResponse<string>> RemoveEquipmentReservationAsync(int equipmentReservationId);
+    Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByEquipmentIdAsync(int equipmentId);
+    Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByProjectIdAsync(int projectId);
+    Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync();
 
 }

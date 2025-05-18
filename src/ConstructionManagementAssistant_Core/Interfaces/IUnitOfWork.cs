@@ -11,7 +11,7 @@ public interface IUnitOfWork : IDisposable
     ITaskRepository Tasks { get; }
     ITaskAssignmentRepository TaskAssignments { get; }
     IEquipmentRepository Equipment { get; }
-    IEquipmentAssignmentRepository EquipmentAssignments { get; }
+    IEquipmentReservationRepository EquipmentReservations { get; }
     IDocumentRepository Documents { get; }
     IDocClassRepository DocumentClassifications { get; }
 

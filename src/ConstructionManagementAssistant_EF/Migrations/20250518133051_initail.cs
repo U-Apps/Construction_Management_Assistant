@@ -191,7 +191,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EquipmentAssignments",
+                name: "EquipmentReservations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -204,15 +204,15 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EquipmentAssignments", x => x.Id);
+                    table.PrimaryKey("PK_EquipmentReservations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EquipmentAssignments_Equipments_EquipmentId",
+                        name: "FK_EquipmentReservations_Equipments_EquipmentId",
                         column: x => x.EquipmentId,
                         principalTable: "Equipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EquipmentAssignments_Projects_ProjectId",
+                        name: "FK_EquipmentReservations_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
@@ -984,13 +984,13 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipmentAssignments_EquipmentId",
-                table: "EquipmentAssignments",
+                name: "IX_EquipmentReservations_EquipmentId",
+                table: "EquipmentReservations",
                 column: "EquipmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipmentAssignments_ProjectId",
-                table: "EquipmentAssignments",
+                name: "IX_EquipmentReservations_ProjectId",
+                table: "EquipmentReservations",
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
@@ -1057,7 +1057,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 name: "Documents");
 
             migrationBuilder.DropTable(
-                name: "EquipmentAssignments");
+                name: "EquipmentReservations");
 
             migrationBuilder.DropTable(
                 name: "TaskAssignments");
