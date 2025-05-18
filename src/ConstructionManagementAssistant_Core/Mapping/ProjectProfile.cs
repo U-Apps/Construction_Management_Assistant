@@ -34,6 +34,18 @@ public static class ProjectProfile
         };
     }
 
+
+    public static Expression<Func<Project, ProjectNameDto>> ToGetProjectNameDto()
+    {
+        return project => new ProjectNameDto
+        {
+            Id = project.Id,
+            Name = project.Name
+        };
+    }
+
+
+
     public static Project ToProject(this AddProjectDto addProjectDto)
     {
         return new Project

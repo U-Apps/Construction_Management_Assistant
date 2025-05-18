@@ -4,15 +4,18 @@ namespace ConstructionManagementAssistant.Core.Interfaces
 {
     public interface IProjectRepository : IBaseRepository<Project>
     {
-        public Task<ProjectDetailsDto?> GetProjectById(int id);
-        public Task<PagedResult<GetProjectsDto>> GetAllProjects(
+        Task<ProjectDetailsDto?> GetProjectById(int id);
+        Task<PagedResult<GetProjectsDto>> GetAllProjects(
             int pageNumber,
             int pageSize,
             ProjectStatus? status = null,
             string? searchTerm = null);
-        public Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto);
-        public Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto);
-        public Task<BaseResponse<string>> DeleteProjectAsync(int id);
+
+        Task<List<ProjectNameDto>> GetAllProjectNames();
+
+        Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto);
+        Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto);
+        Task<BaseResponse<string>> DeleteProjectAsync(int id);
 
 
     }

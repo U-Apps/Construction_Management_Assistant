@@ -26,6 +26,17 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
         return project;
     }
 
+
+
+    public async Task<List<ProjectNameDto>> GetAllProjectNames()
+    {
+        var pagedResult = await GetAllDataWithSelectionAsync(
+            orderBy: x => x.Name,
+            selector: ProjectProfile.ToGetProjectNameDto());
+
+        return pagedResult;
+    }
+
     public async Task<PagedResult<GetProjectsDto>> GetAllProjects(
         int pageNumber = 1,
         int pageSize = 10,
@@ -55,6 +66,7 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
 
         return pagedResult;
     }
+
 
     public async Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto)
     {
@@ -154,5 +166,6 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
             Message = "تم حذف المشروع بنجاح"
         };
     }
+
 }
 

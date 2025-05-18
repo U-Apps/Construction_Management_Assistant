@@ -57,6 +57,8 @@ public static class SystemApiRouts
         public const string Base = "api/v1/Projects";
         public const string GetProjectById = Base + "/{id}";
         public const string GetAllProjects = Base;
+        public const string GetAllProjectNames = Base + "/GetAllProjectNames";
+
         public const string AddProject = Base;
         public const string UpdateProject = Base;
         public const string DeleteProject = Base + "/{id}";

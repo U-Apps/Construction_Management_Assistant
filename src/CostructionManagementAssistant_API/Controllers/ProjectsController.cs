@@ -3,7 +3,7 @@
 [ApiController]
 public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
 {
-    #region Get All Projects
+    #region Get 
 
     /// <summary>
     /// الحصول على جميع المشاريع
@@ -42,9 +42,37 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     }
 
 
-    #endregion
 
-    #region Get Project By Id
+
+    /// <summary>
+    /// الحصول على أسماء جميع المشاريع
+    /// </summary>
+    /// <returns>قائمة بأسماء المشاريع</returns>
+    /// <response code="200">تم العثور على أسماء المشاريع</response>
+    [HttpGet(SystemApiRouts.Projects.GetAllProjectNames)]
+    [ProducesResponseType(typeof(BaseResponse<List<ProjectNameDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllProjectNames()
+    {
+        var projectNames = await _unitOfWork.Projects.GetAllProjectNames();
+        if (projectNames == null || projectNames.Count == 0)
+        {
+            return NotFound(new BaseResponse<List<ProjectNameDto>>
+            {
+                Success = false,
+                Message = "لم يتم العثور على أسماء المشاريع",
+            });
+        }
+
+        return Ok(new BaseResponse<List<ProjectNameDto>>
+        {
+            Success = true,
+            Message = "تم جلب أسماء المشاريع بنجاح",
+            Data = projectNames,
+        });
+    }
+
+
+
 
     /// <summary>
     /// الحصول على مشروع بواسطة المعرف
@@ -350,6 +378,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
             Data = response.Data,
         });
     }
+
 
     #endregion
 }
