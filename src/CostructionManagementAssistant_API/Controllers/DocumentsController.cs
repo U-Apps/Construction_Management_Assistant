@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructionManagementAssistant.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class DocumentsController(IUnitOfWork _unitOfWork) : ControllerBase
     {
-        [HttpPost("upload")]
+        [HttpPost(SystemApiRouts.Documents.UploadDocument)]
         public async Task<IActionResult> UploadDocument([FromForm]UploadFileRequest document)
         {
             if (document == null || document.File == null)
@@ -24,7 +23,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet(SystemApiRouts.Documents.GetAllDocuments)]
         public async Task<IActionResult> GetAllDocs(int projectId,
                                                     int? TaskId = null,
                                                     int pageNumber = 1,
@@ -50,7 +49,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             });
         }
 
-        [HttpGet("{Id:guid}")]
+        [HttpGet(SystemApiRouts.Documents.GetDocumentById)]
         public async Task<IActionResult> GetDocumentById(Guid Id)
         {
             var result = await _unitOfWork.Documents.GetDocumentByIdAsync(Id);
@@ -69,7 +68,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             });
         }
 
-        [HttpPut]
+        [HttpPut(SystemApiRouts.Documents.UpdateDocument)]
         public async Task<IActionResult> UpdateClient(UpdateDocumentRequest payload)
         {
             var result = await _unitOfWork.Documents.UpdateDocumentAsync(payload);
@@ -78,7 +77,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{Id:guid}")]
+        [HttpDelete(SystemApiRouts.Documents.DeleteDocument)]
         public async Task<IActionResult> DeleteDocument(Guid Id)
         {
             var result = await _unitOfWork.Documents.DeleteDocumentAsync(Id);

@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructionManagementAssistant.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class DocumentClassificationsController(IUnitOfWork _unitOfWork) : ControllerBase
     {
        
-        [HttpPost("{type}")]
+        [HttpPost(SystemApiRouts.DocumentClassifications.AddDocumentClassification)]
         public async Task<IActionResult> CreateAsync([FromRoute] string type)
         {
             var response = await _unitOfWork.DocumentClassifications.CreateAsync(type);
@@ -19,17 +18,17 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        [HttpGet(SystemApiRouts.DocumentClassifications.GetDocumentClassificationById)]
+        public async Task<IActionResult> GetAsync(int Id)
         {
-            var response = await _unitOfWork.DocumentClassifications.GetAsync(id);
+            var response = await _unitOfWork.DocumentClassifications.GetAsync(Id);
             if (!response.Success)
                 return NotFound(response);
 
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet(SystemApiRouts.DocumentClassifications.GetAllDocumentClassifications)]
         public async Task<IActionResult> GetAllAsync()
         {
             var response = await _unitOfWork.DocumentClassifications.GetAllAsync();
@@ -39,7 +38,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut(SystemApiRouts.DocumentClassifications.UpdateDocumentClassification)]
         public async Task<IActionResult> UpdateAsync([FromBody] DocumentClassification type)
         {
             var response = await _unitOfWork.DocumentClassifications.UpdateAsync(type);
@@ -49,10 +48,10 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        [HttpDelete(SystemApiRouts.DocumentClassifications.DeleteDocumentClassification)]
+        public async Task<IActionResult> DeleteAsync(int Id)
         {
-            var response = await _unitOfWork.DocumentClassifications.DeleteAsync(id);
+            var response = await _unitOfWork.DocumentClassifications.DeleteAsync(Id);
             if (!response.Success)
                 return BadRequest(response);
 
