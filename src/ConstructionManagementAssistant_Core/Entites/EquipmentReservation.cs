@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.Core.Entites;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ConstructionManagementAssistant.Core.Entites;
 
 public class EquipmentReservation
 {
@@ -11,5 +13,6 @@ public class EquipmentReservation
 
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public bool IsCompleted { get; set; }
+    [NotMapped]
+    public bool IsActive { get; set; }
 }

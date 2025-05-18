@@ -1,5 +1,6 @@
 using ConstructionManagementAssistant.Core.Models.Response;
 
+namespace ConstructionManagementAssistant.Core.Interfaces;
 public interface IEquipmentReservationRepository
 {
     Task<BaseResponse<string>> ReserveEquipmentForProjectAsync(int equipmentId, int projectId, DateTime startDate, DateTime endDate);

@@ -1791,7 +1791,7 @@ public static class SeedData
             },
             new Equipment {
                 Id = 2, Name = "Bulldozer", Model = "Komatsu D65PX-18", SerialNumber = "BUL-2022-045",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2022, 11, 10),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 11, 10),
                 Notes = "Currently at downtown construction site", CreatedDate = new DateTime(2022, 11, 15),
                 ModifiedDate = new DateTime(2023, 5, 1)
             },
@@ -1813,7 +1813,7 @@ public static class SeedData
             },
             new Equipment {
                 Id = 6, Name = "Motor Grader", Model = "CAT 120K", SerialNumber = "GRD-2020-034",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2020, 3, 10),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2020, 3, 10),
                 Notes = "Road construction project", CreatedDate = new DateTime(2020, 3, 12),
                 ModifiedDate = new DateTime(2023, 4, 18)
             },
@@ -1824,13 +1824,13 @@ public static class SeedData
             },
             new Equipment {
                 Id = 8, Name = "Crawler Dozer", Model = "CAT D6T", SerialNumber = "CDZ-2019-023",
-                Status = EquipmentStatus.OutOfService, PurchaseDate = new DateTime(2019, 2, 15),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2019, 2, 15),
                 Notes = "Pending major engine overhaul", CreatedDate = new DateTime(2019, 2, 20),
                 ModifiedDate = new DateTime(2023, 3, 10)
             },
             new Equipment {
                 Id = 9, Name = "Telescopic Handler", Model = "JCB 536-70", SerialNumber = "TH-2022-091",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2022, 9, 5),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 9, 5),
                 Notes = "High reach capability", CreatedDate = new DateTime(2022, 9, 8),
                 ModifiedDate = new DateTime(2023, 5, 15)
             },
@@ -1843,7 +1843,7 @@ public static class SeedData
             // Concrete Equipment (11-15)
             new Equipment {
                 Id = 11, Name = "Concrete Mixer Truck", Model = "Putzmeister M42", SerialNumber = "CMT-2021-045",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2021, 6, 14),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 6, 14),
                 Notes = "9 cubic meter capacity", CreatedDate = new DateTime(2021, 6, 16),
                 ModifiedDate = new DateTime(2023, 5, 12)
             },
@@ -1854,7 +1854,7 @@ public static class SeedData
             },
             new Equipment {
                 Id = 13, Name = "Concrete Vibrator", Model = "Wacker Neuson AR36", SerialNumber = "CV-2023-009",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2023, 3, 10),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2023, 3, 10),
                 Notes = "Internal vibration system", CreatedDate = new DateTime(2023, 3, 12)
             },
             new Equipment {
@@ -1872,7 +1872,7 @@ public static class SeedData
             // Cranes and Lifting (16-20)
             new Equipment {
                 Id = 16, Name = "Tower Crane", Model = "Liebherr 63EC", SerialNumber = "TC-2021-007",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2021, 3, 15),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 3, 15),
                 Notes = "High-rise construction project", CreatedDate = new DateTime(2021, 3, 18),
                 ModifiedDate = new DateTime(2023, 4, 22)
             },
@@ -1889,7 +1889,7 @@ public static class SeedData
             },
             new Equipment {
                 Id = 19, Name = "Forklift", Model = "Toyota 8FGCU25", SerialNumber = "FL-2021-038",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2021, 9, 12),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 9, 12),
                 Notes = "Warehouse operations", CreatedDate = new DateTime(2021, 9, 15),
                 ModifiedDate = new DateTime(2023, 5, 18)
             },
@@ -1907,7 +1907,7 @@ public static class SeedData
             },
             new Equipment {
                 Id = 22, Name = "Plate Compactor", Model = "Wacker Neuson WP1550", SerialNumber = "PC-2021-029",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2021, 10, 15),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 10, 15),
                 Notes = "Trench backfilling", CreatedDate = new DateTime(2021, 10, 18),
                 ModifiedDate = new DateTime(2023, 5, 22)
             },
@@ -1924,7 +1924,7 @@ public static class SeedData
             },
             new Equipment {
                 Id = 25, Name = "Cold Planer", Model = "Wirtgen W2000", SerialNumber = "CP-2019-015",
-                Status = EquipmentStatus.OutOfService, PurchaseDate = new DateTime(2019, 6, 5),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2019, 6, 5),
                 Notes = "End of service life", CreatedDate = new DateTime(2019, 6, 8),
                 ModifiedDate = new DateTime(2023, 2, 15)
             },
@@ -1932,7 +1932,7 @@ public static class SeedData
             // Support Equipment (26-30)
             new Equipment {
                 Id = 26, Name = "Generator", Model = "Cummins QSK60", SerialNumber = "GEN-2022-032",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2022, 9, 12),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 9, 12),
                 Notes = "Powering north site operations", CreatedDate = new DateTime(2022, 9, 15),
                 ModifiedDate = new DateTime(2023, 5, 20)
             },
@@ -1943,7 +1943,7 @@ public static class SeedData
             },
             new Equipment {
                 Id = 28, Name = "Light Tower", Model = "Generac Light Tower", SerialNumber = "LT-2022-019",
-                Status = EquipmentStatus.Reserved, PurchaseDate = new DateTime(2022, 5, 15),
+                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 5, 15),
                 Notes = "Night shift operations", CreatedDate = new DateTime(2022, 5, 18),
                 ModifiedDate = new DateTime(2023, 5, 25)
             },

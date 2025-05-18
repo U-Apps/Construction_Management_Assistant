@@ -32,6 +32,35 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
             filter = filter.AndAlso(e => e.Status == status.Value);
         }
 
+        // Check for active reservations and update status if needed
+        var equipmentIds = await _context.Equipments.Where(filter).Select(e => e.Id).ToListAsync();
+
+        var activeReservations = await _context.Set<EquipmentReservation>()
+            .Where(r => equipmentIds.Contains(r.EquipmentId) && r.StartDate <= DateTime.Now && r.EndDate > DateTime.Now)
+            .Select(r => r.EquipmentId)
+            .ToListAsync();
+
+        var reservedIds = activeReservations;
+        var availableIds = equipmentIds.Except(reservedIds).ToList();
+
+        if (reservedIds.Any())
+        {
+            await _context.Equipments
+                .Where(x => reservedIds.Contains(x.Id))
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(e => e.Status, EquipmentStatus.Reserved)
+                    .SetProperty(e => e.ModifiedDate, DateTime.Now));
+        }
+
+        if (availableIds.Any())
+        {
+            await _context.Equipments
+                .Where(x => availableIds.Contains(x.Id))
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(e => e.Status, EquipmentStatus.Available)
+                    .SetProperty(e => e.ModifiedDate, DateTime.Now));
+        }
+
         var pagedResult = await GetPagedDataWithSelectionAsync(
             orderBy: x => x.Name,
             selector: EquipmentProfile.ToGetEquipmentDto(),
@@ -44,6 +73,28 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
 
     public async Task<EquipmentDetailsDto?> GetEquipmentById(int id)
     {
+
+        var ActiveReservation = await _context.Set<EquipmentReservation>()
+            .FirstOrDefaultAsync(r => r.EquipmentId == id && r.StartDate <= DateTime.Now && r.EndDate > DateTime.Now);
+
+
+        if (ActiveReservation is not null)
+        {
+            await _context.Equipments
+         .Where(x => x.Id == id)
+         .ExecuteUpdateAsync(setters => setters
+             .SetProperty(e => e.Status, EquipmentStatus.Reserved)
+             .SetProperty(e => e.ModifiedDate, DateTime.Now));
+        }
+        else
+        {
+            await _context.Equipments
+             .Where(x => x.Id == id)
+             .ExecuteUpdateAsync(setters => setters
+                 .SetProperty(e => e.Status, EquipmentStatus.Available)
+                .SetProperty(e => e.ModifiedDate, DateTime.Now));
+        }
+
         return await _context.Equipments
             .Include(e => e.Assignments)
             .ThenInclude(a => a.Project)

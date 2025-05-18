@@ -1,6 +1,4 @@
-﻿namespace ConstructionManagementAssistant.EF.Repositories;
-
-public class EquipmentReservationRepository : IEquipmentReservationRepository
+﻿public class EquipmentReservationRepository : IEquipmentReservationRepository
 {
     private readonly AppDbContext _context;
     private readonly ILogger<EquipmentReservationRepository> _logger;
@@ -19,8 +17,7 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
         if (equipment == null)
             return new BaseResponse<string> { Success = false, Message = "المعدة غير موجودة" };
 
-        var project = await _context.Projects.FindAsync(projectId);
-        if (project == null)
+        if (!await _context.Projects.AnyAsync(x => x.Id == projectId))
             return new BaseResponse<string> { Success = false, Message = "المشروع غير موجود" };
 
         if (equipment.Status != EquipmentStatus.Available)
@@ -30,11 +27,9 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
         bool hasConflict = await _context.EquipmentReservations
             .AnyAsync(r =>
                 r.EquipmentId == equipmentId &&
-                !r.IsCompleted &&
-                (
-                    (startDate < r.EndDate && endDate > r.StartDate)
-                )
+                (startDate < r.EndDate && endDate > r.StartDate) || (startDate > r.EndDate && endDate < r.StartDate)
             );
+
 
         if (hasConflict)
             return new BaseResponse<string> { Success = false, Message = "هناك حجز آخر متداخل لهذه المعدة في الفترة المحددة" };
@@ -45,13 +40,11 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
             ProjectId = projectId,
             StartDate = startDate,
             EndDate = endDate,
-            IsCompleted = false
         };
 
-        equipment.Status = EquipmentStatus.Reserved;
-        equipment.ModifiedDate = DateTime.Now;
         _context.EquipmentReservations.Add(reservation);
         await _context.SaveChangesAsync();
+
 
         _logger.LogInformation("Equipment {EquipmentId} reserved for project {ProjectId}", equipmentId, projectId);
 
@@ -63,17 +56,14 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
         _logger.LogInformation("Removing equipment reservation {ReservationId}", equipmentReservationId);
 
         var reservation = await _context.EquipmentReservations
-            .Include(a => a.Equipment)
             .FirstOrDefaultAsync(a => a.Id == equipmentReservationId);
 
         if (reservation == null)
             return new BaseResponse<string> { Success = false, Message = "الحجز غير موجود" };
 
-        reservation.Equipment.Status = EquipmentStatus.Available;
-        reservation.Equipment.ModifiedDate = DateTime.Now;
-        reservation.IsCompleted = true;
-        // If you have ActualReturnDate, set it here:
-        // reservation.ActualReturnDate = DateTime.Now;
+        // Remove the reservation from the database
+        _context.EquipmentReservations.Remove(reservation);
+
         await _context.SaveChangesAsync();
 
         _logger.LogInformation("Equipment reservation {ReservationId} removed", equipmentReservationId);
@@ -81,8 +71,10 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
         return new BaseResponse<string> { Success = true, Message = "تم إلغاء حجز المعدة بنجاح" };
     }
 
+
     public async Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByEquipmentIdAsync(int equipmentId)
     {
+        var now = DateTime.Now;
         return await _context.EquipmentReservations
             .Where(a => a.EquipmentId == equipmentId)
             .Select(a => new GetEquipmentReservationDto
@@ -94,13 +86,13 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
                 EquipmentName = a.Equipment.Name,
                 StartDate = a.StartDate,
                 EndDate = a.EndDate,
-                IsCompleted = a.IsCompleted
-                // If you have ActualReturnDate, map it here
+                IsActive = IsReservationActive(a.StartDate, a.EndDate, now)
             }).ToListAsync();
     }
 
     public async Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByProjectIdAsync(int projectId)
     {
+        var now = DateTime.Now;
         return await _context.EquipmentReservations
             .Where(a => a.ProjectId == projectId)
             .Select(a => new GetEquipmentReservationDto
@@ -112,13 +104,13 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
                 EquipmentName = a.Equipment.Name,
                 StartDate = a.StartDate,
                 EndDate = a.EndDate,
-                IsCompleted = a.IsCompleted
-                // If you have ActualReturnDate, map it here
+                IsActive = IsReservationActive(a.StartDate, a.EndDate, now)
             }).ToListAsync();
     }
 
     public async Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync()
     {
+        var now = DateTime.Now;
         return await _context.EquipmentReservations
             .Select(a => new GetEquipmentReservationDto
             {
@@ -129,8 +121,15 @@ public class EquipmentReservationRepository : IEquipmentReservationRepository
                 EquipmentName = a.Equipment.Name,
                 StartDate = a.StartDate,
                 EndDate = a.EndDate,
-                IsCompleted = a.IsCompleted
-                // If you have ActualReturnDate, map it here
+                IsActive = IsReservationActive(a.StartDate, a.EndDate, now)
             }).ToListAsync();
     }
+    private static bool IsReservationActive(DateTime startDate, DateTime endDate, DateTime? reference = null)
+    {
+        var now = reference ?? DateTime.Now;
+        var result = startDate <= now && endDate > now;
+        return result;
+    }
+
+
 }

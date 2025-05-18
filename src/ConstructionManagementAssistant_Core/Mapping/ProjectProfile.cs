@@ -12,7 +12,6 @@ public static class ProjectProfile
             ProjectName = project.Name,
             SiteAddress = project.SiteAddress,
             ClientName = project.Client.FullName,
-            SiteEngineerName = project.SiteEngineer.GetFullName(),
             ProjectStatus = (project.Status).GetDisplayName(),
             Progress =
                 project.Stages != null && project.Stages.Any(s => s.Tasks != null && s.Tasks.Any())
