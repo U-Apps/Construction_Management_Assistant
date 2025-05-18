@@ -138,16 +138,21 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SetEquipmentStatus(int equipmentId,
-        [AllowedValues([EquipmentStatus.OutOfService, EquipmentStatus.UnderMaintenance, EquipmentStatus.Available])]
+
+        [AllowedValues(
+        [EquipmentStatus.OutOfService,
+            EquipmentStatus.UnderMaintenance,
+            EquipmentStatus.Available]
+        )]
         EquipmentStatus status)
     {
         // Only allow status values in the allowed array
-        if (status != EquipmentStatus.OutOfService && status != EquipmentStatus.UnderMaintenance)
+        if (status != EquipmentStatus.OutOfService && status != EquipmentStatus.UnderMaintenance && status != EquipmentStatus.Available)
         {
             return BadRequest(new BaseResponse<string>
             {
                 Success = false,
-                Message = "Only OutOfService and UnderMaintenance statuses are allowed."
+                Message = "Only OutOfService , availbale and UnderMaintenance statuses are allowed."
             });
         }
 
