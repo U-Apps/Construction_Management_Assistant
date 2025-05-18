@@ -47,7 +47,9 @@ namespace ConstructionManagementAssistant.Core.DTOs
     {
         public required int Id { get; init; }
         public required string ProjectName { get; init; }
+        public string? SiteEngineerName { get; init; }
         public string? SiteAddress { get; init; }
+        public int Progress { get; set; }
         public required string ClientName { get; init; }
         public required string ProjectStatus { get; init; }
     }
@@ -69,6 +71,8 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public required string ProjectStatus { get; init; }
         public string? SiteEngineerName { get; init; }
         public required string ClientName { get; init; }
+        public int Progress { get; set; }
+
         public DateOnly? StartDate { get; init; }
         public DateOnly? ExpectedEndDate { get; init; }
 

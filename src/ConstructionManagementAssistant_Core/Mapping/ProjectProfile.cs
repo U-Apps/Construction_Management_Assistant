@@ -12,7 +12,25 @@ public static class ProjectProfile
             ProjectName = project.Name,
             SiteAddress = project.SiteAddress,
             ClientName = project.Client.FullName,
+            SiteEngineerName = project.SiteEngineer.GetFullName(),
             ProjectStatus = (project.Status).GetDisplayName(),
+            Progress =
+                project.Stages != null && project.Stages.Any(s => s.Tasks != null && s.Tasks.Any())
+                    ? (int)(
+                        (project.Stages
+                            .SelectMany(s => s.Tasks)
+                            .Where(t => t.IsCompleted)
+                            .Count() * 100.0) /
+                        (project.Stages
+                            .SelectMany(s => s.Tasks)
+                            .Count() == 0
+                            ? 1
+                            : project.Stages
+                                .SelectMany(s => s.Tasks)
+                                .Count())
+                      )
+                    : 0,
+
         };
     }
 
@@ -28,6 +46,7 @@ public static class ProjectProfile
             ClientId = addProjectDto.ClientId,
             StartDate = addProjectDto.StartDate,
             ExpectedEndDate = addProjectDto.ExpectedEndDate
+
         };
     }
     public static Expression<Func<Project, ProjectDetailsDto>> ToProjectDetails()
@@ -39,15 +58,29 @@ public static class ProjectProfile
             Description = Project.Description,
             SiteAddress = Project.SiteAddress,
             GeographicalCoordinates = Project.GeographicalCoordinates,
-            SiteEngineerName = Project.SiteEngineer.GetFullName(),
-            ClientName = Project.Client.FullName,
+            SiteEngineerName = Project.SiteEngineer != null ? Project.SiteEngineer.GetFullName() : null,
+            ClientName = Project.Client != null ? Project.Client.FullName : string.Empty,
             StartDate = Project.StartDate,
             ExpectedEndDate = Project.ExpectedEndDate,
             ProjectStatus = Project.Status.GetDisplayName(),
-
+            Progress =
+                Project.Stages != null && Project.Stages.Any(s => s.Tasks != null && s.Tasks.Any())
+                    ? (int)(
+                        (Project.Stages
+                            .SelectMany(s => s.Tasks)
+                            .Where(t => t.IsCompleted)
+                            .Count() * 100.0) /
+                        (Project.Stages
+                            .SelectMany(s => s.Tasks)
+                            .Count() == 0
+                            ? 1
+                            : Project.Stages
+                                .SelectMany(s => s.Tasks)
+                                .Count())
+                      )
+                    : 0,
             CancellationReason = Project.CancelationReason,
             CancellationDate = Project.CancelationDate,
-
             CompletionDate = Project.CompletionDate,
             HandoverDate = Project.HandoverDate,
         };
