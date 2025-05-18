@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.Core.Entites
+﻿using System.Text.Json.Serialization;
+
+namespace ConstructionManagementAssistant.Core.Entites
 {
     public class DocumentClassification
     {
@@ -6,6 +8,7 @@
 
         public string? Type { get; set; }
 
+        [JsonIgnore]
         public List<Documnet>? Documnets { get; set; }
     }
 }

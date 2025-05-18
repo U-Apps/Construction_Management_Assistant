@@ -17,7 +17,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             // Check if the classification already exists
             var existingClassification = await _context.Set<DocumentClassification>()
                 .FirstOrDefaultAsync(c => c.Type == type);
-            if (existingClassification == null)
+            if (existingClassification != null)
             {
                 return new BaseResponse<DocumentClassification>
                 {
@@ -68,6 +68,16 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 {
                     Success = false,
                     Message = "لا يوجد تصنيف بهذا المعرف"
+                };
+            }
+
+            // Check if the classification already exists
+            if (await FindAsync(c => c.Type == entity.Type && c.Id != entity.Id) is not null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "التصنيف موجود مسبقا"
                 };
             }
 
