@@ -117,6 +117,9 @@ public static class SystemApiRouts
         public const string GetByTaskId = Base + "/ByTask/{taskId}";
         public const string GetByWorkerId = Base + "/ByWorker/{workerId}";
         public const string AssignWorkersToTask = Base + "/AssignWorkersToTask";
+        public const string UnAssignWorkersToTask = "api/task-assignments/unassign";
+
+
     }
 
 }

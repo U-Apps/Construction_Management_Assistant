@@ -40,4 +40,15 @@ public class TaskAssignmentsController(IUnitOfWork unitOfWork) : ControllerBase
             return Ok(result);
         return BadRequest(result);
     }
+
+    [HttpPost]
+    [Route(SystemApiRouts.TaskAssignments.UnAssignWorkersToTask)]
+    public async Task<IActionResult> UnAssignWorkersToTask([FromBody] AddTaskAssignmentDto dto)
+    {
+        var result = await unitOfWork.TaskAssignments.UnAssignWorkersToTask(dto.TaskId, dto.WorkerIds);
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
+    }
+
 }

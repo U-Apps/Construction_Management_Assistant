@@ -47,6 +47,33 @@
             };
         }
 
+        public async Task<BaseResponse<string>> UnAssignWorkersToTask(int taskId, List<int> workerIds)
+        {
+            var task = await _context.Tasks
+                .Include(t => t.TaskAssignments)
+                .FirstOrDefaultAsync(t => t.Id == taskId);
+
+            if (task == null)
+                return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
+
+            var assignmentsToRemove = task.TaskAssignments
+                .Where(ta => workerIds.Contains(ta.WorkerId))
+                .ToList();
+
+            if (assignmentsToRemove.Count == 0)
+                return new BaseResponse<string> { Success = false, Message = "لم يتم العثور على أي عمال محددين لهذه المهمة" };
+
+            _context.TaskAssignments.RemoveRange(assignmentsToRemove);
+            await _context.SaveChangesAsync();
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم إلغاء تعيين العمال من المهمة بنجاح"
+            };
+        }
+
+
 
         public async Task<IEnumerable<GetTaskAssignmentDto>> GetAssignmentsByTaskId(int taskId)
         {
@@ -65,5 +92,6 @@
                 criteria: x => x.WorkerId == workerId
             );
         }
+
     }
 }

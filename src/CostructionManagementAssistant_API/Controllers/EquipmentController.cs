@@ -138,7 +138,7 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SetEquipmentStatus(int equipmentId,
-        [AllowedValues([EquipmentStatus.OutOfService, EquipmentStatus.UnderMaintenance])]
+        [AllowedValues([EquipmentStatus.OutOfService, EquipmentStatus.UnderMaintenance, EquipmentStatus.Available])]
         EquipmentStatus status)
     {
         // Only allow status values in the allowed array
