@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initail : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -175,7 +175,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
-                    table.CheckConstraint("CK_Project_CancelationCompletionDate", "[CancelationDate] IS NULL OR [CompletionDate] IS NULL");
+                    table.CheckConstraint("CK_Project_StatusDatesAndReason", "\r\n                            (\r\n                                ([Status] IN (0, 1)) AND [CompletionDate] IS NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 2) AND [CompletionDate] IS NOT NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 3) AND [CompletionDate] IS NULL AND [CancelationDate] IS NOT NULL AND [CancelationReason] IS NOT NULL\r\n                            )\r\n                        ");
                     table.CheckConstraint("CK_Projects_Status", "[Status] BETWEEN 0 AND 3");
                     table.ForeignKey(
                         name: "FK_Projects_Clients_ClientId",
@@ -198,7 +198,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EquipmentId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
-                    CheckoutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BookDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpectedReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ActualReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -274,17 +274,18 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 name: "Documents",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    FileType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Path = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     TaskId = table.Column<int>(type: "int", nullable: true),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
                     ClassificationId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UploadedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -550,13 +551,13 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     { 11, null, null, 11, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مكتبة عامة في المدينة", new DateOnly(2022, 12, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مكتبة عامة", "المدينة، شارع 11", 31, new DateOnly(2022, 10, 1), 0 },
                     { 12, null, null, 12, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء ملعب رياضي حديث", new DateOnly(2022, 12, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء ملعب رياضي", "المدينة، شارع 12", 32, new DateOnly(2022, 10, 1), 0 },
                     { 13, null, null, 13, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء محطة وقود حديثة", new DateOnly(2022, 11, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء محطة وقود", "المدينة، شارع 13", 33, new DateOnly(2022, 10, 1), 0 },
-                    { 14, new DateOnly(2020, 9, 1), null, 14, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مركز صحي في المدينة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مركز صحي", "المدينة، شارع 14", 34, new DateOnly(2022, 10, 1), 2 },
-                    { 15, new DateOnly(2020, 9, 1), null, 15, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مجمع تجاري ضخم", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مجمع تجاري", "المدينة، شارع 15", 35, new DateOnly(2022, 10, 1), 2 },
-                    { 16, new DateOnly(2020, 9, 1), null, 16, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء محطة كهرباء حديثة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء محطة كهرباء", "المدينة، شارع 16", 36, new DateOnly(2022, 10, 1), 2 },
+                    { 14, null, null, 14, new DateOnly(2020, 9, 1), new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مركز صحي في المدينة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مركز صحي", "المدينة، شارع 14", 34, new DateOnly(2022, 10, 1), 2 },
+                    { 15, null, null, 15, new DateOnly(2020, 9, 1), new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مجمع تجاري ضخم", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مجمع تجاري", "المدينة، شارع 15", 35, new DateOnly(2022, 10, 1), 2 },
+                    { 16, null, null, 16, new DateOnly(2020, 9, 1), new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء محطة كهرباء حديثة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء محطة كهرباء", "المدينة، شارع 16", 36, new DateOnly(2022, 10, 1), 2 },
                     { 17, null, null, 17, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء محطة مياه حديثة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء محطة مياه", "المدينة، شارع 17", 37, new DateOnly(2022, 10, 1), 1 },
                     { 18, null, null, 18, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مركز شرطة حديث", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مركز شرطة", "المدينة، شارع 18", 38, new DateOnly(2022, 10, 1), 1 },
-                    { 19, new DateOnly(2020, 9, 1), null, 19, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء محطة إطفاء حديثة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء محطة إطفاء", "المدينة، شارع 19", 39, new DateOnly(2022, 10, 1), 3 },
-                    { 20, new DateOnly(2020, 9, 1), null, 20, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مركز ثقافي حديث", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مركز ثقافي", "المدينة، شارع 20", 40, new DateOnly(2022, 10, 1), 3 }
+                    { 19, new DateOnly(2020, 9, 1), "تم إلغاء المشروع بسبب نقص التمويل", 19, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء محطة إطفاء حديثة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء محطة إطفاء", "المدينة، شارع 19", 39, new DateOnly(2022, 10, 1), 3 },
+                    { 20, new DateOnly(2020, 9, 1), "تم إلغاء المشروع بسبب تغير الأولويات", 20, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مركز ثقافي حديث", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مركز ثقافي", "المدينة، شارع 20", 40, new DateOnly(2022, 10, 1), 3 }
                 });
 
             migrationBuilder.InsertData(

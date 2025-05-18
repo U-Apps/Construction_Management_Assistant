@@ -986,7 +986,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
                     b.ToTable("Projects", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Project_CancelationCompletionDate", "[CancelationDate] IS NULL OR [CompletionDate] IS NULL");
+                            t.HasCheckConstraint("CK_Project_StatusDatesAndReason", "\r\n                            (\r\n                                ([Status] IN (0, 1)) AND [CompletionDate] IS NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 2) AND [CompletionDate] IS NOT NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 3) AND [CompletionDate] IS NULL AND [CancelationDate] IS NOT NULL AND [CancelationReason] IS NOT NULL\r\n                            )\r\n                        ");
 
                             t.HasCheckConstraint("CK_Projects_Status", "[Status] BETWEEN 0 AND 3");
                         });
@@ -1190,8 +1190,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         new
                         {
                             Id = 14,
-                            CancelationDate = new DateOnly(2020, 9, 1),
                             ClientId = 14,
+                            CompletionDate = new DateOnly(2020, 9, 1),
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء مركز صحي في المدينة",
                             ExpectedEndDate = new DateOnly(2020, 8, 1),
@@ -1206,8 +1206,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         new
                         {
                             Id = 15,
-                            CancelationDate = new DateOnly(2020, 9, 1),
                             ClientId = 15,
+                            CompletionDate = new DateOnly(2020, 9, 1),
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء مجمع تجاري ضخم",
                             ExpectedEndDate = new DateOnly(2020, 8, 1),
@@ -1222,8 +1222,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         new
                         {
                             Id = 16,
-                            CancelationDate = new DateOnly(2020, 9, 1),
                             ClientId = 16,
+                            CompletionDate = new DateOnly(2020, 9, 1),
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء محطة كهرباء حديثة",
                             ExpectedEndDate = new DateOnly(2020, 8, 1),
@@ -1269,6 +1269,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         {
                             Id = 19,
                             CancelationDate = new DateOnly(2020, 9, 1),
+                            CancelationReason = "تم إلغاء المشروع بسبب نقص التمويل",
                             ClientId = 19,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء محطة إطفاء حديثة",
@@ -1285,6 +1286,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         {
                             Id = 20,
                             CancelationDate = new DateOnly(2020, 9, 1),
+                            CancelationReason = "تم إلغاء المشروع بسبب تغير الأولويات",
                             ClientId = 20,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء مركز ثقافي حديث",

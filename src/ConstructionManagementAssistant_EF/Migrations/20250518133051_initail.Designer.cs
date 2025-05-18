@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250515164515_RenameColumn_BookDate")]
-    partial class RenameColumn_BookDate
+    [Migration("20250518133051_initail")]
+    partial class initail
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -354,11 +354,9 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Documnet", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ClassificationId")
                         .HasColumnType("int");
@@ -366,9 +364,20 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -386,10 +395,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
                     b.Property<int?>("TaskId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UploadedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -984,7 +989,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
                     b.ToTable("Projects", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Project_CancelationCompletionDate", "[CancelationDate] IS NULL OR [CompletionDate] IS NULL");
+                            t.HasCheckConstraint("CK_Project_StatusDatesAndReason", "\r\n                            (\r\n                                ([Status] IN (0, 1)) AND [CompletionDate] IS NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 2) AND [CompletionDate] IS NOT NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 3) AND [CompletionDate] IS NULL AND [CancelationDate] IS NOT NULL AND [CancelationReason] IS NOT NULL\r\n                            )\r\n                        ");
 
                             t.HasCheckConstraint("CK_Projects_Status", "[Status] BETWEEN 0 AND 3");
                         });
@@ -1188,8 +1193,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         new
                         {
                             Id = 14,
-                            CancelationDate = new DateOnly(2020, 9, 1),
                             ClientId = 14,
+                            CompletionDate = new DateOnly(2020, 9, 1),
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء مركز صحي في المدينة",
                             ExpectedEndDate = new DateOnly(2020, 8, 1),
@@ -1204,8 +1209,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         new
                         {
                             Id = 15,
-                            CancelationDate = new DateOnly(2020, 9, 1),
                             ClientId = 15,
+                            CompletionDate = new DateOnly(2020, 9, 1),
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء مجمع تجاري ضخم",
                             ExpectedEndDate = new DateOnly(2020, 8, 1),
@@ -1220,8 +1225,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         new
                         {
                             Id = 16,
-                            CancelationDate = new DateOnly(2020, 9, 1),
                             ClientId = 16,
+                            CompletionDate = new DateOnly(2020, 9, 1),
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء محطة كهرباء حديثة",
                             ExpectedEndDate = new DateOnly(2020, 8, 1),
@@ -1267,6 +1272,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         {
                             Id = 19,
                             CancelationDate = new DateOnly(2020, 9, 1),
+                            CancelationReason = "تم إلغاء المشروع بسبب نقص التمويل",
                             ClientId = 19,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء محطة إطفاء حديثة",
@@ -1283,6 +1289,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         {
                             Id = 20,
                             CancelationDate = new DateOnly(2020, 9, 1),
+                            CancelationReason = "تم إلغاء المشروع بسبب تغير الأولويات",
                             ClientId = 20,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "بناء مركز ثقافي حديث",
@@ -1297,648 +1304,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Stage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateOnly?>("ExpectedEndDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly?>("StartDate")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Stages", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم المدرسة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 1,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المدرسة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 1,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 1,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم المستشفى",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 2,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المستشفى",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 2,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 2,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم المجمع السكني",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 3,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المجمع السكني",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 3,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 3,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم الجسر",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 4,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء الجسر",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 4,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 4,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم المصنع",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 5,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المصنع",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 5,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 5,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم الفندق",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 6,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 17,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء الفندق",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 6,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 18,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 6,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 19,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم محطة القطار",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 7,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 20,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء محطة القطار",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 7,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 21,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 7,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 22,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم المركز التجاري",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 8,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 23,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المركز التجاري",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 8,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 24,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 8,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 25,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم الجامعة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 9,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 26,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء الجامعة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 9,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 27,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 9,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 28,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة تصميم الحديقة العامة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تصميم",
-                            ProjectId = 10,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 29,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء الحديقة العامة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "بناء",
-                            ProjectId = 10,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 30,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التشطيب النهائية",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "تشطيب",
-                            ProjectId = 10,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 31,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط للمكتبة العامة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 11,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 32,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المكتبة العامة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 11,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 33,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي للمكتبة قبل الافتتاح",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 11,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 34,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط للملعب الرياضي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 12,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 35,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء الملعب الرياضي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 12,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 36,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي للملعب الرياضي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 12,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 37,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط لمحطة الوقود",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 13,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 38,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء محطة الوقود",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 13,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 39,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي لمحطة الوقود",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 13,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 40,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط للمركز الصحي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 14,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 41,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المركز الصحي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 14,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 42,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي للمركز الصحي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 14,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 43,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط للمجمع التجاري",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 15,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 44,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المجمع التجاري",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 15,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 45,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي للمجمع التجاري",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 15,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 46,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط لمحطة الكهرباء",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 16,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 47,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء محطة الكهرباء",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 16,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 48,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي لمحطة الكهرباء",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 16,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 49,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط لمحطة المياه",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 17,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 50,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء محطة المياه",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 17,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 51,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي لمحطة المياه",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 17,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 52,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط لمركز الشرطة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 18,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 53,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء مركز الشرطة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 18,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 54,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي لمركز الشرطة",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 18,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 55,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط لمحطة الإطفاء",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 19,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 56,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء محطة الإطفاء",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 19,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 57,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي لمحطة الإطفاء",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 19,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 58,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة التخطيط للمركز الثقافي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التخطيط",
-                            ProjectId = 20,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 59,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "مرحلة بناء المركز الثقافي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "التنفيذ",
-                            ProjectId = 20,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        },
-                        new
-                        {
-                            Id = 60,
-                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "الفحص النهائي للمركز الثقافي",
-                            ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "الفحص النهائي",
-                            ProjectId = 20,
-                            StartDate = new DateOnly(2022, 11, 1)
-                        });
-                });
-
-            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Task", b =>
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.ProjectTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -5282,6 +4648,647 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Stage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateOnly?>("ExpectedEndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly?>("StartDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Stages", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم المدرسة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 1,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المدرسة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 1,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 1,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم المستشفى",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 2,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المستشفى",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 2,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 2,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم المجمع السكني",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 3,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المجمع السكني",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 3,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 3,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم الجسر",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 4,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء الجسر",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 4,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 4,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم المصنع",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 5,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المصنع",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 5,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 5,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم الفندق",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 6,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء الفندق",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 6,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 6,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم محطة القطار",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 7,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء محطة القطار",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 7,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 7,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم المركز التجاري",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 8,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المركز التجاري",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 8,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 8,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم الجامعة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 9,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء الجامعة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 9,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 9,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة تصميم الحديقة العامة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تصميم",
+                            ProjectId = 10,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء الحديقة العامة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "بناء",
+                            ProjectId = 10,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التشطيب النهائية",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "تشطيب",
+                            ProjectId = 10,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط للمكتبة العامة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 11,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المكتبة العامة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 11,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي للمكتبة قبل الافتتاح",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 11,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط للملعب الرياضي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 12,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 35,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء الملعب الرياضي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 12,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 36,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي للملعب الرياضي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 12,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 37,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط لمحطة الوقود",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 13,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 38,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء محطة الوقود",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 13,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 39,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي لمحطة الوقود",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 13,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 40,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط للمركز الصحي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 14,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 41,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المركز الصحي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 14,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 42,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي للمركز الصحي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 14,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 43,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط للمجمع التجاري",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 15,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 44,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المجمع التجاري",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 15,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 45,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي للمجمع التجاري",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 15,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 46,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط لمحطة الكهرباء",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 16,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 47,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء محطة الكهرباء",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 16,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 48,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي لمحطة الكهرباء",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 16,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 49,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط لمحطة المياه",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 17,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 50,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء محطة المياه",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 17,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 51,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي لمحطة المياه",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 17,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 52,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط لمركز الشرطة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 18,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 53,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء مركز الشرطة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 18,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 54,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي لمركز الشرطة",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 18,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 55,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط لمحطة الإطفاء",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 19,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 56,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء محطة الإطفاء",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 19,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 57,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي لمحطة الإطفاء",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 19,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 58,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة التخطيط للمركز الثقافي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التخطيط",
+                            ProjectId = 20,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 59,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "مرحلة بناء المركز الثقافي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "التنفيذ",
+                            ProjectId = 20,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        },
+                        new
+                        {
+                            Id = 60,
+                            CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "الفحص النهائي للمركز الثقافي",
+                            ExpectedEndDate = new DateOnly(2022, 11, 1),
+                            Name = "الفحص النهائي",
+                            ProjectId = 20,
+                            StartDate = new DateOnly(2022, 11, 1)
+                        });
+                });
+
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.TaskAssignment", b =>
                 {
                     b.Property<int>("TaskId")
@@ -5949,7 +5956,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ConstructionManagementAssistant.Core.Entites.Task", "Task")
+                    b.HasOne("ConstructionManagementAssistant.Core.Entites.ProjectTask", "Task")
                         .WithMany("Documents")
                         .HasForeignKey("TaskId");
 
@@ -5996,6 +6003,17 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.Navigation("SiteEngineer");
                 });
 
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.ProjectTask", b =>
+                {
+                    b.HasOne("ConstructionManagementAssistant.Core.Entites.Stage", "Stage")
+                        .WithMany("Tasks")
+                        .HasForeignKey("StageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stage");
+                });
+
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Stage", b =>
                 {
                     b.HasOne("ConstructionManagementAssistant.Core.Entites.Project", "Project")
@@ -6007,20 +6025,9 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Task", b =>
-                {
-                    b.HasOne("ConstructionManagementAssistant.Core.Entites.Stage", "Stage")
-                        .WithMany("Tasks")
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Stage");
-                });
-
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.TaskAssignment", b =>
                 {
-                    b.HasOne("ConstructionManagementAssistant.Core.Entites.Task", "Task")
+                    b.HasOne("ConstructionManagementAssistant.Core.Entites.ProjectTask", "Task")
                         .WithMany("TaskAssignments")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6085,16 +6092,16 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.Navigation("Stages");
                 });
 
-            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Stage", b =>
-                {
-                    b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Task", b =>
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.ProjectTask", b =>
                 {
                     b.Navigation("Documents");
 
                     b.Navigation("TaskAssignments");
+                });
+
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Stage", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.WorkerSpecialty", b =>

@@ -832,317 +832,369 @@ public static class SeedData
     public static List<Project> SeedProjects()
     {
         return new List<Project>
-            {
-                new Project
-                {
-                    Id = 1,
-                    Name = "مشروع بناء مدرسة",
-                    Description = "بناء مدرسة ابتدائية في المدينة",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 21,
-                    ClientId = 1,
-                    SiteAddress = "المدينة، شارع 1",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 2,
-                    Name = "مشروع بناء مستشفى",
-                    Description = "بناء مستشفى عام في المدينة",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 22,
-                    ClientId = 2,
-                    SiteAddress = "المدينة، شارع 2",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 3,
-                    Name = "مشروع بناء مجمع سكني",
-                    Description = "بناء مجمع سكني فاخر",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 23,
-                    ClientId = 3,
-                    SiteAddress = "المدينة، شارع 3",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 4,
-                    Name = "مشروع بناء جسر",
-                    Description = "بناء جسر يربط بين منطقتين",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 24,
-                    ClientId = 4,
-                    SiteAddress = "المدينة، شارع 4",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 5,
-                    Name = "مشروع بناء مصنع",
-                    Description = "بناء مصنع لإنتاج المواد الغذائية",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 25,
-                    ClientId = 5,
-                    SiteAddress = "المدينة، شارع 5",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 6,
-                    Name = "مشروع بناء فندق",
-                    Description = "بناء فندق خمس نجوم",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 26,
-                    ClientId = 6,
-                    SiteAddress = "المدينة، شارع 6",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 7,
-                    Name = "مشروع بناء محطة قطار",
-                    Description = "بناء محطة قطار حديثة",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                        ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 27,
-                    ClientId = 7,
-                    SiteAddress = "المدينة، شارع 7",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 8,
-                    Name = "مشروع بناء مركز تجاري",
-                    Description = "بناء مركز تجاري ضخم",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 28,
-                    ClientId = 8,
-                    SiteAddress = "المدينة، شارع 8",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 9,
-                    Name = "مشروع بناء جامعة",
-                    Description = "بناء جامعة حديثة",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 29,
-                    ClientId = 9,
-                    SiteAddress = "المدينة، شارع 9",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 10,
-                    Name = "مشروع بناء حديقة عامة",
-                    Description = "بناء حديقة عامة كبيرة",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 30,
-                    ClientId = 10,
-                    SiteAddress = "المدينة، شارع 10",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 11,
-                    Name = "مشروع بناء مكتبة عامة",
-                    Description = "بناء مكتبة عامة في المدينة",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                     ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 31,
-                    ClientId = 11,
-                    SiteAddress = "المدينة، شارع 11",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 12,
-                    Name = "مشروع بناء ملعب رياضي",
-                    Description = "بناء ملعب رياضي حديث",
-                    StartDate = new DateOnly(2022, 10, 1), // Static date
-                    ExpectedEndDate = new DateOnly(2022, 12, 1), // Static date
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 32,
-                    ClientId = 12,
-                    SiteAddress = "المدينة، شارع 12",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 13,
-                    Name = "مشروع بناء محطة وقود",
-                    Description = "بناء محطة وقود حديثة",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2022, 11, 1),
-                    Status = ProjectStatus.Active,
-                    SiteEngineerId = 33,
-                    ClientId = 13,
-                    SiteAddress = "المدينة، شارع 13",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 14,
-                    Name = "مشروع بناء مركز صحي",
-                    Description = "بناء مركز صحي في المدينة",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    CancelationDate = new DateOnly(2020, 9, 1),
-
-                    Status = ProjectStatus.Completed,
-                    SiteEngineerId = 34,
-                    ClientId = 14,
-                    SiteAddress = "المدينة، شارع 14",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 15,
-                    Name = "مشروع بناء مجمع تجاري",
-                    Description = "بناء مجمع تجاري ضخم",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    CancelationDate = new DateOnly(2020, 9, 1),
-
-                    Status = ProjectStatus.Completed,
-                    SiteEngineerId = 35,
-                    ClientId = 15,
-                    SiteAddress = "المدينة، شارع 15",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 16,
-                    Name = "مشروع بناء محطة كهرباء",
-                    Description = "بناء محطة كهرباء حديثة",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    CancelationDate = new DateOnly(2020, 9, 1),
-                    Status = ProjectStatus.Completed,
-                    SiteEngineerId = 36,
-                    ClientId = 16,
-                    SiteAddress = "المدينة، شارع 16",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 17,
-                    Name = "مشروع بناء محطة مياه",
-                    Description = "بناء محطة مياه حديثة",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Pending,
-                    SiteEngineerId = 37,
-                    ClientId = 17,
-                    SiteAddress = "المدينة، شارع 17",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 18,
-                    Name = "مشروع بناء مركز شرطة",
-                    Description = "بناء مركز شرطة حديث",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    Status = ProjectStatus.Pending,
-                    SiteEngineerId = 38,
-                    ClientId = 18,
-                    SiteAddress = "المدينة، شارع 18",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 19,
-                    Name = "مشروع بناء محطة إطفاء",
-                    Description = "بناء محطة إطفاء حديثة",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    CancelationDate = new DateOnly(2020, 9, 1),
-                    Status = ProjectStatus.Cancelled,
-                    SiteEngineerId = 39,
-                    ClientId = 19,
-                    SiteAddress = "المدينة، شارع 19",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                },
-                new Project
-                {
-                    Id = 20,
-                    Name = "مشروع بناء مركز ثقافي",
-                    Description = "بناء مركز ثقافي حديث",
-                    StartDate = new DateOnly(2022, 10, 1),
-                    ExpectedEndDate = new DateOnly(2020, 8, 1),
-                    CancelationDate = new DateOnly(2020, 9, 1),
-                    Status = ProjectStatus.Cancelled,
-                    SiteEngineerId = 40,
-                    ClientId = 20,
-                    SiteAddress = "المدينة، شارع 20",
-                    GeographicalCoordinates = "24.7136, 46.6753",
-                    CreatedDate = new DateTime(2023, 10, 1),
-                    IsDeleted = false
-                }
-            };
+    {
+        new Project
+        {
+            Id = 1,
+            Name = "مشروع بناء مدرسة",
+            Description = "بناء مدرسة ابتدائية في المدينة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2022, 12, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 21,
+            ClientId = 1,
+            SiteAddress = "المدينة، شارع 1",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 2,
+            Name = "مشروع بناء مستشفى",
+            Description = "بناء مستشفى عام في المدينة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2022, 12, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 22,
+            ClientId = 2,
+            SiteAddress = "المدينة، شارع 2",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 3,
+            Name = "مشروع بناء مجمع سكني",
+            Description = "بناء مجمع سكني فاخر",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 23,
+            ClientId = 3,
+            SiteAddress = "المدينة، شارع 3",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 4,
+            Name = "مشروع بناء جسر",
+            Description = "بناء جسر يربط بين منطقتين",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 24,
+            ClientId = 4,
+            SiteAddress = "المدينة، شارع 4",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 5,
+            Name = "مشروع بناء مصنع",
+            Description = "بناء مصنع لإنتاج المواد الغذائية",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 25,
+            ClientId = 5,
+            SiteAddress = "المدينة، شارع 5",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 6,
+            Name = "مشروع بناء فندق",
+            Description = "بناء فندق خمس نجوم",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 26,
+            ClientId = 6,
+            SiteAddress = "المدينة، شارع 6",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 7,
+            Name = "مشروع بناء محطة قطار",
+            Description = "بناء محطة قطار حديثة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 27,
+            ClientId = 7,
+            SiteAddress = "المدينة، شارع 7",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 8,
+            Name = "مشروع بناء مركز تجاري",
+            Description = "بناء مركز تجاري ضخم",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 28,
+            ClientId = 8,
+            SiteAddress = "المدينة، شارع 8",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 9,
+            Name = "مشروع بناء جامعة",
+            Description = "بناء جامعة حديثة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 29,
+            ClientId = 9,
+            SiteAddress = "المدينة، شارع 9",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 10,
+            Name = "مشروع بناء حديقة عامة",
+            Description = "بناء حديقة عامة كبيرة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 30,
+            ClientId = 10,
+            SiteAddress = "المدينة، شارع 10",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 11,
+            Name = "مشروع بناء مكتبة عامة",
+            Description = "بناء مكتبة عامة في المدينة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2022, 12, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 31,
+            ClientId = 11,
+            SiteAddress = "المدينة، شارع 11",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 12,
+            Name = "مشروع بناء ملعب رياضي",
+            Description = "بناء ملعب رياضي حديث",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2022, 12, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 32,
+            ClientId = 12,
+            SiteAddress = "المدينة، شارع 12",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 13,
+            Name = "مشروع بناء محطة وقود",
+            Description = "بناء محطة وقود حديثة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2022, 11, 1),
+            Status = ProjectStatus.Active,
+            SiteEngineerId = 33,
+            ClientId = 13,
+            SiteAddress = "المدينة، شارع 13",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 14,
+            Name = "مشروع بناء مركز صحي",
+            Description = "بناء مركز صحي في المدينة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Completed,
+            CompletionDate = new DateOnly(2020, 9, 1),
+            SiteEngineerId = 34,
+            ClientId = 14,
+            SiteAddress = "المدينة، شارع 14",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 15,
+            Name = "مشروع بناء مجمع تجاري",
+            Description = "بناء مجمع تجاري ضخم",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Completed,
+            CompletionDate = new DateOnly(2020, 9, 1),
+            SiteEngineerId = 35,
+            ClientId = 15,
+            SiteAddress = "المدينة، شارع 15",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 16,
+            Name = "مشروع بناء محطة كهرباء",
+            Description = "بناء محطة كهرباء حديثة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Completed,
+            CompletionDate = new DateOnly(2020, 9, 1),
+            SiteEngineerId = 36,
+            ClientId = 16,
+            SiteAddress = "المدينة، شارع 16",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 17,
+            Name = "مشروع بناء محطة مياه",
+            Description = "بناء محطة مياه حديثة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Pending,
+            SiteEngineerId = 37,
+            ClientId = 17,
+            SiteAddress = "المدينة، شارع 17",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 18,
+            Name = "مشروع بناء مركز شرطة",
+            Description = "بناء مركز شرطة حديث",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Pending,
+            SiteEngineerId = 38,
+            ClientId = 18,
+            SiteAddress = "المدينة، شارع 18",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null,
+            CancelationDate = null,
+            CancelationReason = null
+        },
+        new Project
+        {
+            Id = 19,
+            Name = "مشروع بناء محطة إطفاء",
+            Description = "بناء محطة إطفاء حديثة",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Cancelled,
+            CancelationDate = new DateOnly(2020, 9, 1),
+            CancelationReason = "تم إلغاء المشروع بسبب نقص التمويل",
+            SiteEngineerId = 39,
+            ClientId = 19,
+            SiteAddress = "المدينة، شارع 19",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null
+        },
+        new Project
+        {
+            Id = 20,
+            Name = "مشروع بناء مركز ثقافي",
+            Description = "بناء مركز ثقافي حديث",
+            StartDate = new DateOnly(2022, 10, 1),
+            ExpectedEndDate = new DateOnly(2020, 8, 1),
+            Status = ProjectStatus.Cancelled,
+            CancelationDate = new DateOnly(2020, 9, 1),
+            CancelationReason = "تم إلغاء المشروع بسبب تغير الأولويات",
+            SiteEngineerId = 40,
+            ClientId = 20,
+            SiteAddress = "المدينة، شارع 20",
+            GeographicalCoordinates = "24.7136, 46.6753",
+            CreatedDate = new DateTime(2023, 10, 1),
+            IsDeleted = false,
+            CompletionDate = null
+        }
+    };
     }
-
 
     public static List<Stage> SeedStages()
     {

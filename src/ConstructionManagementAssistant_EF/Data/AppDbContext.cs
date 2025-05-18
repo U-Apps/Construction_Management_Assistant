@@ -104,7 +104,22 @@ namespace ConstructionManagementAssistant.EF.Data
             {
                 builder.ToTable(TablesNames.Projects, t =>
                 {
-                    t.HasCheckConstraint("CK_Project_CancelationCompletionDate", "[CancelationDate] IS NULL OR [CompletionDate] IS NULL");
+                    t.HasCheckConstraint(
+                        "CK_Project_StatusDatesAndReason",
+                        @"
+                            (
+                                ([Status] IN (0, 1)) AND [CompletionDate] IS NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL
+                            )
+                            OR
+                            (
+                                ([Status] = 2) AND [CompletionDate] IS NOT NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL
+                            )
+                            OR
+                            (
+                                ([Status] = 3) AND [CompletionDate] IS NULL AND [CancelationDate] IS NOT NULL AND [CancelationReason] IS NOT NULL
+                            )
+                        "
+                    );
                 });
 
                 builder.Property(p => p.Name).HasMaxLength(200);
