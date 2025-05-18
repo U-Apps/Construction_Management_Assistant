@@ -11,6 +11,26 @@ public class EquipmentAssignmentRepository : IEquipmentAssignmentRepository
         _logger = logger;
     }
 
+
+    public async Task<List<GetEquipmentAssignmentDto>> GetAllAssignmentsAsync()
+    {
+        return await _context.EquipmentAssignments
+            .Select(a => new GetEquipmentAssignmentDto
+            {
+                Id = a.Id,
+                ProjectId = a.ProjectId,
+                ProjectName = a.Project.Name,
+                EquipmentId = a.Equipment.Id,
+                EquipmentName = a.Equipment.Name,
+                BookDate = a.BookDate,
+                ExpectedReturnDate = a.ExpectedReturnDate,
+                ActualReturnDate = a.ActualReturnDate
+            }).ToListAsync();
+    }
+
+
+
+
     public async Task<BaseResponse<string>> AssignEquipmentToProjectAsync(int equipmentId, int projectId, DateTime expectedReturnDate)
     {
         _logger.LogInformation("Assigning equipment {EquipmentId} to project {ProjectId}", equipmentId, projectId);

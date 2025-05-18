@@ -6,4 +6,6 @@ public interface IEquipmentAssignmentRepository
     Task<BaseResponse<string>> UnassignEquipmentFromProjectAsync(int equipmentAssignmentId);
     Task<List<GetEquipmentAssignmentDto>> GetAssignmentsByEquipmentIdAsync(int equipmentId);
     Task<List<GetEquipmentAssignmentDto>> GetAssignmentsByProjectIdAsync(int projectId);
+    Task<List<GetEquipmentAssignmentDto>> GetAllAssignmentsAsync();
+
 }

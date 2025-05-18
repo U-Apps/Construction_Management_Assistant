@@ -46,6 +46,28 @@ public class EquipmentAssignmentController(IUnitOfWork _unitOfWork) : Controller
         return Ok(result);
     }
 
+
+
+
+
+
+    /// <summary>
+    /// Retrieves all equipment assignments.
+    /// </summary>
+    /// <returns>Returns a list of all equipment assignments.</returns>
+    [HttpGet(SystemApiRouts.EquipmentAssignments.GetAll)]
+    [ProducesResponseType(typeof(List<GetEquipmentAssignmentDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllAssignments()
+    {
+        var result = await _unitOfWork.EquipmentAssignments.GetAllAssignmentsAsync();
+        return Ok(result);
+    }
+
+
+
+
+
+
     /// <summary>
     /// Retrieves all equipment assignments for a specific equipment item.
     /// </summary>

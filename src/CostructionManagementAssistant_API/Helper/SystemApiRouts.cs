@@ -94,6 +94,7 @@ public static class SystemApiRouts
     public static class EquipmentAssignments
     {
         public const string Base = "api/v1/EquipmentAssignments";
+        public const string GetAll = Base + "/All";
         public const string Assign = Base + "/Assign";
         public const string Unassign = Base + "/Unassign/{assignmentId}";
         public const string GetByEquipment = Base + "/ByEquipment/{equipmentId}";
