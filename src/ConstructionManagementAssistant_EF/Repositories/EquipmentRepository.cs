@@ -27,80 +27,75 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
                 e.SerialNumber.Contains(searchTerm));
         }
 
-        if (status.HasValue)
-        {
-            filter = filter.AndAlso(e => e.Status == status.Value);
-        }
+        // Get all equipment matching filter
+        var equipmentQuery = _context.Equipments.Where(filter);
 
-        // Check for active reservations and update status if needed
-        var equipmentIds = await _context.Equipments.Where(filter).Select(e => e.Id).ToListAsync();
-
-        var activeReservations = await _context.Set<EquipmentReservation>()
-            .Where(r => equipmentIds.Contains(r.EquipmentId) && r.StartDate <= DateTime.Now && r.EndDate > DateTime.Now)
+        // Get all reservations with Started status
+        // Get all reservations with Started status and current date within reservation period
+        var currentDate = DateTime.Now;
+        var startedReservations = await _context.EquipmentReservations
+            .Where(r => r.StartDate <= currentDate && r.EndDate >= currentDate)
             .Select(r => r.EquipmentId)
             .ToListAsync();
 
-        var reservedIds = activeReservations;
-        var availableIds = equipmentIds.Except(reservedIds).ToList();
-
-        if (reservedIds.Any())
+        // Project to DTO and set status based on reservations
+        var equipmentDtosQuery = equipmentQuery.Select(e => new GetEquipmentDto
         {
-            await _context.Equipments
-                .Where(x => reservedIds.Contains(x.Id))
-                .ExecuteUpdateAsync(setters => setters
-                    .SetProperty(e => e.Status, EquipmentStatus.Reserved)
-                    .SetProperty(e => e.ModifiedDate, DateTime.Now));
+            Id = e.Id,
+            Name = e.Name,
+            Model = e.Model,
+            PurchaseDate = e.PurchaseDate,
+            Status = startedReservations.Contains(e.Id)
+                ? EquipmentStatus.Reserved.ToString()
+                : EquipmentStatus.Available.ToString()
+        });
+
+        // Filter by status if provided
+        if (status.HasValue)
+        {
+            var statusString = status.Value.ToString();
+            equipmentDtosQuery = equipmentDtosQuery.Where(e => e.Status == statusString);
         }
 
-        if (availableIds.Any())
+        // Paging
+        var totalCount = await equipmentDtosQuery.CountAsync();
+        var items = await equipmentDtosQuery
+            .OrderBy(e => e.Name)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PagedResult<GetEquipmentDto>
         {
-            await _context.Equipments
-                .Where(x => availableIds.Contains(x.Id))
-                .ExecuteUpdateAsync(setters => setters
-                    .SetProperty(e => e.Status, EquipmentStatus.Available)
-                    .SetProperty(e => e.ModifiedDate, DateTime.Now));
-        }
-
-        var pagedResult = await GetPagedDataWithSelectionAsync(
-            orderBy: x => x.Name,
-            selector: EquipmentProfile.ToGetEquipmentDto(),
-            criteria: filter,
-            pageNumber: pageNumber,
-            pageSize: pageSize);
-
-        return pagedResult;
+            Items = items,
+            TotalItems = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
     public async Task<EquipmentDetailsDto?> GetEquipmentById(int id)
     {
+        // Get all reservations with Started status for this equipment
+        var currentDate = DateTime.Now;
+        var hasStartedReservation = await _context.EquipmentReservations
+            .AnyAsync(r => r.EquipmentId == id && r.StartDate <= currentDate && r.EndDate >= currentDate);
 
-        var ActiveReservation = await _context.Set<EquipmentReservation>()
-            .FirstOrDefaultAsync(r => r.EquipmentId == id && r.StartDate <= DateTime.Now && r.EndDate > DateTime.Now);
-
-
-        if (ActiveReservation is not null)
-        {
-            await _context.Equipments
-         .Where(x => x.Id == id)
-         .ExecuteUpdateAsync(setters => setters
-             .SetProperty(e => e.Status, EquipmentStatus.Reserved)
-             .SetProperty(e => e.ModifiedDate, DateTime.Now));
-        }
-        else
-        {
-            await _context.Equipments
-             .Where(x => x.Id == id)
-             .ExecuteUpdateAsync(setters => setters
-                 .SetProperty(e => e.Status, EquipmentStatus.Available)
-                .SetProperty(e => e.ModifiedDate, DateTime.Now));
-        }
-
-        return await _context.Equipments
-            .Include(e => e.Assignments)
-            .ThenInclude(a => a.Project)
+        var equipment = await _context.Equipments
             .Where(e => e.Id == id)
-            .Select(EquipmentProfile.ToEquipmentDetailsDto())
+            .Select(e => new EquipmentDetailsDto
+            {
+                Id = e.Id,
+                Name = e.Name,
+                SerialNumber = e.SerialNumber,
+                PurchaseDate = e.PurchaseDate,
+                Status = hasStartedReservation
+                    ? EquipmentStatus.Reserved.ToString()
+                    : EquipmentStatus.Available.ToString()
+            })
             .FirstOrDefaultAsync();
+
+        return equipment;
     }
 
     public async Task<BaseResponse<string>> AddEquipmentAsync(AddEquipmentDto dto)

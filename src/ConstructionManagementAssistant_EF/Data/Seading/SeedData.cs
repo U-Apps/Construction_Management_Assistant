@@ -1786,145 +1786,145 @@ public static class SeedData
             // Heavy Machinery (1-10)
             new Equipment {
                 Id = 1, Name = "Excavator", Model = "CAT 320D", SerialNumber = "EXC-2023-001",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2023, 1, 15),
+                PurchaseDate = new DateTime(2023, 1, 15),
                 Notes = "Heavy duty excavator for ground work", CreatedDate = new DateTime(2023, 1, 20)
             },
             new Equipment {
                 Id = 2, Name = "Bulldozer", Model = "Komatsu D65PX-18", SerialNumber = "BUL-2022-045",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 11, 10),
+                PurchaseDate = new DateTime(2022, 11, 10),
                 Notes = "Currently at downtown construction site", CreatedDate = new DateTime(2022, 11, 15),
                 ModifiedDate = new DateTime(2023, 5, 1)
             },
             new Equipment {
                 Id = 3, Name = "Wheel Loader", Model = "Volvo L120H", SerialNumber = "WL-2023-008",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2023, 2, 18),
+                PurchaseDate = new DateTime(2023, 2, 18),
                 Notes = "New addition to fleet", CreatedDate = new DateTime(2023, 2, 20)
             },
             new Equipment {
                 Id = 4, Name = "Backhoe Loader", Model = "JCB 3CX", SerialNumber = "BHL-2021-112",
-                Status = EquipmentStatus.UnderMaintenance, PurchaseDate = new DateTime(2021, 5, 12),
+                 PurchaseDate = new DateTime(2021, 5, 12),
                 Notes = "Hydraulic leak detected", CreatedDate = new DateTime(2021, 5, 15),
                 ModifiedDate = new DateTime(2023, 6, 5)
             },
             new Equipment {
                 Id = 5, Name = "Skid Steer Loader", Model = "Bobcat S650", SerialNumber = "SSL-2022-078",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 8, 22),
+                PurchaseDate = new DateTime(2022, 8, 22),
                 Notes = "With pallet forks attachment", CreatedDate = new DateTime(2022, 8, 25)
             },
             new Equipment {
                 Id = 6, Name = "Motor Grader", Model = "CAT 120K", SerialNumber = "GRD-2020-034",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2020, 3, 10),
+                PurchaseDate = new DateTime(2020, 3, 10),
                 Notes = "Road construction project", CreatedDate = new DateTime(2020, 3, 12),
                 ModifiedDate = new DateTime(2023, 4, 18)
             },
             new Equipment {
                 Id = 7, Name = "Articulated Dump Truck", Model = "Volvo A30G", SerialNumber = "ADT-2021-056",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 7, 8),
+                PurchaseDate = new DateTime(2021, 7, 8),
                 Notes = "30-ton capacity", CreatedDate = new DateTime(2021, 7, 10)
             },
             new Equipment {
                 Id = 8, Name = "Crawler Dozer", Model = "CAT D6T", SerialNumber = "CDZ-2019-023",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2019, 2, 15),
+                PurchaseDate = new DateTime(2019, 2, 15),
                 Notes = "Pending major engine overhaul", CreatedDate = new DateTime(2019, 2, 20),
                 ModifiedDate = new DateTime(2023, 3, 10)
             },
             new Equipment {
                 Id = 9, Name = "Telescopic Handler", Model = "JCB 536-70", SerialNumber = "TH-2022-091",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 9, 5),
+                PurchaseDate = new DateTime(2022, 9, 5),
                 Notes = "High reach capability", CreatedDate = new DateTime(2022, 9, 8),
                 ModifiedDate = new DateTime(2023, 5, 15)
             },
             new Equipment {
                 Id = 10, Name = "Pile Driver", Model = "ICE 1412", SerialNumber = "PD-2020-017",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2020, 4, 18),
+                PurchaseDate = new DateTime(2020, 4, 18),
                 Notes = "Foundation work equipment", CreatedDate = new DateTime(2020, 4, 20)
             },
 
             // Concrete Equipment (11-15)
             new Equipment {
                 Id = 11, Name = "Concrete Mixer Truck", Model = "Putzmeister M42", SerialNumber = "CMT-2021-045",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 6, 14),
+                PurchaseDate = new DateTime(2021, 6, 14),
                 Notes = "9 cubic meter capacity", CreatedDate = new DateTime(2021, 6, 16),
                 ModifiedDate = new DateTime(2023, 5, 12)
             },
             new Equipment {
                 Id = 12, Name = "Concrete Pump", Model = "Schwing S36X", SerialNumber = "CP-2022-033",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 4, 5),
+                PurchaseDate = new DateTime(2022, 4, 5),
                 Notes = "Boom pump 36 meters", CreatedDate = new DateTime(2022, 4, 8)
             },
             new Equipment {
                 Id = 13, Name = "Concrete Vibrator", Model = "Wacker Neuson AR36", SerialNumber = "CV-2023-009",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2023, 3, 10),
+                PurchaseDate = new DateTime(2023, 3, 10),
                 Notes = "Internal vibration system", CreatedDate = new DateTime(2023, 3, 12)
             },
             new Equipment {
                 Id = 14, Name = "Concrete Saw", Model = "Husqvarna K760", SerialNumber = "CS-2021-028",
-                Status = EquipmentStatus.UnderMaintenance, PurchaseDate = new DateTime(2021, 8, 22),
+                 PurchaseDate = new DateTime(2021, 8, 22),
                 Notes = "Blade replacement needed", CreatedDate = new DateTime(2021, 8, 25),
                 ModifiedDate = new DateTime(2023, 6, 8)
             },
             new Equipment {
                 Id = 15, Name = "Concrete Finisher", Model = "Allen Eng. SP-16", SerialNumber = "CF-2020-019",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2020, 5, 30),
+                PurchaseDate = new DateTime(2020, 5, 30),
                 Notes = "16-foot finishing width", CreatedDate = new DateTime(2020, 6, 2)
             },
 
             // Cranes and Lifting (16-20)
             new Equipment {
                 Id = 16, Name = "Tower Crane", Model = "Liebherr 63EC", SerialNumber = "TC-2021-007",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 3, 15),
+                PurchaseDate = new DateTime(2021, 3, 15),
                 Notes = "High-rise construction project", CreatedDate = new DateTime(2021, 3, 18),
                 ModifiedDate = new DateTime(2023, 4, 22)
             },
             new Equipment {
                 Id = 17, Name = "Mobile Crane", Model = "Tadano ATF-220G-5", SerialNumber = "MC-2022-014",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 2, 10),
+                PurchaseDate = new DateTime(2022, 2, 10),
                 Notes = "220-ton capacity", CreatedDate = new DateTime(2022, 2, 12)
             },
             new Equipment {
                 Id = 18, Name = "Rough Terrain Crane", Model = "Grove RT880E", SerialNumber = "RTC-2020-026",
-                Status = EquipmentStatus.UnderMaintenance, PurchaseDate = new DateTime(2020, 7, 8),
+                 PurchaseDate = new DateTime(2020, 7, 8),
                 Notes = "Annual inspection", CreatedDate = new DateTime(2020, 7, 10),
                 ModifiedDate = new DateTime(2023, 6, 1)
             },
             new Equipment {
                 Id = 19, Name = "Forklift", Model = "Toyota 8FGCU25", SerialNumber = "FL-2021-038",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 9, 12),
+                PurchaseDate = new DateTime(2021, 9, 12),
                 Notes = "Warehouse operations", CreatedDate = new DateTime(2021, 9, 15),
                 ModifiedDate = new DateTime(2023, 5, 18)
             },
             new Equipment {
                 Id = 20, Name = "Scissor Lift", Model = "Genie GS-3246", SerialNumber = "SL-2022-021",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 3, 5),
+                PurchaseDate = new DateTime(2022, 3, 5),
                 Notes = "32ft working height", CreatedDate = new DateTime(2022, 3, 8)
             },
 
             // Earthmoving and Compaction (21-25)
             new Equipment {
                 Id = 21, Name = "Vibratory Roller", Model = "Bomag BW211D-40", SerialNumber = "VR-2023-005",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2023, 4, 5),
+                PurchaseDate = new DateTime(2023, 4, 5),
                 Notes = "For asphalt compaction work", CreatedDate = new DateTime(2023, 4, 5)
             },
             new Equipment {
                 Id = 22, Name = "Plate Compactor", Model = "Wacker Neuson WP1550", SerialNumber = "PC-2021-029",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 10, 15),
+                PurchaseDate = new DateTime(2021, 10, 15),
                 Notes = "Trench backfilling", CreatedDate = new DateTime(2021, 10, 18),
                 ModifiedDate = new DateTime(2023, 5, 22)
             },
             new Equipment {
                 Id = 23, Name = "Trencher", Model = "Vermeer RTX550", SerialNumber = "TR-2020-031",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2020, 8, 12),
+                PurchaseDate = new DateTime(2020, 8, 12),
                 Notes = "Chain-type trencher", CreatedDate = new DateTime(2020, 8, 15)
             },
             new Equipment {
                 Id = 24, Name = "Asphalt Paver", Model = "Volvo ABG6820", SerialNumber = "AP-2021-042",
-                Status = EquipmentStatus.UnderMaintenance, PurchaseDate = new DateTime(2021, 4, 20),
+                 PurchaseDate = new DateTime(2021, 4, 20),
                 Notes = "Screed calibration", CreatedDate = new DateTime(2021, 4, 22),
                 ModifiedDate = new DateTime(2023, 6, 3)
             },
             new Equipment {
                 Id = 25, Name = "Cold Planer", Model = "Wirtgen W2000", SerialNumber = "CP-2019-015",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2019, 6, 5),
+                PurchaseDate = new DateTime(2019, 6, 5),
                 Notes = "End of service life", CreatedDate = new DateTime(2019, 6, 8),
                 ModifiedDate = new DateTime(2023, 2, 15)
             },
@@ -1932,29 +1932,29 @@ public static class SeedData
             // Support Equipment (26-30)
             new Equipment {
                 Id = 26, Name = "Generator", Model = "Cummins QSK60", SerialNumber = "GEN-2022-032",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 9, 12),
+                PurchaseDate = new DateTime(2022, 9, 12),
                 Notes = "Powering north site operations", CreatedDate = new DateTime(2022, 9, 15),
                 ModifiedDate = new DateTime(2023, 5, 20)
             },
             new Equipment {
                 Id = 27, Name = "Air Compressor", Model = "Atlas Copco XAS185", SerialNumber = "AC-2021-027",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2021, 11, 8),
+                PurchaseDate = new DateTime(2021, 11, 8),
                 Notes = "185 cfm capacity", CreatedDate = new DateTime(2021, 11, 10)
             },
             new Equipment {
                 Id = 28, Name = "Light Tower", Model = "Generac Light Tower", SerialNumber = "LT-2022-019",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2022, 5, 15),
+                PurchaseDate = new DateTime(2022, 5, 15),
                 Notes = "Night shift operations", CreatedDate = new DateTime(2022, 5, 18),
                 ModifiedDate = new DateTime(2023, 5, 25)
             },
             new Equipment {
                 Id = 29, Name = "Water Pump", Model = "Godwin HL100", SerialNumber = "WP-2020-024",
-                Status = EquipmentStatus.Available, PurchaseDate = new DateTime(2020, 9, 3),
+                PurchaseDate = new DateTime(2020, 9, 3),
                 Notes = "High volume dewatering", CreatedDate = new DateTime(2020, 9, 5)
             },
             new Equipment {
                 Id = 30, Name = "Welding Machine", Model = "Lincoln Vantage 400", SerialNumber = "WM-2021-036",
-                Status = EquipmentStatus.UnderMaintenance, PurchaseDate = new DateTime(2021, 7, 20),
+                 PurchaseDate = new DateTime(2021, 7, 20),
                 Notes = "Electrode feeder repair", CreatedDate = new DateTime(2021, 7, 22),
                 ModifiedDate = new DateTime(2023, 6, 7)
             }

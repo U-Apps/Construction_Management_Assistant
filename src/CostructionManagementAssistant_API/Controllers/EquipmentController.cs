@@ -137,30 +137,30 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
     [HttpPut(SystemApiRouts.Equipment.SetStatus)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SetEquipmentStatus(int equipmentId,
+    //public async Task<IActionResult> SetEquipmentStatus(int equipmentId,
 
-        [AllowedValues(
-        [EquipmentStatus.OutOfService,
-            EquipmentStatus.UnderMaintenance,
-            EquipmentStatus.Available]
-        )]
-        EquipmentStatus status)
-    {
-        // Only allow status values in the allowed array
-        if (status != EquipmentStatus.OutOfService && status != EquipmentStatus.UnderMaintenance && status != EquipmentStatus.Available)
-        {
-            return BadRequest(new BaseResponse<string>
-            {
-                Success = false,
-                Message = "Only OutOfService , availbale and UnderMaintenance statuses are allowed."
-            });
-        }
+    //    [AllowedValues(
+    //    [EquipmentStatus.OutOfService,
+    //        EquipmentStatus.UnderMaintenance,
+    //        EquipmentStatus.Available]
+    //    )]
+    //    EquipmentStatus status)
+    //{
+    //    // Only allow status values in the allowed array
+    //    if (status != EquipmentStatus.OutOfService && status != EquipmentStatus.UnderMaintenance && status != EquipmentStatus.Available)
+    //    {
+    //        return BadRequest(new BaseResponse<string>
+    //        {
+    //            Success = false,
+    //            Message = "Only OutOfService , availbale and UnderMaintenance statuses are allowed."
+    //        });
+    //    }
 
-        var result = await _unitOfWork.Equipment.SetEquipmentStatusAsync(equipmentId, status);
-        if (!result.Success)
-            return BadRequest(result);
-        return Ok(result);
-    }
+    //    var result = await _unitOfWork.Equipment.SetEquipmentStatusAsync(equipmentId, status);
+    //    if (!result.Success)
+    //        return BadRequest(result);
+    //    return Ok(result);
+    //}
 
     #endregion
 

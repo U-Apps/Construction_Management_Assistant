@@ -13,6 +13,7 @@ public class EquipmentReservation
 
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+
     [NotMapped]
-    public bool IsActive { get; set; }
+    public ReservationStatus ReservationStatus { get; set; }
 }

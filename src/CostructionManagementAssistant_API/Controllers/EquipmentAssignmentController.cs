@@ -40,7 +40,7 @@ public class EquipmentReservationController(IUnitOfWork _unitOfWork) : Controlle
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveEquipmentReservation(int reservationId)
     {
-        var result = await _unitOfWork.EquipmentReservations.RemoveEquipmentReservationAsync(reservationId);
+        var result = await _unitOfWork.EquipmentReservations.DeleteEquipmentReservationAsync(reservationId);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);

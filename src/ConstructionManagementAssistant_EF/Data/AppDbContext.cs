@@ -204,7 +204,6 @@ namespace ConstructionManagementAssistant.EF.Data
                 builder.Property(e => e.Model).HasMaxLength(100);
                 builder.Property(e => e.SerialNumber).HasMaxLength(100);
                 builder.Property(e => e.Notes).HasMaxLength(1000);
-                builder.AddEnumCheckConstraint<EquipmentStatus>(TablesNames.Equipments, nameof(Equipment.Status));
 
                 builder.HasMany(e => e.Assignments)
                     .WithOne(a => a.Equipment)

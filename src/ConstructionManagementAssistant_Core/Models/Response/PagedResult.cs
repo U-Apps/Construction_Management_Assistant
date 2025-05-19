@@ -8,10 +8,10 @@
 
         public int TotalPages { get; set; }
 
-        public int CurrentPage { get; set; }
+        public int PageNumber { get; set; }
 
         public int PageSize { get; set; }
-        public bool HasNextPage => PageSize * CurrentPage < TotalItems;
-        public bool HasPreveiosPage => CurrentPage > 1;
+        public bool HasNextPage => PageSize * PageNumber < TotalItems;
+        public bool HasPreveiosPage => PageNumber > 1;
     }
 }

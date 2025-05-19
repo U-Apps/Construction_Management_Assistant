@@ -120,7 +120,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
 
         return new PagedResult<T>
         {
-            CurrentPage = pageNumber,
+            PageNumber = pageNumber,
             PageSize = pageSize,
             TotalItems = totalItems,
             Items = items,
@@ -149,7 +149,7 @@ public class BaseRepository<T>(AppDbContext _context) : IBaseRepository<T> where
 
         return new PagedResult<TResult>
         {
-            CurrentPage = pageNumber,
+            PageNumber = pageNumber,
             PageSize = pageSize,
             TotalItems = totalItems,
             Items = items,
