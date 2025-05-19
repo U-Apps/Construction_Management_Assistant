@@ -58,7 +58,7 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
         }
 
         // Paging
-        var totalCount = await equipmentDtosQuery.CountAsync();
+        var totaltems = await equipmentDtosQuery.CountAsync();
         var items = await equipmentDtosQuery
             .OrderBy(e => e.Name)
             .Skip((pageNumber - 1) * pageSize)
@@ -68,9 +68,10 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
         return new PagedResult<GetEquipmentDto>
         {
             Items = items,
-            TotalItems = totalCount,
+            TotalItems = totaltems,
             PageNumber = pageNumber,
-            PageSize = pageSize
+            PageSize = pageSize,
+            TotalPages = (int)Math.Ceiling(totaltems / (double)pageSize)
         };
     }
 
@@ -87,6 +88,8 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
             {
                 Id = e.Id,
                 Name = e.Name,
+                Model = e.Model,
+                Notes = e.Notes,
                 SerialNumber = e.SerialNumber,
                 PurchaseDate = e.PurchaseDate,
                 Status = hasStartedReservation

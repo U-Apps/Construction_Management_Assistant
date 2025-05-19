@@ -21,12 +21,19 @@
             return new BaseResponse<string> { Success = false, Message = "المشروع غير موجود" };
 
 
-        if (await HasOverlappingReservationAsync(equipmentId, startDate, endDate))
+        // Check for overlapping reservation and get the first one found
+        var overlappingReservation = await _context.EquipmentReservations
+            .Where(r =>
+                r.EquipmentId == equipmentId &&
+                (startDate < r.EndDate && endDate > r.StartDate))
+            .FirstOrDefaultAsync();
+
+        if (overlappingReservation != null)
         {
             return new BaseResponse<string>
             {
                 Success = false,
-                Message = "هناك حجز آخر متداخل لهذه المعدة في الفترة المحددة"
+                Message = $"هناك حجز آخر متداخل لهذه المعدة في الفترة من {overlappingReservation.StartDate:yyyy-MM-dd} إلى {overlappingReservation.EndDate:yyyy-MM-dd}"
             };
         }
 
