@@ -129,15 +129,5 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
     }
 
 
-    public async Task<BaseResponse<string>> SetEquipmentStatusAsync(int equipmentId, EquipmentStatus status)
-    {
-        var equipment = await _context.Equipments.FindAsync(equipmentId);
-        if (equipment == null)
-            return new BaseResponse<string> { Success = false, Message = "المعدة غير موجودة" };
 
-        equipment.Status = status;
-        equipment.ModifiedDate = DateTime.Now;
-        await _context.SaveChangesAsync();
-        return new BaseResponse<string> { Success = true, Message = "تم تحديث حالة المعدة بنجاح" };
-    }
 }

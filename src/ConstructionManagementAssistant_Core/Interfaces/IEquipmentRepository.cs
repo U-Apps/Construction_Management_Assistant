@@ -8,5 +8,4 @@ public interface IEquipmentRepository
     Task<BaseResponse<string>> UpdateEquipmentAsync(UpdateEquipmentDto dto);
     Task<BaseResponse<string>> DeleteEquipmentAsync(int id);
 
-    Task<BaseResponse<string>> SetEquipmentStatusAsync(int equipmentId, EquipmentStatus status);
 }
