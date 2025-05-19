@@ -125,7 +125,7 @@ public static class SystemApiRouts
 
     }
 
-    public class Documents
+    public static class Documents
     {
         public const string Base = "api/v1/Documents";
         public const string GetDocumentById = Base + "/{Id}";
@@ -136,7 +136,7 @@ public static class SystemApiRouts
 
     }
 
-    public class DocumentClassifications
+    public static class DocumentClassifications
     {
         public const string Base = "api/v1/DocumentClassifications";
         public const string GetDocumentClassificationById = Base + "/{Id}";
