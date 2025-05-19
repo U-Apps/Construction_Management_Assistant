@@ -125,4 +125,25 @@ public static class SystemApiRouts
 
     }
 
+    public class Documents
+    {
+        public const string Base = "api/v1/Documents";
+        public const string GetDocumentById = Base + "/{Id}";
+        public const string GetAllDocuments = Base;
+        public const string UploadDocument = Base;
+        public const string UpdateDocument = Base;
+        public const string DeleteDocument = Base + "/{Id}";
+
+    }
+
+    public class DocumentClassifications
+    {
+        public const string Base = "api/v1/DocumentClassifications";
+        public const string GetDocumentClassificationById = Base + "/{Id}";
+        public const string GetAllDocumentClassifications = Base;
+        public const string AddDocumentClassification = Base;
+        public const string UpdateDocumentClassification = Base;
+        public const string DeleteDocumentClassification = Base + "/{Id}";
+
+    }
 }
