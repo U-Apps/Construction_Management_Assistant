@@ -129,11 +129,11 @@ public static class SystemApiRouts
     public static class Documents
     {
         public const string Base = "api/v1/Documents";
-        public const string GetDocumentById = Base + "/{Id}";
+        public const string GetDocumentById = Base + "/{id}";
         public const string GetAllDocuments = Base;
         public const string UploadDocument = Base;
         public const string UpdateDocument = Base;
-        public const string DeleteDocument = Base + "/{Id}";
+        public const string DeleteDocument = Base + "/{id}";
 
     }
 
