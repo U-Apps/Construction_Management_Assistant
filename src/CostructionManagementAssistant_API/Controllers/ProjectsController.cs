@@ -13,7 +13,6 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <summary>
     /// حالة المشروع
     /// </summary>
-    /// <param name="status">حالة المشروع اختياري (0=لم يبدأ , 1=قيد التنفيذ , 2=معلق 3=مكتمل 4=ملغي )</param>
     /// <param name="searchTerm">مصطلح البحث اختياري</param>
     /// <returns>قائمة المشاريع</returns>
     /// <response code="200">تم العثور على المشاريع</response>
@@ -224,55 +223,6 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
 
     #endregion
 
-    #region Complete Project
-
-    /// <summary>
-    /// إكمال مشروع
-    /// </summary>
-    /// <param name="id">معرف المشروع</param>
-    /// <returns>نتيجة الإكمال</returns>
-    /// <response code="200">تم إكمال المشروع بنجاح</response>
-    /// <response code="404">لم يتم العثور على المشروع</response>
-    [HttpPost(SystemApiRouts.Projects.CompleteProject)]
-    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CompleteProject(int id)
-    {
-        var project = await _unitOfWork.Projects.GetProjectById(id);
-        if (project == null)
-        {
-            return NotFound(new BaseResponse<string>
-            {
-                Success = false,
-                Message = "لم يتم العثور على المشروع",
-            });
-        }
-
-        var updatedProject = new UpdateProjectDto
-        {
-            Id = project.Id,
-            ProjectName = project.ProjectName,
-            SiteAddress = project.SiteAddress,
-            //ProjectStatus = ProjectStatus.Completed.GetDisplayName()
-        };
-
-        var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(new BaseResponse<string>
-        {
-            Success = true,
-            Message = "تم إكمال المشروع بنجاح",
-            Data = response.Data,
-        });
-    }
-
-    #endregion
-
     #region Cancel Project
 
     /// <summary>
@@ -285,40 +235,51 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     [HttpPost(SystemApiRouts.Projects.CancelProject)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CancelProject(int id)
+    public async Task<IActionResult> CancelProject(int id, [FromBody] string? cancelationReason = null)
     {
-        var project = await _unitOfWork.Projects.GetProjectById(id);
-        if (project == null)
-        {
-            return NotFound(new BaseResponse<string>
-            {
-                Success = false,
-                Message = "لم يتم العثور على المشروع",
-            });
-        }
 
-        var updatedProject = new UpdateProjectDto
-        {
-            Id = project.Id,
-            ProjectName = project.ProjectName,
-            SiteAddress = project.SiteAddress,
-            //ProjectStatus = ProjectStatus.Cancelled.GetDisplayName()
-        };
-
-        var response = await _unitOfWork.Projects.UpdateProjectAsync(updatedProject);
-
+        var response = await _unitOfWork.Projects.CancelProjectAsync(id, cancelationReason);
         if (!response.Success)
         {
-            return BadRequest(response);
+            return NotFound(response);
+
         }
 
-        return Ok(new BaseResponse<string>
-        {
-            Success = true,
-            Message = "تم إلغاء المشروع بنجاح",
-            Data = response.Data,
-        });
+        return Ok(response);
+
     }
+
+
+
+    [HttpPost(SystemApiRouts.Projects.PendProject)]
+    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> PendProject(int id)
+    {
+
+        var response = await _unitOfWork.Projects.PendProjectAsync(id);
+        if (!response.Success)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost(SystemApiRouts.Projects.ActivateProject)]
+    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ActivateProject(int id)
+    {
+        var response = await _unitOfWork.Projects.ActivatePendingProjectAsync(id);
+        if (!response.Success)
+        {
+            return NotFound(response);
+        }
+
+        return Ok(response);
+    }
+
     #endregion
 
     #region Assign Project To Site Engineer

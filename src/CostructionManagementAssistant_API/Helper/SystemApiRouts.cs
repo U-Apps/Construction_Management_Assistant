@@ -65,9 +65,10 @@ public static class SystemApiRouts
         public const string GetAllCompletedProjects = Base + "/Completed";
         public const string GetAllCancelProjects = Base + "/Cancelled";
         public const string GetUnderImplementingProjects = Base + "/UnderImplementing";
-        public const string CompleteProject = Base + "/Complete/{id}";
         public const string CancelProject = Base + "/Cancel/{id}";
+        public const string PendProject = Base + "/Pend/{id}";
         public const string AssignProjectToSiteEngineer = Base + "/AssignToSiteEngineer";
+        public const string ActivateProject = Base + "/Activate/{id}";
     }
 
     public static class Stages
