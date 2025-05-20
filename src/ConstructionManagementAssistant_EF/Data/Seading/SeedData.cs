@@ -1762,22 +1762,7 @@ public static class SeedData
     //}
 
 
-    public static List<DocumentClassification> SeedDocumentClassifications()
-    {
-        return new List<DocumentClassification>
-        {
-            new DocumentClassification { Id = 1, Type = "Project Documents" },
-            new DocumentClassification { Id = 2, Type = "Design Documents" },
-            new DocumentClassification { Id = 3, Type = "Engineering & Technical Documents" },
-            new DocumentClassification { Id = 4, Type = "Legal & Compliance Documents" },
-            new DocumentClassification { Id = 5, Type = "Financial Documents" },
-            new DocumentClassification { Id = 6, Type = "Site & Execution Documents" },
-            new DocumentClassification { Id = 7, Type = "HR & Administrative Documents" },
-            new DocumentClassification { Id = 8, Type = "Quality Assurance & Control Documents" },
-            new DocumentClassification { Id = 9, Type = "Health, Safety, and Environment (HSE) Documents" },
-            new DocumentClassification { Id = 10, Type = "Close-Out & Handover Documents" }
-        };
-    }
+
 
     public static List<Equipment> SeedEquipment()
     {

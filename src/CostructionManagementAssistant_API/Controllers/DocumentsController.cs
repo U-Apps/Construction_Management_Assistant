@@ -1,14 +1,10 @@
-﻿using ConstructionManagementAssistant.Core.Mapping;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace ConstructionManagementAssistant.API.Controllers
+﻿namespace ConstructionManagementAssistant.API.Controllers
 {
     [ApiController]
     public class DocumentsController(IUnitOfWork _unitOfWork) : ControllerBase
     {
         [HttpPost(SystemApiRouts.Documents.UploadDocument)]
-        public async Task<IActionResult> UploadDocument([FromForm]UploadFileRequest document)
+        public async Task<IActionResult> UploadDocument([FromForm] UploadFileRequest document)
         {
             if (document == null || document.File == null)
             {
@@ -28,10 +24,9 @@ namespace ConstructionManagementAssistant.API.Controllers
                                                     int? TaskId = null,
                                                     int pageNumber = 1,
                                                     [Range(10, 50)] int pageSize = 10,
-                                                    string? searchTerm = null,
-                                                    int? ClassificationId = null)
+                                                    string? searchTerm = null)
         {
-            var result = await _unitOfWork.Documents.GetDocumentsByProjectIdAsync(projectId, TaskId, pageNumber, pageSize, searchTerm, ClassificationId);
+            var result = await _unitOfWork.Documents.GetDocumentsByProjectIdAsync(projectId, TaskId, pageNumber, pageSize, searchTerm);
             if (result.Items == null || result.Items.Count == 0)
             {
                 return NotFound(new BaseResponse<PagedResult<DocumentResponse>>

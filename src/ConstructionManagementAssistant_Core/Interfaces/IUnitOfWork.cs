@@ -13,7 +13,6 @@ public interface IUnitOfWork : IDisposable
     IEquipmentRepository Equipment { get; }
     IEquipmentReservationRepository EquipmentReservations { get; }
     IDocumentRepository Documents { get; }
-    IDocClassRepository DocumentClassifications { get; }
 
     Task<int> SaveAsync();
 

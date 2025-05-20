@@ -137,14 +137,4 @@ public static class SystemApiRouts
 
     }
 
-    public static class DocumentClassifications
-    {
-        public const string Base = "api/v1/DocumentClassifications";
-        public const string GetDocumentClassificationById = Base + "/{Id}";
-        public const string GetAllDocumentClassifications = Base;
-        public const string AddDocumentClassification = Base;
-        public const string UpdateDocumentClassification = Base;
-        public const string DeleteDocumentClassification = Base + "/{Id}";
-
-    }
 }

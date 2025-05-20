@@ -1,10 +1,4 @@
-﻿
-using Azure.Core;
-using ConstructionManagementAssistant.Core.Entites;
-using ConstructionManagementAssistant.Core.Enums;
-using Supabase.Functions.Responses;
-
-namespace ConstructionManagementAssistant.EF.Repositories
+﻿namespace ConstructionManagementAssistant.EF.Repositories
 {
     public class DocumentRepository(AppDbContext _context, ILogger<DocumentRepository> _logger, Supabase.Client supabase)
                         : BaseRepository<Documnet>(_context), IDocumentRepository
@@ -19,7 +13,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             try
             {
 
-            
+
                 using var memoryStream = new MemoryStream();
                 await document.File.CopyToAsync(memoryStream);
                 var lastIndexOfDot = document.File.FileName.LastIndexOf('.');
@@ -32,7 +26,8 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 if (string.IsNullOrEmpty(Path))
                 {
                     _logger.LogError("Failed to upload document to storage.");
-                    return new BaseResponse<string>() {
+                    return new BaseResponse<string>()
+                    {
                         Success = false,
                         Errors = ["Failed to upload document to storage."],
                         Message = "unknown error occured while uploading file"
@@ -97,14 +92,12 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return doc;
         }
 
-        public async Task<PagedResult<DocumentResponse>> GetDocumentsByProjectIdAsync(int projectId, int? TaskId = null, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, int? ClassificationId = null)
+        public async Task<PagedResult<DocumentResponse>> GetDocumentsByProjectIdAsync(int projectId, int? TaskId = null, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
         {
             Expression<Func<Documnet, bool>> filter = x => true;
 
             filter = filter.AndAlso(d => d.ProjectId == projectId);
 
-            if (ClassificationId is not null)
-                filter = filter.AndAlso(d => d.ClassificationId == ClassificationId);
 
             if (TaskId is not null)
                 filter = filter.AndAlso(d => d.TaskId == TaskId);
@@ -127,7 +120,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             _logger.LogInformation("Fetched {Count} docs", pagedResult.Items.Count);
 
             return pagedResult;
-            
+
         }
         public async Task<BaseResponse<string>> UpdateDocumentAsync(UpdateDocumentRequest payload)
         {

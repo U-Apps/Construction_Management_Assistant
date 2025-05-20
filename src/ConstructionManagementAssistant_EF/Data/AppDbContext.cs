@@ -186,15 +186,6 @@ namespace ConstructionManagementAssistant.EF.Data
             });
             #endregion
 
-            #region DocumentClassification Configuration
-            modelBuilder.Entity<DocumentClassification>(builder =>
-            {
-                builder.ToTable(TablesNames.DocumentClassification);
-                builder.Property(e => e.Type).HasMaxLength(50);
-                builder.HasIndex(e => e.Type, "UniqueType").IsUnique();
-                builder.HasData(SeedData.SeedDocumentClassifications());
-            });
-            #endregion
 
             #region Equipment Configuration
             modelBuilder.Entity<Equipment>(builder =>
