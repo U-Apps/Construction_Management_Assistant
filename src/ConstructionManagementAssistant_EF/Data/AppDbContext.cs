@@ -1,5 +1,6 @@
 ﻿using ConstructionManagementAssistant.Core.Constants;
 using ConstructionManagementAssistant.EF.Data.Seading;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ProjectTask = ConstructionManagementAssistant.Core.Entites.ProjectTask;
 
@@ -241,6 +242,7 @@ namespace ConstructionManagementAssistant.EF.Data
 
 
             });
+            #endregion
             modelBuilder.Entity<ApplicationIdentity>(builder =>
             {
                 builder.HasKey(x => x.Id);
@@ -254,12 +256,19 @@ namespace ConstructionManagementAssistant.EF.Data
                 .HasMaxLength(50)
                 .IsUnicode(true);
 
+                builder.HasIndex(x => x.Email).IsUnique();
+                builder.HasIndex(x => x.PhoneNumber).IsUnique();
 
             }
             );
+            modelBuilder.Entity<IdentityRole>(builder =>
+            {
+                builder.HasData(SeedData.SeedRules());
+            }
+           );
 
 
-            #endregion
+
 
 
         }

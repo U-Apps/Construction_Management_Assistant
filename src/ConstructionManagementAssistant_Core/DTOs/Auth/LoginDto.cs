@@ -1,4 +1,4 @@
-﻿namespace ConstructionManagementAssistant.Core.DTOs
+﻿namespace ConstructionManagementAssistant.Core.DTOs.Auth
 {
     public class LoginDto
     {
@@ -6,3 +6,4 @@
         public string Password { get; set; }
     }
 }
+

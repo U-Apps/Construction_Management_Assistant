@@ -121,6 +121,15 @@ public static class SystemApiRouts
         public const string GetByWorkerId = Base + "/ByWorker/{workerId}";
         public const string AssignWorkersToTask = Base + "/AssignWorkersToTask";
         public const string UnAssignWorkersToTask = "api/task-assignments/unassign";
+    }
+
+    public static class Auth
+    {
+        public const string Base = "api/v1/Auth";
+        public const string Login = Base + "/login";
+        public const string Register = Base + "/register";
+        public const string GetAllUsersWithThereRoles = Base + "/getAllUsers";
+        public const string ResetPassWord = "api/resetPassword/{Email}";
 
 
     }
