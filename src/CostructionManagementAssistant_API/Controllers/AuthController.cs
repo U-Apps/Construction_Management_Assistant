@@ -45,13 +45,11 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Unauthorized(response);
         }
 
-        [HttpPost("GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
             throw new NotImplementedException();
         }
 
-        [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
             var user = await _authService.ForgotPasswordAsync(dto);
@@ -61,7 +59,6 @@ namespace ConstructionManagementAssistant.API.Controllers
             }
             return BadRequest(user);
         }
-        [HttpPost("resetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
             var user = await _authService.ResetPasswordAsync(dto);
@@ -73,8 +70,38 @@ namespace ConstructionManagementAssistant.API.Controllers
 
         }
 
+        public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
+        {
+            var send = await _authService.SendConfirmationEmail(email);
+            if (send.Success)
+                return Ok("Confirmation email sent.");
+
+            return NotFound("User not found");
+        }
+
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto dto)
+        {
+            if (dto.UserId == null || dto.Token == null)
+                return BadRequest(new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "Invalid confirmation data"
+                });
+
+            var confirmed = await _authService.ConfirmEmail(dto);
+            if (confirmed.Success)
+                return Ok(confirmed);
+
+
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "User not found"
+            });
 
 
 
+
+        }
     }
 }

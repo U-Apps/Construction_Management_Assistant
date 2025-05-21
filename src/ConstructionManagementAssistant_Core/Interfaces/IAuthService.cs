@@ -11,5 +11,10 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         Task<BaseResponse<string>> ForgotPasswordAsync(ForgotPasswordDto dto);
 
         Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto);
+
+        Task<BaseResponse<string>> SendConfirmationEmail(string email);
+
+        Task<BaseResponse<string>> ConfirmEmail(ConfirmEmailDto dto);
+
     }
 }
