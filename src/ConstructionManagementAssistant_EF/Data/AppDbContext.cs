@@ -233,6 +233,7 @@ namespace ConstructionManagementAssistant.EF.Data
 
             });
             #endregion
+
             modelBuilder.Entity<ApplicationIdentity>(builder =>
             {
                 builder.HasKey(x => x.Id);

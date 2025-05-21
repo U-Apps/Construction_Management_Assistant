@@ -17,7 +17,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// عملية الدخول للنظام
         /// </summary>
         /// <param name="loginDto">بيانات الدخول</param>
-        [HttpPost("loginUser")]
+        [HttpPost("login-User")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var response = await _authService.LoginAsync(loginDto);
@@ -35,7 +35,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// 1-Admin (مدير)
         /// 2- siteEngineer (مهندس موقع)
         /// </remarks>
-        [HttpPost("registerUser")]
+        [HttpPost("register-User")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             var response = await _authService.RegisterAsync(registerDto);
@@ -45,11 +45,8 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Unauthorized(response);
         }
 
-        public async Task<IActionResult> GetUsers()
-        {
-            throw new NotImplementedException();
-        }
 
+        [HttpPost("Forgot-Password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
             var user = await _authService.ForgotPasswordAsync(dto);
@@ -59,6 +56,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             }
             return BadRequest(user);
         }
+        [HttpPost("Reset-Password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
             var user = await _authService.ResetPasswordAsync(dto);
@@ -69,7 +67,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             return BadRequest(user);
 
         }
-
+        [HttpPost("Send-Confirmation-Email")]
         public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
         {
             var send = await _authService.SendConfirmationEmail(email);
@@ -78,7 +76,7 @@ namespace ConstructionManagementAssistant.API.Controllers
 
             return NotFound("User not found");
         }
-
+        [HttpPost("Confirm-Email")]
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto dto)
         {
             if (dto.UserId == null || dto.Token == null)
