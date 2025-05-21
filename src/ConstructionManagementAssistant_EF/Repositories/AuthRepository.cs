@@ -13,9 +13,11 @@ namespace ConstructionManagementAssistant.EF.Repositories
     {
         private readonly UserManager<ApplicationIdentity> _userManager;
         private readonly IOptions<JWTSettings> _jwtOptions;
+        private readonly IEmailService _emailService;
 
-        public AuthRepository(UserManager<ApplicationIdentity> userManager, IOptions<JWTSettings> jwtOptions)
+        public AuthRepository(UserManager<ApplicationIdentity> userManager, IOptions<JWTSettings> jwtOptions, IEmailService emailService)
         {
+            _emailService = emailService;
             _userManager = userManager;
             _jwtOptions = jwtOptions;
         }
@@ -107,22 +109,16 @@ namespace ConstructionManagementAssistant.EF.Repositories
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
-                return new BaseResponse<string>
-                {
-                    Success = true,
-                    Message = "No Email Found"
-                };
+                return new BaseResponse<string> { Success = false, Message = "User not found" };
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = $"https://yourfrontend.com/reset-password?email={dto.Email}&token={Uri.EscapeDataString(token)}";
 
-            return new BaseResponse<string>
-            {
-                Success = true,
-                Message = "Reset token generated successfully.",
-                Data = token
-            };
+            var html = $"<p>Reset your password by clicking <a href='{resetLink}'>here</a>.</p>";
+            await _emailService.SendEmailAsync(dto.Email, "Reset Password", html);
+
+            return new BaseResponse<string> { Success = true, Message = "check your email please to reset the password" }; ;
         }
-
         public async Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -151,6 +147,50 @@ namespace ConstructionManagementAssistant.EF.Repositories
             {
                 Success = true,
                 Message = "Password reset successfully."
+            };
+        }
+        public async Task<BaseResponse<string>> SendConfirmationEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new BaseResponse<string> { Success = false, Message = "User not found" };
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = $"https://yourfrontend.com/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(token)}";
+
+            var html = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
+            await _emailService.SendEmailAsync(email, "Confirm your email", html);
+
+            return new BaseResponse<string> { Success = true, Message = "check your email please" }; ;
+        }
+
+        public async Task<BaseResponse<string>> ConfirmEmail(ConfirmEmailDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(dto.UserId);
+            if (user == null)
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "User not found"
+                };
+
+            var decodedToken = Uri.UnescapeDataString(dto.Token);
+
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+            if (!result.Succeeded)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "Email confirmation failed",
+                    Errors = result.Errors.Select(e => e.Description).ToList()
+                };
+            }
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "Email confirmed successfully"
             };
         }
 
@@ -186,6 +226,9 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+
     }
 }
 

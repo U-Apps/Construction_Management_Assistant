@@ -36,6 +36,8 @@ public static class EFServices
         });
         services.Configure<JWTSettings>(configuration.GetSection("JwtSettings"));
         services.AddScoped<IAuthService, AuthRepository>();
+
+        services.AddScoped<IEmailService, EmailReposotry>();
     }
 
 }
