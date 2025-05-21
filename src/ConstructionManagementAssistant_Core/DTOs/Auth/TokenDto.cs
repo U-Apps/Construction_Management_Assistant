@@ -1,13 +1,8 @@
 ﻿namespace ConstructionManagementAssistant.Core.DTOs.Auth
 {
-    public class ResponseLogin
+    public class TokenDto
     {
-        public string Email { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-
     }
 }
-

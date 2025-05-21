@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ConstructionManagementAssistant.EF.Repositories
@@ -45,6 +46,11 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
                 };
             }
+            var refreshToken = GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            await _userManager.UpdateAsync(user);
             return new BaseResponse<ResponseLogin>
             {
                 Data = new ResponseLogin
@@ -52,8 +58,8 @@ namespace ConstructionManagementAssistant.EF.Repositories
                     firstName = user.FirstName,
                     lastName = user.LastName,
                     Email = user.Email,
-                    Token = await GenerateJwtToken(user)
-
+                    AccessToken = await GenerateJwtTokenAsync(user),
+                    RefreshToken = refreshToken,
                 },
                 Errors = null,
                 Message = "User login successfully",
@@ -104,7 +110,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                     firstName = registerDto.FirstName,
                     lastName = registerDto.LastName,
                     Email = registerDto.Email,
-                    Token = await GenerateJwtToken(user)
+                    AccessToken = await GenerateJwtTokenAsync(user)
 
                 },
                 Errors = null,
@@ -158,7 +164,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 Message = "Password reset successfully."
             };
         }
-        public async Task<BaseResponse<string>> SendConfirmationEmail(string email)
+        public async Task<BaseResponse<string>> SendConfirmationEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -173,7 +179,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return new BaseResponse<string> { Success = true, Message = "check your email please" }; ;
         }
 
-        public async Task<BaseResponse<string>> ConfirmEmail(ConfirmEmailDto dto)
+        public async Task<BaseResponse<string>> ConfirmEmailAsync(ConfirmEmailDto dto)
         {
             var user = await _userManager.FindByIdAsync(dto.UserId);
             if (user == null)
@@ -202,8 +208,63 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 Message = "Email confirmed successfully"
             };
         }
+        public async Task<BaseResponse<TokenDto>> RefreshTokenAsync(TokenDto dto)
+        {
+            var principal = GetPrincipalFromExpiredToken(dto.AccessToken);
+            var email = principal?.Identity?.Name;
 
-        private async Task<string> GenerateJwtToken(ApplicationIdentity user)
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || user.RefreshToken != dto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                return new BaseResponse<TokenDto>
+                {
+                    Success = false,
+                    Data = null,
+                    Errors = null,
+                    Message = "Invalid refresh request",
+                };
+
+            var newAccessToken = await GenerateJwtTokenAsync(user);
+            var newRefreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await _userManager.UpdateAsync(user);
+
+            return new BaseResponse<TokenDto>
+            {
+                Data = new TokenDto
+                {
+                    AccessToken = newAccessToken,
+                    RefreshToken = newRefreshToken
+                },
+
+            };
+
+        }
+        public async Task<BaseResponse<string>> LogoutAsync(ClaimsPrincipal userPrincipal)
+        {
+            var user = await _userManager.GetUserAsync(userPrincipal);
+            if (user == null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "Unauthorized"
+                };
+            }
+
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = DateTime.MinValue;
+
+            await _userManager.UpdateAsync(user);
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "Logged out successfully"
+            };
+        }
+        private async Task<string> GenerateJwtTokenAsync(ApplicationIdentity user)
         {
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -229,16 +290,45 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 issuer: _jwtOptions.Value.Issuer,
                 audience: _jwtOptions.Value.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(_jwtOptions.Value.DurationInDays),
+                expires: DateTime.UtcNow.AddMinutes(_jwtOptions.Value.DurationInMinutes),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        private string GenerateRefreshToken()
+        {
+            var randomBytes = new byte[64];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomBytes);
+            return Convert.ToBase64String(randomBytes);
+        }
+
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.Key)),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
 
 
     }
+
 }
 
 

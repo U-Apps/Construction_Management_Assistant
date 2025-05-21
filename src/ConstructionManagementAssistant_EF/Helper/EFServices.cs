@@ -1,5 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.Helper;
-using Supabase;
+﻿using Supabase;
 
 namespace ConstructionManagementAssistant.EF.Helper;
 
@@ -34,7 +33,6 @@ public static class EFServices
             client.InitializeAsync().Wait(); // Ensure initialization before use
             return client;
         });
-        services.Configure<JWTSettings>(configuration.GetSection("JwtSettings"));
         services.AddScoped<IAuthService, AuthRepository>();
 
         services.AddScoped<IEmailService, EmailReposotry>();

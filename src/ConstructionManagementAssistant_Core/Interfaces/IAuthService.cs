@@ -1,5 +1,6 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
 using ConstructionManagementAssistant.Core.Models.Response;
+using System.Security.Claims;
 
 namespace ConstructionManagementAssistant.Core.Interfaces
 {
@@ -12,9 +13,13 @@ namespace ConstructionManagementAssistant.Core.Interfaces
 
         Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto);
 
-        Task<BaseResponse<string>> SendConfirmationEmail(string email);
+        Task<BaseResponse<string>> SendConfirmationEmailAsync(string email);
 
-        Task<BaseResponse<string>> ConfirmEmail(ConfirmEmailDto dto);
+        Task<BaseResponse<string>> ConfirmEmailAsync(ConfirmEmailDto dto);
+
+        Task<BaseResponse<TokenDto>> RefreshTokenAsync(TokenDto dto);
+
+        Task<BaseResponse<string>> LogoutAsync(ClaimsPrincipal userPrincipal);
 
     }
 }

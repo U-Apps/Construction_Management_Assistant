@@ -1,4 +1,5 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConstructionManagementAssistant.API.Controllers
 {
@@ -70,7 +71,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         [HttpPost(SystemApiRouts.Auth.SendConfirmationEmail)]
         public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
         {
-            var send = await _authService.SendConfirmationEmail(email);
+            var send = await _authService.SendConfirmationEmailAsync(email);
             if (send.Success)
                 return Ok("Confirmation email sent.");
 
@@ -86,7 +87,7 @@ namespace ConstructionManagementAssistant.API.Controllers
                     Message = "Invalid confirmation data"
                 });
 
-            var confirmed = await _authService.ConfirmEmail(dto);
+            var confirmed = await _authService.ConfirmEmailAsync(dto);
             if (confirmed.Success)
                 return Ok(confirmed);
 
@@ -100,6 +101,17 @@ namespace ConstructionManagementAssistant.API.Controllers
 
 
 
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var response = await _authService.LogoutAsync(User);
+            if (!response.Success)
+                return Unauthorized(response);
+
+            return Ok(response);
         }
     }
 }
