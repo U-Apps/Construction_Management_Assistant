@@ -16,13 +16,12 @@
         }
 
         [HttpGet(SystemApiRouts.Documents.GetAllDocuments)]
-        public async Task<IActionResult> GetAllDocs([FromQuery] int? projectId = null,
-                                                    [FromQuery] int? taskId = null,
+        public async Task<IActionResult> GetAllDocumets([FromQuery] int? projectId = null,
                                                     [FromQuery] int pageNumber = 1,
                                                     [FromQuery, Range(10, 50)] int pageSize = 10,
                                                     [FromQuery] string? searchTerm = null)
         {
-            var result = await _unitOfWork.Documents.GetAllDocumentsAsync(projectId, taskId, pageNumber, pageSize, searchTerm);
+            var result = await _unitOfWork.Documents.GetAllDocumentsAsync(projectId, pageNumber, pageSize, searchTerm);
             if (result.Items == null || result.Items.Count == 0)
             {
                 return NotFound(new BaseResponse<PagedResult<DocumentResponse>>
@@ -55,6 +54,27 @@
             {
                 Success = true,
                 Message = "تم جلب المستند بنجاح",
+                Data = result
+            });
+        }
+
+        [HttpGet(SystemApiRouts.Documents.GetAllDocumentsByTaskId)]
+        public async Task<IActionResult> GetAllDocumentsByTaskId([FromRoute] int taskId)
+        {
+            var result = await _unitOfWork.Documents.GetAllDocumentsByTaskIdAsync(taskId);
+            if (result == null || result.Count == 0)
+            {
+                return NotFound(new BaseResponse<List<DocumentResponse>>
+                {
+                    Success = false,
+                    Message = "لم يتم العثور على مستندات لهذه المهمة"
+                });
+            }
+
+            return Ok(new BaseResponse<List<DocumentResponse>>
+            {
+                Success = true,
+                Message = "تم جلب المستندات بنجاح",
                 Data = result
             });
         }

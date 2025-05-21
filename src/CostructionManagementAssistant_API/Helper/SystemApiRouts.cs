@@ -143,7 +143,8 @@ public static class SystemApiRouts
         public const string UploadDocument = Base;
         public const string UpdateDocument = Base;
         public const string DeleteDocument = Base + "/{id}";
-
+        // Add new route for getting all documents by task id
+        public const string GetAllDocumentsByTaskId = Base + "/ByTask/{taskId}";
     }
 
 }

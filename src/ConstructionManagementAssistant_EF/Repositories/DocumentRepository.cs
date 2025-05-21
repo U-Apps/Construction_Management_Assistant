@@ -129,16 +129,14 @@
             return doc;
         }
         public async Task<PagedResult<DocumentResponse>> GetAllDocumentsAsync(
-            int? projectId, int? taskId = null, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
+            int? projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
         {
             Expression<Func<Documnet, bool>> filter = x => true;
 
             if (projectId.HasValue)
                 filter = filter.AndAlso(d => d.ProjectId == projectId.Value);
 
-            // If projectId is not provided, ignore taskId even if it has a value
-            if (projectId.HasValue && taskId is not null)
-                filter = filter.AndAlso(d => d.TaskId == taskId);
+            // Removed taskId filtering
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -159,6 +157,16 @@
             return pagedResult;
         }
 
+        public async Task<List<DocumentResponse>> GetAllDocumentsByTaskIdAsync(int taskId)
+        {
+            var docs = await _context.Documnets
+                .Where(d => d.TaskId == taskId)
+                .OrderByDescending(d => d.CreatedDate)
+                .Select(DocumentProfile.ToDocumentResponse())
+                .ToListAsync();
+
+            return docs;
+        }
 
         public async Task<BaseResponse<string>> UpdateDocumentAsync(UpdateDocumentRequest payload)
         {
