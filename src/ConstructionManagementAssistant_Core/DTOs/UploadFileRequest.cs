@@ -13,10 +13,8 @@ namespace ConstructionManagementAssistant.Core.DTOs
         [StringLength(500)]
         public string? Description { get; set; }
 
-        public int? TaskId { get; set; }
-
-        [Required]
-        public int ProjectId { get; set; }
+        //public int ProjectId/ { get; set; }
+        //public int Proje/ctId { get; set; }
 
         [Required]
         public IFormFile? File { get; set; }

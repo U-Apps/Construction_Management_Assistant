@@ -121,7 +121,7 @@ public static class SystemApiRouts
         public const string GetByTaskId = Base + "/ByTask/{taskId}";
         public const string GetByWorkerId = Base + "/ByWorker/{workerId}";
         public const string AssignWorkersToTask = Base + "/AssignWorkersToTask";
-        public const string UnAssignWorkersToTask = "api/task-assignments/unassign";
+        public const string UnAssignWorkersToTask = Base + "/unassign";
     }
 
     public static class Auth
@@ -140,10 +140,12 @@ public static class SystemApiRouts
         public const string Base = "api/v1/Documents";
         public const string GetDocumentById = Base + "/{id}";
         public const string GetAllDocuments = Base;
-        public const string UploadDocument = Base;
+        public const string UploadDocumentToProject = Base + "/uploadToProject/{projectId}";
+        public const string UploadDocumentToTask = Base + "/uploadToTask/{taskId}";
         public const string UpdateDocument = Base;
         public const string DeleteDocument = Base + "/{id}";
-
+        // Add new route for getting all documents by task id
+        public const string GetAllDocumentsByTaskId = Base + "/ByTask/{taskId}";
     }
 
 }

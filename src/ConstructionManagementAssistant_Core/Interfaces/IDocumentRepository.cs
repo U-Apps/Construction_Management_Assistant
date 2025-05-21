@@ -10,15 +10,25 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         Task<DocumentDetailsResponse?> GetDocumentByIdAsync(Guid id);
 
         /// <summary>
-        /// Get paged documents by project id and optional task id.
+        /// Get paged documents by project id.
         /// </summary>
         Task<PagedResult<DocumentResponse>> GetAllDocumentsAsync(
-            int? projectId, int? taskId = null, int pageNumber = 1, int pageSize = 10, string? searchTerm = null);
+            int? projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null);
+
+        /// <summary>
+        /// Get all documents by task id.
+        /// </summary>
+        Task<List<DocumentResponse>> GetAllDocumentsByTaskIdAsync(int taskId);
 
         /// <summary>
         /// Add a new document (file upload).
         /// </summary>
-        Task<BaseResponse<string>> UploadDocumentAsync(UploadFileRequest document);
+        Task<BaseResponse<string>> UploadDocumentToProjectAsync(int projectId, UploadFileRequest document);
+
+        /// <summary>
+        /// Upload a document and associate it with a task.
+        /// </summary>
+        Task<BaseResponse<string>> UploadDocumentToTaskAsync(int taskId, UploadFileRequest document);
 
         /// <summary>
         /// Update document metadata (name, description).
