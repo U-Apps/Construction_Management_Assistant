@@ -23,7 +23,12 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         /// <summary>
         /// Add a new document (file upload).
         /// </summary>
-        Task<BaseResponse<string>> UploadDocumentAsync(UploadFileRequest document);
+        Task<BaseResponse<string>> UploadDocumentToProjectAsync(int projectId, UploadFileRequest document);
+
+        /// <summary>
+        /// Upload a document and associate it with a task.
+        /// </summary>
+        Task<BaseResponse<string>> UploadDocumentToTaskAsync(int taskId, UploadFileRequest document);
 
         /// <summary>
         /// Update document metadata (name, description).

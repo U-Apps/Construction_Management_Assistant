@@ -62,8 +62,8 @@
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
-                TaskId = request.TaskId,
-                ProjectId = request.ProjectId,
+                //TaskId = request.TaskId,
+                //ProjectId = request.ProjectId,
                 CreatedDate = DateTime.Now
             };
         }
