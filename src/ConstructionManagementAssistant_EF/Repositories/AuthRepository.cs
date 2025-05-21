@@ -34,7 +34,17 @@ namespace ConstructionManagementAssistant.EF.Repositories
                     Success = false,
 
                 };
+            if (user.EmailConfirmed == false)
+            {
+                return new BaseResponse<ResponseLogin>
+                {
+                    Data = null,
+                    Errors = null,
+                    Message = "Email is not confirmed",
+                    Success = false,
 
+                };
+            }
             return new BaseResponse<ResponseLogin>
             {
                 Data = new ResponseLogin
@@ -60,7 +70,6 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.Email.Substring(0, registerDto.Email.IndexOf('@')),
                 Email = registerDto.Email,
-                EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
             };
 
