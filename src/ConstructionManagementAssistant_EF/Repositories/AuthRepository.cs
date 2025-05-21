@@ -56,7 +56,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
                 PhoneNumber = registerDto.PhoneNumber,
-                UserName = registerDto.FirstName.Trim() + registerDto.LastName.Trim(),
+                UserName = registerDto.Email.Substring(0, registerDto.Email.IndexOf('@')),
                 Email = registerDto.Email,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
