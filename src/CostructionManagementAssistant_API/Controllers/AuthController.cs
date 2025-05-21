@@ -17,7 +17,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// عملية الدخول للنظام
         /// </summary>
         /// <param name="loginDto">بيانات الدخول</param>
-        [HttpPost("login-User")]
+        [HttpPost(SystemApiRouts.Auth.Login)]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var response = await _authService.LoginAsync(loginDto);
@@ -35,7 +35,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// 1-Admin (مدير)
         /// 2- siteEngineer (مهندس موقع)
         /// </remarks>
-        [HttpPost("register-User")]
+        [HttpPost(SystemApiRouts.Auth.Register)]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             var response = await _authService.RegisterAsync(registerDto);
@@ -46,7 +46,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         }
 
 
-        [HttpPost("Forgot-Password")]
+        [HttpPost(SystemApiRouts.Auth.ForgotPassword)]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
             var user = await _authService.ForgotPasswordAsync(dto);
@@ -56,7 +56,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             }
             return BadRequest(user);
         }
-        [HttpPost("Reset-Password")]
+        [HttpPost(SystemApiRouts.Auth.ResetPassWord)]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
             var user = await _authService.ResetPasswordAsync(dto);
@@ -67,7 +67,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             return BadRequest(user);
 
         }
-        [HttpPost("Send-Confirmation-Email")]
+        [HttpPost(SystemApiRouts.Auth.SendConfirmationEmail)]
         public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
         {
             var send = await _authService.SendConfirmationEmail(email);
@@ -76,7 +76,7 @@ namespace ConstructionManagementAssistant.API.Controllers
 
             return NotFound("User not found");
         }
-        [HttpPost("Confirm-Email")]
+        [HttpPost(SystemApiRouts.Auth.confirmEmail)]
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto dto)
         {
             if (dto.UserId == null || dto.Token == null)

@@ -130,7 +130,11 @@ public static class SystemApiRouts
         public const string Login = Base + "/login";
         public const string Register = Base + "/register";
         public const string GetAllUsersWithThereRoles = Base + "/getAllUsers";
-        public const string ResetPassWord = "api/resetPassword/{Email}";
+        public const string ForgotPassword = "api/ForgotPassword";
+        public const string ResetPassWord = "api/resetPassword";
+        public const string SendConfirmationEmail = "api/SendConfirmationEmail";
+        public const string confirmEmail = "api/confirmEmail";
+
 
 
     }
