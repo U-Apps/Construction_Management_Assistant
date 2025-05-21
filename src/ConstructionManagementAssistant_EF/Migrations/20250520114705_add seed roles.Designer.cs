@@ -4,6 +4,7 @@ using ConstructionManagementAssistant.EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520114705_add seed roles")]
+    partial class addseedroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,11 +279,87 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.DocumentClassification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Type" }, "UniqueType")
+                        .IsUnique()
+                        .HasFilter("[Type] IS NOT NULL");
+
+                    b.ToTable("DocumentClassifications", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Type = "Project Documents"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Type = "Design Documents"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Type = "Engineering & Technical Documents"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Type = "Legal & Compliance Documents"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Type = "Financial Documents"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Type = "Site & Execution Documents"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Type = "HR & Administrative Documents"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Type = "Quality Assurance & Control Documents"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Type = "Health, Safety, and Environment (HSE) Documents"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Type = "Close-Out & Handover Documents"
+                        });
+                });
+
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Documnet", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ClassificationId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -318,6 +397,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClassificationId");
 
                     b.HasIndex("ProjectId");
 
@@ -371,9 +452,15 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Equipments", (string)null);
+                    b.ToTable("Equipments", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Equipments_Status", "[Status] BETWEEN 0 AND 3");
+                        });
 
                     b.HasData(
                         new
@@ -384,7 +471,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Excavator",
                             Notes = "Heavy duty excavator for ground work",
                             PurchaseDate = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "EXC-2023-001"
+                            SerialNumber = "EXC-2023-001",
+                            Status = 0
                         },
                         new
                         {
@@ -395,7 +483,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Bulldozer",
                             Notes = "Currently at downtown construction site",
                             PurchaseDate = new DateTime(2022, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "BUL-2022-045"
+                            SerialNumber = "BUL-2022-045",
+                            Status = 0
                         },
                         new
                         {
@@ -405,7 +494,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Wheel Loader",
                             Notes = "New addition to fleet",
                             PurchaseDate = new DateTime(2023, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "WL-2023-008"
+                            SerialNumber = "WL-2023-008",
+                            Status = 0
                         },
                         new
                         {
@@ -416,7 +506,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Backhoe Loader",
                             Notes = "Hydraulic leak detected",
                             PurchaseDate = new DateTime(2021, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "BHL-2021-112"
+                            SerialNumber = "BHL-2021-112",
+                            Status = 2
                         },
                         new
                         {
@@ -426,7 +517,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Skid Steer Loader",
                             Notes = "With pallet forks attachment",
                             PurchaseDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "SSL-2022-078"
+                            SerialNumber = "SSL-2022-078",
+                            Status = 0
                         },
                         new
                         {
@@ -437,7 +529,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Motor Grader",
                             Notes = "Road construction project",
                             PurchaseDate = new DateTime(2020, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "GRD-2020-034"
+                            SerialNumber = "GRD-2020-034",
+                            Status = 0
                         },
                         new
                         {
@@ -447,7 +540,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Articulated Dump Truck",
                             Notes = "30-ton capacity",
                             PurchaseDate = new DateTime(2021, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "ADT-2021-056"
+                            SerialNumber = "ADT-2021-056",
+                            Status = 0
                         },
                         new
                         {
@@ -458,7 +552,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Crawler Dozer",
                             Notes = "Pending major engine overhaul",
                             PurchaseDate = new DateTime(2019, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "CDZ-2019-023"
+                            SerialNumber = "CDZ-2019-023",
+                            Status = 0
                         },
                         new
                         {
@@ -469,7 +564,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Telescopic Handler",
                             Notes = "High reach capability",
                             PurchaseDate = new DateTime(2022, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "TH-2022-091"
+                            SerialNumber = "TH-2022-091",
+                            Status = 0
                         },
                         new
                         {
@@ -479,7 +575,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Pile Driver",
                             Notes = "Foundation work equipment",
                             PurchaseDate = new DateTime(2020, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "PD-2020-017"
+                            SerialNumber = "PD-2020-017",
+                            Status = 0
                         },
                         new
                         {
@@ -490,7 +587,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Concrete Mixer Truck",
                             Notes = "9 cubic meter capacity",
                             PurchaseDate = new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "CMT-2021-045"
+                            SerialNumber = "CMT-2021-045",
+                            Status = 0
                         },
                         new
                         {
@@ -500,7 +598,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Concrete Pump",
                             Notes = "Boom pump 36 meters",
                             PurchaseDate = new DateTime(2022, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "CP-2022-033"
+                            SerialNumber = "CP-2022-033",
+                            Status = 0
                         },
                         new
                         {
@@ -510,7 +609,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Concrete Vibrator",
                             Notes = "Internal vibration system",
                             PurchaseDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "CV-2023-009"
+                            SerialNumber = "CV-2023-009",
+                            Status = 0
                         },
                         new
                         {
@@ -521,7 +621,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Concrete Saw",
                             Notes = "Blade replacement needed",
                             PurchaseDate = new DateTime(2021, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "CS-2021-028"
+                            SerialNumber = "CS-2021-028",
+                            Status = 2
                         },
                         new
                         {
@@ -531,7 +632,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Concrete Finisher",
                             Notes = "16-foot finishing width",
                             PurchaseDate = new DateTime(2020, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "CF-2020-019"
+                            SerialNumber = "CF-2020-019",
+                            Status = 0
                         },
                         new
                         {
@@ -542,7 +644,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Tower Crane",
                             Notes = "High-rise construction project",
                             PurchaseDate = new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "TC-2021-007"
+                            SerialNumber = "TC-2021-007",
+                            Status = 0
                         },
                         new
                         {
@@ -552,7 +655,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Mobile Crane",
                             Notes = "220-ton capacity",
                             PurchaseDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "MC-2022-014"
+                            SerialNumber = "MC-2022-014",
+                            Status = 0
                         },
                         new
                         {
@@ -563,7 +667,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Rough Terrain Crane",
                             Notes = "Annual inspection",
                             PurchaseDate = new DateTime(2020, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "RTC-2020-026"
+                            SerialNumber = "RTC-2020-026",
+                            Status = 2
                         },
                         new
                         {
@@ -574,7 +679,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Forklift",
                             Notes = "Warehouse operations",
                             PurchaseDate = new DateTime(2021, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "FL-2021-038"
+                            SerialNumber = "FL-2021-038",
+                            Status = 0
                         },
                         new
                         {
@@ -584,7 +690,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Scissor Lift",
                             Notes = "32ft working height",
                             PurchaseDate = new DateTime(2022, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "SL-2022-021"
+                            SerialNumber = "SL-2022-021",
+                            Status = 0
                         },
                         new
                         {
@@ -594,7 +701,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Vibratory Roller",
                             Notes = "For asphalt compaction work",
                             PurchaseDate = new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "VR-2023-005"
+                            SerialNumber = "VR-2023-005",
+                            Status = 0
                         },
                         new
                         {
@@ -605,7 +713,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Plate Compactor",
                             Notes = "Trench backfilling",
                             PurchaseDate = new DateTime(2021, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "PC-2021-029"
+                            SerialNumber = "PC-2021-029",
+                            Status = 0
                         },
                         new
                         {
@@ -615,7 +724,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Trencher",
                             Notes = "Chain-type trencher",
                             PurchaseDate = new DateTime(2020, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "TR-2020-031"
+                            SerialNumber = "TR-2020-031",
+                            Status = 0
                         },
                         new
                         {
@@ -626,7 +736,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Asphalt Paver",
                             Notes = "Screed calibration",
                             PurchaseDate = new DateTime(2021, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "AP-2021-042"
+                            SerialNumber = "AP-2021-042",
+                            Status = 2
                         },
                         new
                         {
@@ -637,7 +748,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Cold Planer",
                             Notes = "End of service life",
                             PurchaseDate = new DateTime(2019, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "CP-2019-015"
+                            SerialNumber = "CP-2019-015",
+                            Status = 0
                         },
                         new
                         {
@@ -648,7 +760,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Generator",
                             Notes = "Powering north site operations",
                             PurchaseDate = new DateTime(2022, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "GEN-2022-032"
+                            SerialNumber = "GEN-2022-032",
+                            Status = 0
                         },
                         new
                         {
@@ -658,7 +771,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Air Compressor",
                             Notes = "185 cfm capacity",
                             PurchaseDate = new DateTime(2021, 11, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "AC-2021-027"
+                            SerialNumber = "AC-2021-027",
+                            Status = 0
                         },
                         new
                         {
@@ -669,7 +783,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Light Tower",
                             Notes = "Night shift operations",
                             PurchaseDate = new DateTime(2022, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "LT-2022-019"
+                            SerialNumber = "LT-2022-019",
+                            Status = 0
                         },
                         new
                         {
@@ -679,7 +794,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Water Pump",
                             Notes = "High volume dewatering",
                             PurchaseDate = new DateTime(2020, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "WP-2020-024"
+                            SerialNumber = "WP-2020-024",
+                            Status = 0
                         },
                         new
                         {
@@ -690,7 +806,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Name = "Welding Machine",
                             Notes = "Electrode feeder repair",
                             PurchaseDate = new DateTime(2021, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SerialNumber = "WM-2021-036"
+                            SerialNumber = "WM-2021-036",
+                            Status = 2
                         });
                 });
 
@@ -5325,7 +5442,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -5342,10 +5459,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -5353,10 +5466,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique()
-                        .HasFilter("[PhoneNumber] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -6056,6 +6165,12 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Documnet", b =>
                 {
+                    b.HasOne("ConstructionManagementAssistant.Core.Entites.DocumentClassification", "Classification")
+                        .WithMany("Documnets")
+                        .HasForeignKey("ClassificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ConstructionManagementAssistant.Core.Entites.Project", "Project")
                         .WithMany("Documents")
                         .HasForeignKey("ProjectId")
@@ -6065,6 +6180,8 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.HasOne("ConstructionManagementAssistant.Core.Entites.ProjectTask", "Task")
                         .WithMany("Documents")
                         .HasForeignKey("TaskId");
+
+                    b.Navigation("Classification");
 
                     b.Navigation("Project");
 
@@ -6226,6 +6343,11 @@ namespace ConstructionManagementAssistant.EF.Migrations
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Client", b =>
                 {
                     b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.DocumentClassification", b =>
+                {
+                    b.Navigation("Documnets");
                 });
 
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.Equipment", b =>

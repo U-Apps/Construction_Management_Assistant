@@ -1,10 +1,12 @@
 ﻿using ConstructionManagementAssistant.Core.Constants;
 using ConstructionManagementAssistant.EF.Data.Seading;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ProjectTask = ConstructionManagementAssistant.Core.Entites.ProjectTask;
 
 namespace ConstructionManagementAssistant.EF.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationIdentity>
     {
         #region DbSets
 
@@ -29,6 +31,7 @@ namespace ConstructionManagementAssistant.EF.Data
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
+
         }
 
 
@@ -226,8 +229,38 @@ namespace ConstructionManagementAssistant.EF.Data
 
                 //builder.HasData(SeedData.SeedEquipmentReservations());
 
+
+
             });
             #endregion
+            modelBuilder.Entity<ApplicationIdentity>(builder =>
+            {
+                builder.HasKey(x => x.Id);
+
+                builder.Property(x => x.FirstName).
+                IsRequired(true).
+                HasMaxLength(50).
+                IsUnicode(true);
+
+                builder.Property(x => x.LastName).IsRequired(true)
+                .HasMaxLength(50)
+                .IsUnicode(true);
+
+                builder.HasIndex(x => x.Email).IsUnique();
+                builder.HasIndex(x => x.PhoneNumber).IsUnique();
+
+            }
+            );
+            modelBuilder.Entity<IdentityRole>(builder =>
+            {
+                builder.HasData(SeedData.SeedRules());
+            }
+           );
+
+
+
+
+
         }
 
     }

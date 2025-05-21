@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.EF.Data.Seading;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace ConstructionManagementAssistant.EF.Data.Seading;
 
 public static class SeedData
 {
@@ -1763,7 +1765,16 @@ public static class SeedData
 
 
 
-
+  
+      public static List<IdentityRole> SeedRules()
+    {
+        return new List<IdentityRole>
+        {
+            new IdentityRole { Id="d324016b-09a7-4f1a-b387-065c14dc5296", Name="admin", NormalizedName= "ADMIN" },
+            new IdentityRole { Id = "73575c45-d1f0-464c-b734-d6c3c1393069", Name="siteEngineer", NormalizedName= "SITEENGINEER" },
+        };
+    }
+  
     public static List<Equipment> SeedEquipment()
     {
         return new List<Equipment>
@@ -2007,5 +2018,5 @@ public static class SeedData
     //    return assignments;
     //}
 
-
 }
+
