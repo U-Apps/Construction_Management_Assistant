@@ -58,6 +58,24 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
     {
         try
         {
+            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Stages.Select(x => x.Id).Contains(taskDto.StageId));
+            if (project is null)
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "المشروع غير موجود"
+                };
+
+            if (project.Status == ProjectStatus.Cancelled || project.Status != ProjectStatus.Pending)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "المشروع غير فعال"
+                };
+            }
+
+
             _logger.LogInformation("Adding a new task: {TaskName}", taskDto.Name);
             if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
             {

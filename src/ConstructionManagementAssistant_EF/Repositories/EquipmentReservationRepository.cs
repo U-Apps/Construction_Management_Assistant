@@ -20,19 +20,23 @@
         if (!await _context.Projects.AnyAsync(x => x.Id == projectId))
             return new BaseResponse<string> { Success = false, Message = "المشروع غير موجود" };
 
-        if (equipment.Status != EquipmentStatus.Available)
-            return new BaseResponse<string> { Success = false, Message = "المعدة غير متاحة للحجز" };
 
-        // Overlap prevention: check for conflicting reservations
-        bool hasConflict = await _context.EquipmentReservations
-            .AnyAsync(r =>
+        // Check for overlapping reservation and get the first one found
+        var overlappingReservation = await _context.EquipmentReservations
+            .Where(r =>
                 r.EquipmentId == equipmentId &&
-                (startDate < r.EndDate && endDate > r.StartDate) || (startDate > r.EndDate && endDate < r.StartDate)
-            );
+                (startDate < r.EndDate && endDate > r.StartDate))
+            .FirstOrDefaultAsync();
 
+        if (overlappingReservation != null)
+        {
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = $"هناك حجز آخر متداخل لهذه المعدة في الفترة من {overlappingReservation.StartDate:yyyy-MM-dd} إلى {overlappingReservation.EndDate:yyyy-MM-dd}"
+            };
+        }
 
-        if (hasConflict)
-            return new BaseResponse<string> { Success = false, Message = "هناك حجز آخر متداخل لهذه المعدة في الفترة المحددة" };
 
         var reservation = new EquipmentReservation
         {
@@ -45,15 +49,14 @@
         _context.EquipmentReservations.Add(reservation);
         await _context.SaveChangesAsync();
 
-
         _logger.LogInformation("Equipment {EquipmentId} reserved for project {ProjectId}", equipmentId, projectId);
 
         return new BaseResponse<string> { Success = true, Message = "تم حجز المعدة للمشروع بنجاح" };
     }
 
-    public async Task<BaseResponse<string>> RemoveEquipmentReservationAsync(int equipmentReservationId)
+    public async Task<BaseResponse<string>> DeleteEquipmentReservationAsync(int equipmentReservationId)
     {
-        _logger.LogInformation("Removing equipment reservation {ReservationId}", equipmentReservationId);
+        _logger.LogInformation("Canceling equipment reservation {ReservationId}", equipmentReservationId);
 
         var reservation = await _context.EquipmentReservations
             .FirstOrDefaultAsync(a => a.Id == equipmentReservationId);
@@ -61,21 +64,33 @@
         if (reservation == null)
             return new BaseResponse<string> { Success = false, Message = "الحجز غير موجود" };
 
-        // Remove the reservation from the database
-        _context.EquipmentReservations.Remove(reservation);
+        if (reservation.ReservationStatus == ReservationStatus.Compoleted)
+            return new BaseResponse<string> { Success = false, Message = "لا يمكن إلغاء حجز مكتمل" };
 
+
+        _context.EquipmentReservations.Remove(reservation);
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Equipment reservation {ReservationId} removed", equipmentReservationId);
+        _logger.LogInformation("Equipment reservation {ReservationId} canceled", equipmentReservationId);
 
         return new BaseResponse<string> { Success = true, Message = "تم إلغاء حجز المعدة بنجاح" };
     }
 
 
+    private static ReservationStatus GetReservationStatus(DateTime startDate, DateTime endDate, DateTime now)
+    {
+        if (endDate <= now)
+            return ReservationStatus.Compoleted;
+        else if (startDate > now)
+            return ReservationStatus.NotStarted;
+        else
+            return ReservationStatus.Started;
+    }
+
     public async Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByEquipmentIdAsync(int equipmentId)
     {
         var now = DateTime.Now;
-        return await _context.EquipmentReservations
+        var reservations = await _context.EquipmentReservations
             .Where(a => a.EquipmentId == equipmentId)
             .Select(a => new GetEquipmentReservationDto
             {
@@ -86,14 +101,18 @@
                 EquipmentName = a.Equipment.Name,
                 StartDate = a.StartDate,
                 EndDate = a.EndDate,
-                IsActive = IsReservationActive(a.StartDate, a.EndDate, now)
-            }).ToListAsync();
+                ReservationStatus = GetReservationStatus(a.StartDate, a.EndDate, now)
+            })
+            .ToListAsync();
+
+
+        return reservations;
     }
 
     public async Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByProjectIdAsync(int projectId)
     {
         var now = DateTime.Now;
-        return await _context.EquipmentReservations
+        var reservations = await _context.EquipmentReservations
             .Where(a => a.ProjectId == projectId)
             .Select(a => new GetEquipmentReservationDto
             {
@@ -104,14 +123,18 @@
                 EquipmentName = a.Equipment.Name,
                 StartDate = a.StartDate,
                 EndDate = a.EndDate,
-                IsActive = IsReservationActive(a.StartDate, a.EndDate, now)
-            }).ToListAsync();
+                ReservationStatus = GetReservationStatus(a.StartDate, a.EndDate, now)
+            })
+            .ToListAsync();
+
+
+        return reservations;
     }
 
     public async Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync()
     {
         var now = DateTime.Now;
-        return await _context.EquipmentReservations
+        var reservations = await _context.EquipmentReservations
             .Select(a => new GetEquipmentReservationDto
             {
                 Id = a.Id,
@@ -121,15 +144,19 @@
                 EquipmentName = a.Equipment.Name,
                 StartDate = a.StartDate,
                 EndDate = a.EndDate,
-                IsActive = IsReservationActive(a.StartDate, a.EndDate, now)
-            }).ToListAsync();
-    }
-    private static bool IsReservationActive(DateTime startDate, DateTime endDate, DateTime? reference = null)
-    {
-        var now = reference ?? DateTime.Now;
-        var result = startDate <= now && endDate > now;
-        return result;
-    }
+                ReservationStatus = GetReservationStatus(a.StartDate, a.EndDate, now)
+            })
+            .ToListAsync();
 
+
+        return reservations;
+    }
+    private async Task<bool> HasOverlappingReservationAsync(int equipmentId, DateTime startDate, DateTime endDate)
+    {
+        return await _context.EquipmentReservations
+            .AnyAsync(r =>
+                r.EquipmentId == equipmentId &&
+                (startDate < r.EndDate && endDate > r.StartDate));
+    }
 
 }

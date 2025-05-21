@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace ConstructionManagementAssistant.Core.DTOs
 {
+    /// <summary>
+    /// Basic document response DTO.
+    /// </summary>
     public class DocumentResponse
     {
         public Guid Id { get; set; }
@@ -17,12 +15,13 @@ namespace ConstructionManagementAssistant.Core.DTOs
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? TaskName { get; set; }
         public int ProjectId { get; set; }
-        public string ProjectName { get; set; }
-        public int ClassificationId { get; set; }
-        public string ClassificationName { get; set; }
+        public string ProjectName { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
     }
 
+    /// <summary>
+    /// Detailed document response DTO.
+    /// </summary>
     public class DocumentDetailsResponse : DocumentResponse
     {
         public string? FileUrl { get; set; }

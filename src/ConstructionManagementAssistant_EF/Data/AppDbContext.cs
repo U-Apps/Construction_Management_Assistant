@@ -189,15 +189,6 @@ namespace ConstructionManagementAssistant.EF.Data
             });
             #endregion
 
-            #region DocumentClassification Configuration
-            modelBuilder.Entity<DocumentClassification>(builder =>
-            {
-                builder.ToTable(TablesNames.DocumentClassification);
-                builder.Property(e => e.Type).HasMaxLength(50);
-                builder.HasIndex(e => e.Type, "UniqueType").IsUnique();
-                builder.HasData(SeedData.SeedDocumentClassifications());
-            });
-            #endregion
 
             #region Equipment Configuration
             modelBuilder.Entity<Equipment>(builder =>
@@ -207,7 +198,6 @@ namespace ConstructionManagementAssistant.EF.Data
                 builder.Property(e => e.Model).HasMaxLength(100);
                 builder.Property(e => e.SerialNumber).HasMaxLength(100);
                 builder.Property(e => e.Notes).HasMaxLength(1000);
-                builder.AddEnumCheckConstraint<EquipmentStatus>(TablesNames.Equipments, nameof(Equipment.Status));
 
                 builder.HasMany(e => e.Assignments)
                     .WithOne(a => a.Equipment)

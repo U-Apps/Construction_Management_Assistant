@@ -29,7 +29,7 @@ public static class SystemApiRouts
 
     }
 
-    public class WorkerSpecialties
+    public static class WorkerSpecialties
     {
         public const string Base = "api/v1/WorkerSpecialties";
         public const string GetWorkerSpecialtyById = Base + "/{Id}";
@@ -40,7 +40,7 @@ public static class SystemApiRouts
 
     }
 
-    public class Workers
+    public static class Workers
     {
         public const string Base = "api/v1/Workers";
         public const string GetWorkerById = Base + "/{Id}";
@@ -65,12 +65,13 @@ public static class SystemApiRouts
         public const string GetAllCompletedProjects = Base + "/Completed";
         public const string GetAllCancelProjects = Base + "/Cancelled";
         public const string GetUnderImplementingProjects = Base + "/UnderImplementing";
-        public const string CompleteProject = Base + "/Complete/{id}";
         public const string CancelProject = Base + "/Cancel/{id}";
+        public const string PendProject = Base + "/Pend/{id}";
         public const string AssignProjectToSiteEngineer = Base + "/AssignToSiteEngineer";
+        public const string ActivateProject = Base + "/Activate/{id}";
     }
 
-    public class Stages
+    public static class Stages
     {
         public const string Base = "api/v1/Stages";
         public const string AddStage = Base;
@@ -131,6 +132,17 @@ public static class SystemApiRouts
         public const string GetAllUsersWithThereRoles = Base + "/getAllUsers";
         public const string ResetPassWord = "api/resetPassword/{Email}";
 
+
+    }
+
+    public static class Documents
+    {
+        public const string Base = "api/v1/Documents";
+        public const string GetDocumentById = Base + "/{id}";
+        public const string GetAllDocuments = Base;
+        public const string UploadDocument = Base;
+        public const string UpdateDocument = Base;
+        public const string DeleteDocument = Base + "/{id}";
 
     }
 

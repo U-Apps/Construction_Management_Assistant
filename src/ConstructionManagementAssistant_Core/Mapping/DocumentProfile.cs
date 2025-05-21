@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConstructionManagementAssistant.Core.Mapping
+﻿namespace ConstructionManagementAssistant.Core.Mapping
 {
     public static class DocumentProfile
     {
         public static Expression<Func<Documnet, DocumentResponse>> ToDocumentResponse()
         {
             return document =>
-             new DocumentResponse() {
+             new DocumentResponse()
+             {
 
 
                  Id = document.Id,
@@ -21,8 +16,6 @@ namespace ConstructionManagementAssistant.Core.Mapping
                  TaskName = document.Task != null ? document.Task.Name : null,
                  ProjectId = document.ProjectId,
                  ProjectName = document.Project.Name,
-                 ClassificationId = document.ClassificationId,
-                 ClassificationName = document.Classification != null ? document.Classification.Type : string.Empty,
                  CreatedDate = document.CreatedDate
              };
 
@@ -39,8 +32,6 @@ namespace ConstructionManagementAssistant.Core.Mapping
                  TaskName = document.Task != null ? document.Task.Name : null,
                  ProjectId = document.ProjectId,
                  ProjectName = document.Project.Name,
-                 ClassificationId = document.ClassificationId,
-                 ClassificationName = document.Classification != null ? document.Classification.Type : string.Empty,
                  CreatedDate = document.CreatedDate,
                  FileType = document.FileType,
                  FileUrl = document.Path
@@ -59,12 +50,10 @@ namespace ConstructionManagementAssistant.Core.Mapping
             r.TaskName = document.Task != null ? document.Task.Name : null;
             r.ProjectId = document.ProjectId;
             r.ProjectName = document.Project.Name;
-            r.ClassificationId = document.ClassificationId;
-            r.ClassificationName = document.Classification != null ? document.Classification.Type : string.Empty;
             r.CreatedDate = document.CreatedDate;
 
             return r;
-            
+
         }
         public static Documnet ToDocument(this UploadFileRequest request)
         {
@@ -75,7 +64,6 @@ namespace ConstructionManagementAssistant.Core.Mapping
                 Description = request.Description,
                 TaskId = request.TaskId,
                 ProjectId = request.ProjectId,
-                ClassificationId = request.ClassificationId,
                 CreatedDate = DateTime.Now
             };
         }

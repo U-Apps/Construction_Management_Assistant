@@ -8,6 +8,11 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
 
     /// <summary>
     /// Retrieves a paginated list of equipment, optionally filtered by search term and status.
+    /// <para>
+    /// <b>Note:</b> The status of each equipment item is determined automatically based on its reservation period.
+    /// If the current date falls within a reservation period, the equipment status will be set to <c>Reserved</c>;
+    /// otherwise, it will be <c>Available</c>.
+    /// </para>
     /// </summary>
     /// <param name="pageNumber">The page number to retrieve (default is 1).</param>
     /// <param name="pageSize">The number of items per page (default is 10, max is 50).</param>
@@ -47,6 +52,11 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
 
     /// <summary>
     /// Retrieves the details of a specific equipment item by its identifier.
+    /// <para>
+    /// <b>Note:</b> The status of the equipment is determined automatically based on its reservation period.
+    /// If the current date falls within a reservation period, the equipment status will be set to <c>Reserved</c>;
+    /// otherwise, it will be <c>Available</c>.
+    /// </para>
     /// </summary>
     /// <param name="id">The unique identifier of the equipment.</param>
     /// <returns>
@@ -124,43 +134,7 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Sets the status of a specific equipment item.
-    /// </summary>
-    /// <param name="equipmentId">The unique identifier of the equipment.</param>
-    /// <param name="status">The new status to set for the equipment. Only allowed values: OutOfService, UnderMaintenance.</param>
-    /// <returns>
-    /// A <see cref="BaseResponse{T}"/> indicating the result of the status update operation.
-    /// </returns>
-    /// <response code="200">Status was updated successfully.</response>
-    /// <response code="400">Status update failed due to invalid data or business rules.</response>
-    [HttpPut(SystemApiRouts.Equipment.SetStatus)]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SetEquipmentStatus(int equipmentId,
 
-        [AllowedValues(
-        [EquipmentStatus.OutOfService,
-            EquipmentStatus.UnderMaintenance,
-            EquipmentStatus.Available]
-        )]
-        EquipmentStatus status)
-    {
-        // Only allow status values in the allowed array
-        if (status != EquipmentStatus.OutOfService && status != EquipmentStatus.UnderMaintenance && status != EquipmentStatus.Available)
-        {
-            return BadRequest(new BaseResponse<string>
-            {
-                Success = false,
-                Message = "Only OutOfService , availbale and UnderMaintenance statuses are allowed."
-            });
-        }
-
-        var result = await _unitOfWork.Equipment.SetEquipmentStatusAsync(equipmentId, status);
-        if (!result.Success)
-            return BadRequest(result);
-        return Ok(result);
-    }
 
     #endregion
 

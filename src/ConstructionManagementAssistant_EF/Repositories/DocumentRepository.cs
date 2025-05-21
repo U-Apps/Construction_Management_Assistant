@@ -1,49 +1,72 @@
-﻿
-using Azure.Core;
-using ConstructionManagementAssistant.Core.Entites;
-using ConstructionManagementAssistant.Core.Enums;
-using Supabase.Functions.Responses;
-
-namespace ConstructionManagementAssistant.EF.Repositories
+﻿namespace ConstructionManagementAssistant.EF.Repositories
 {
     public class DocumentRepository(AppDbContext _context, ILogger<DocumentRepository> _logger, Supabase.Client supabase)
-                        : BaseRepository<Documnet>(_context), IDocumentRepository
+            : BaseRepository<Documnet>(_context), IDocumentRepository
     {
         private const string StoragePath = @"https://efpizvhwkfiqsrhpflcn.supabase.co/storage/v1/object/public/";
-        public async Task<BaseResponse<string>> AddDocumentAsync(UploadFileRequest document)
+
+        public async Task<BaseResponse<string>> UploadDocumentAsync(UploadFileRequest document)
         {
+            if (document == null || document.File == null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Errors = new List<string> { "File is required." }
+                };
+            }
+
             _logger.LogInformation("Adding document: {DocumentName}", document.File.FileName);
             var doc = document.ToDocument();
 
-            //var addedDocument = await AddAsync(doc);
             try
             {
+                // Check project status before uploading
+                var project = await _context.Projects.FindAsync(document.ProjectId);
+                if (project == null)
+                {
+                    return new BaseResponse<string>
+                    {
+                        Success = false,
+                        Message = "Project not found",
+                        Errors = new List<string> { "Invalid project ID." }
+                    };
+                }
+                if (project.Status == ProjectStatus.Pending || project.Status == ProjectStatus.Cancelled)
+                {
+                    return new BaseResponse<string>
+                    {
+                        Success = false,
+                        Message = "Cannot upload documents to a pending or canceled project.",
+                        Errors = new List<string> { "Project status does not allow document uploads." }
+                    };
+                }
 
-            
                 using var memoryStream = new MemoryStream();
                 await document.File.CopyToAsync(memoryStream);
                 var lastIndexOfDot = document.File.FileName.LastIndexOf('.');
 
                 string extension = document.File.FileName.Substring(lastIndexOfDot + 1);
 
-                var Path = await supabase.Storage.From("documents").Upload(
+                var path = await supabase.Storage.From("documents").Upload(
                     memoryStream.ToArray(),
                     $"{doc.Id}.{extension}");
-                if (string.IsNullOrEmpty(Path))
+                if (string.IsNullOrEmpty(path))
                 {
                     _logger.LogError("Failed to upload document to storage.");
-                    return new BaseResponse<string>() {
+                    return new BaseResponse<string>
+                    {
                         Success = false,
                         Errors = ["Failed to upload document to storage."],
-                        Message = "unknown error occured while uploading file"
+                        Message = "Unknown error occurred while uploading file"
                     };
                 }
-                doc.Path = Path;
+                doc.Path = StoragePath + path;
                 doc.FileType = extension;
-                doc.Path = StoragePath + Path;
                 await AddAsync(doc);
                 await _context.SaveChangesAsync();
-                return new BaseResponse<string>()
+                return new BaseResponse<string>
                 {
                     Success = true,
                     Message = "Document uploaded successfully",
@@ -52,7 +75,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             catch (Exception e)
             {
                 _logger.LogError("{message} -- {stacktrace}", e.Message, e.StackTrace);
-                return new BaseResponse<string>()
+                return new BaseResponse<string>
                 {
                     Success = false,
                     Message = "Failed to upload document",
@@ -63,6 +86,15 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
         public async Task<BaseResponse<string>> DeleteDocumentAsync(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "Invalid document id"
+                };
+            }
+
             var doc = await GetByIdAsync(id);
             if (doc is null)
             {
@@ -83,11 +115,11 @@ namespace ConstructionManagementAssistant.EF.Repositories
             };
         }
 
-        public async Task<DocumentDetailsResponse> GetDocumentByIdAsync(Guid id)
+        public async Task<DocumentDetailsResponse?> GetDocumentByIdAsync(Guid id)
         {
             var doc = await FindWithSelectionAsync(
-            selector: DocumentProfile.ToDocumentDetailsResponse(),
-            criteria: d => d.Id == id);
+                selector: DocumentProfile.ToDocumentDetailsResponse(),
+                criteria: d => d.Id == id);
 
             if (doc == null)
             {
@@ -96,18 +128,17 @@ namespace ConstructionManagementAssistant.EF.Repositories
             }
             return doc;
         }
-
-        public async Task<PagedResult<DocumentResponse>> GetDocumentsByProjectIdAsync(int projectId, int? TaskId = null, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, int? ClassificationId = null)
+        public async Task<PagedResult<DocumentResponse>> GetAllDocumentsAsync(
+            int? projectId, int? taskId = null, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
         {
             Expression<Func<Documnet, bool>> filter = x => true;
 
-            filter = filter.AndAlso(d => d.ProjectId == projectId);
+            if (projectId.HasValue)
+                filter = filter.AndAlso(d => d.ProjectId == projectId.Value);
 
-            if (ClassificationId is not null)
-                filter = filter.AndAlso(d => d.ClassificationId == ClassificationId);
-
-            if (TaskId is not null)
-                filter = filter.AndAlso(d => d.TaskId == TaskId);
+            // If projectId is not provided, ignore taskId even if it has a value
+            if (projectId.HasValue && taskId is not null)
+                filter = filter.AndAlso(d => d.TaskId == taskId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -115,7 +146,6 @@ namespace ConstructionManagementAssistant.EF.Repositories
                     d.Name.Contains(searchTerm) ||
                     d.Description.Contains(searchTerm));
             }
-
 
             var pagedResult = await GetPagedDataWithSelectionAsync(
                     orderBy: x => x.CreatedDate,
@@ -127,10 +157,17 @@ namespace ConstructionManagementAssistant.EF.Repositories
             _logger.LogInformation("Fetched {Count} docs", pagedResult.Items.Count);
 
             return pagedResult;
-            
         }
+
+
         public async Task<BaseResponse<string>> UpdateDocumentAsync(UpdateDocumentRequest payload)
         {
+            if (payload == null || payload.Id == Guid.Empty)
+            {
+                _logger.LogWarning("Invalid update payload.");
+                return new BaseResponse<string> { Success = false, Message = "Invalid document update request" };
+            }
+
             var doc = await GetByIdAsync(payload.Id);
             if (doc is null)
             {
@@ -138,8 +175,8 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 return new BaseResponse<string> { Success = false, Message = "المستند غير موجود" };
             }
 
-            doc.Name = payload.Name;
-            doc.Description = payload.Description;
+            doc.Name = payload.Name?.Trim();
+            doc.Description = payload.Description?.Trim();
             await _context.SaveChangesAsync();
 
             _logger.LogInformation("Document updated successfully: {Id}", payload.Id);

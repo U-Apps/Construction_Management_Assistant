@@ -1,19 +1,24 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConstructionManagementAssistant.Core.DTOs
 {
+    /// <summary>
+    /// DTO for uploading a document file.
+    /// </summary>
     public class UploadFileRequest
     {
+        [StringLength(200)]
         public string? Name { get; set; }
+
+        [StringLength(500)]
         public string? Description { get; set; }
+
         public int? TaskId { get; set; }
+
+        [Required]
         public int ProjectId { get; set; }
-        public int ClassificationId { get; set; }
+
+        [Required]
         public IFormFile? File { get; set; }
     }
 }

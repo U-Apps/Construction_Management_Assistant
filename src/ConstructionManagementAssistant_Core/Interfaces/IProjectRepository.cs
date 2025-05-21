@@ -13,10 +13,11 @@ namespace ConstructionManagementAssistant.Core.Interfaces
 
         Task<List<ProjectNameDto>> GetAllProjectNames();
 
+        Task<BaseResponse<string>> CancelProjectAsync(int projectId, string? cancelationReason);
+        Task<BaseResponse<string>> PendProjectAsync(int projectId);
         Task<BaseResponse<string>> AddProjectAsync(AddProjectDto addProjectDto);
         Task<BaseResponse<string>> UpdateProjectAsync(UpdateProjectDto updateProjectDto);
         Task<BaseResponse<string>> DeleteProjectAsync(int id);
-
-
+        Task<BaseResponse<string>> ActivatePendingProjectAsync(int projectId);
     }
 }

@@ -32,6 +32,7 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
         var pagedResult = await GetAllDataWithSelectionAsync(
             orderBy: x => x.Name,
+            criteria: x => x.Status != ProjectStatus.Cancelled || x.Status != ProjectStatus.Pending,
             selector: ProjectProfile.ToGetProjectNameDto());
 
         return pagedResult;
@@ -164,6 +165,90 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
         {
             Success = true,
             Message = "تم حذف المشروع بنجاح"
+        };
+    }
+
+    public async Task<BaseResponse<string>> CancelProjectAsync(int projectId, string? cancelationReason)
+    {
+        var project = await GetByIdAsync(projectId);
+        if (project is null)
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "المشروع غير موجود"
+            };
+
+        if (project.Status == ProjectStatus.Completed)
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لا يمكن إلغاء مشروع مكتمل"
+            };
+
+        project.Status = ProjectStatus.Cancelled;
+        project.CancelationDate = DateOnly.FromDateTime(DateTime.Now);
+        project.CancelationReason = cancelationReason;
+
+        await _context.SaveChangesAsync();
+
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم ألغاء المشروع بنجاح"
+        };
+    }
+
+    public async Task<BaseResponse<string>> PendProjectAsync(int projectId)
+    {
+        var project = await GetByIdAsync(projectId);
+        if (project is null)
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "المشروع غير موجود"
+            };
+
+        if (project.Status == ProjectStatus.Completed)
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "لا يمكن تعليق مشروع مكتمل"
+            };
+
+        project.Status = ProjectStatus.Pending;
+        await _context.SaveChangesAsync();
+
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تعليق المشروع بنجاح"
+        };
+    }
+
+    public async Task<BaseResponse<string>> ActivatePendingProjectAsync(int projectId)
+    {
+        var project = await GetByIdAsync(projectId);
+        if (project is null)
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "المشروع غير موجود"
+            };
+
+        if (project.Status != ProjectStatus.Pending)
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "يمكن فقط تفعيل المشاريع المعلقة"
+            };
+
+        project.Status = ProjectStatus.Active;
+        await _context.SaveChangesAsync();
+
+        return new BaseResponse<string>
+        {
+            Success = true,
+            Message = "تم تفعيل المشروع بنجاح"
         };
     }
 

@@ -6,9 +6,5 @@
         Available,
         [Display(Name = "محجوز")]
         Reserved,
-        [Display(Name = "تحت الصيانة")]
-        UnderMaintenance,
-        [Display(Name = "خارج الخدمة")]
-        OutOfService
     }
 }

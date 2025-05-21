@@ -12,7 +12,6 @@
         public const string Tasks = "Tasks";
         public const string TaskAssignments = "TaskAssignments";
         public const string Documents = "Documents";
-        public const string DocumentClassification = "DocumentClassifications";
         public const string Equipments = "Equipments";
         public const string EquipmentReservations = "EquipmentReservations";
 

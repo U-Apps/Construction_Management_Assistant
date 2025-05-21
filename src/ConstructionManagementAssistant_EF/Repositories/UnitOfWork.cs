@@ -14,7 +14,6 @@ public class UnitOfWork : IUnitOfWork
     public IEquipmentReservationRepository EquipmentReservations { get; private set; }
     public IDocumentRepository Documents { get; private set; }
 
-    public IDocClassRepository DocumentClassifications { get; private set; }
 
     private readonly AppDbContext _appDbContext;
     private readonly ILogger<UnitOfWork> _logger;
@@ -35,7 +34,6 @@ public class UnitOfWork : IUnitOfWork
         Equipment = new EquipmentRepository(_appDbContext);
         EquipmentReservations = new EquipmentReservationRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentReservationRepository>>());
         Documents = new DocumentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>(), serviceProvider.GetRequiredService<Supabase.Client>());
-        DocumentClassifications = new DocumentClassificationRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>());
     }
 
     public void Dispose()
