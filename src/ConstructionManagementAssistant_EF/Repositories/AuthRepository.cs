@@ -18,8 +18,9 @@ namespace ConstructionManagementAssistant.EF.Repositories
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IOptions<JWT> _jwtOptions;
+        private readonly IEmailService _emailService;
 
-        public AuthRepository(UserManager<AppUser> userManager, IOptions<JWT> jwtOptions)
+        public AuthRepository(UserManager<AppUser> userManager, IOptions<JWT> jwtOptions, IEmailService emailService)
         {
             _emailService = emailService;
             _userManager = userManager;
@@ -27,21 +28,23 @@ namespace ConstructionManagementAssistant.EF.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<BaseResponse<ResponseLogin>> LoginAsync(LoginDto loginDto)
+        public async Task<BaseResponse<AuthResponse>> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
-                return new BaseResponse<ResponseLogin>
+                return new BaseResponse<AuthResponse>
                 {
                     Data = null,
                     Errors = null,
                     Message = "Email or password is wrong ... please try again",
                     Success = false,
                 };
+            }
+
             if (user.EmailConfirmed == false)
             {
-                return new BaseResponse<ResponseLogin>
+                return new BaseResponse<AuthResponse>
                 {
                     Data = null,
                     Errors = null,
@@ -50,19 +53,15 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
                 };
             }
-            var refreshToken = GenerateRefreshToken();
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
-            await _userManager.UpdateAsync(user);
-            return new BaseResponse<ResponseLogin>
+            return new BaseResponse<AuthResponse>
             {
-                Data = new ResponseLogin
+                Data = new AuthResponse
                 {
                     Name = user.Name,
                     Email = user.Email,
                     UserName = user.UserName,
-                    Token = await GenerateJwtToken(user),
+                    AccessToken = await GenerateJwtToken(user),
                     RefereshToken = user.RefereshTokens?.LastOrDefault(t => t.IsActive)?.Token,
                     RefreshTokenExpiration = user.RefereshTokens?.LastOrDefault(t => t.IsActive)?.ExpiresOn ?? DateTime.UtcNow
                 },
@@ -73,8 +72,20 @@ namespace ConstructionManagementAssistant.EF.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<BaseResponse<ResponseLogin>> RegisterAsync(RegisterDto registerDto)
+        public async Task<BaseResponse<AuthResponse>> RegisterAsync(RegisterDto registerDto)
         {
+            var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
+            if (existingUser != null)
+            {
+                return new BaseResponse<AuthResponse>
+                {
+                    Data = null,
+                    Errors = new List<string> { "Email already exists." },
+                    Message = "Registration failed, email already exists",
+                    Success = false,
+                };
+            }
+
             var user = new AppUser
             {
                 Name = registerDto.Name,
@@ -89,7 +100,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             if (!result.Succeeded)
             {
                 var errorMessages = result.Errors.Select(x => x.Description).ToList();
-                return new BaseResponse<ResponseLogin>
+                return new BaseResponse<AuthResponse>
                 {
                     Data = null,
                     Errors = errorMessages,
@@ -98,12 +109,12 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 };
             }
 
-            // Assign default user role (not Admin)
+            // Assign default user role (Admin)
             var roleResult = await _userManager.AddToRoleAsync(user, SystemRole.Admin.ToString());
             if (!roleResult.Succeeded)
             {
                 await _userManager.DeleteAsync(user);
-                return new BaseResponse<ResponseLogin>
+                return new BaseResponse<AuthResponse>
                 {
                     Data = null,
                     Errors = roleResult.Errors.Select(x => x.Description).ToList(),
@@ -116,14 +127,14 @@ namespace ConstructionManagementAssistant.EF.Repositories
             user.RefereshTokens.Add(refreshToken);
             await _userManager.UpdateAsync(user);
 
-            return new BaseResponse<ResponseLogin>
+            return new BaseResponse<AuthResponse>
             {
-                Data = new ResponseLogin
+                Data = new AuthResponse
                 {
                     Name = registerDto.Name,
                     Email = registerDto.Email,
                     UserName = user.UserName,
-                    Token = await GenerateJwtToken(user),
+                    AccessToken = await GenerateJwtToken(user),
                     RefereshToken = refreshToken.Token,
                     RefreshTokenExpiration = refreshToken.ExpiresOn
                 },
@@ -132,19 +143,16 @@ namespace ConstructionManagementAssistant.EF.Repositories
             };
         }
 
-        /// <inheritdoc />
+
         public async Task<BaseResponse<string>> ForgotPasswordAsync(ForgotPasswordDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
-            {
-                // Do not reveal if email exists
-                return new BaseResponse<string>
-                {
-                    Success = true,
-                    Message = "If the email exists, a reset token has been sent."
-                };
-            }
+                return new BaseResponse<string> { Success = false, Message = "User not found" };
+
+
+
+
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var resetLink = $"https://yourfrontend.com/reset-password?email={dto.Email}&token={Uri.EscapeDataString(token)}";
@@ -152,7 +160,13 @@ namespace ConstructionManagementAssistant.EF.Repositories
             var html = $"<p>Reset your password by clicking <a href='{resetLink}'>here</a>.</p>";
             await _emailService.SendEmailAsync(dto.Email, "Reset Password", html);
 
-        /// <inheritdoc />
+
+
+
+
+
+            return new BaseResponse<string> { Success = true, Message = "check your email please to reset the password" }; ;
+        }
         public async Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -162,6 +176,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 {
                     Success = false,
                     Message = "User not found",
+
                 };
             }
 
@@ -182,6 +197,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 Message = "Password reset successfully."
             };
         }
+
         public async Task<BaseResponse<string>> SendConfirmationEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -226,54 +242,8 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 Message = "Email confirmed successfully"
             };
         }
-        public async Task<BaseResponse<TokenDto>> RefreshTokenAsync(TokenDto dto)
-        {
-            var principal = GetPrincipalFromExpiredToken(dto.AccessToken);
-            var email = principal?.Identity?.Name;
 
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null || user.RefreshToken != dto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-                return new BaseResponse<TokenDto>
-                {
-                    Success = false,
-                    Data = null,
-                    Errors = null,
-                    Message = "Invalid refresh request",
-                };
 
-            var newAccessToken = await GenerateJwtTokenAsync(user);
-            var newRefreshToken = GenerateRefreshToken();
-
-            user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-            await _userManager.UpdateAsync(user);
-
-            return new BaseResponse<TokenDto>
-            {
-                Data = new TokenDto
-                {
-                    AccessToken = newAccessToken,
-                    RefreshToken = newRefreshToken
-                },
-
-            };
-
-        }
-        public async Task<BaseResponse<string>> LogoutAsync(ClaimsPrincipal userPrincipal)
-        {
-            var user = await _userManager.GetUserAsync(userPrincipal);
-            if (user == null)
-            {
-                return new BaseResponse<string>
-                {
-                    Success = false,
-                    Message = "Unauthorized"
-                };
-            }
-
-        /// <summary>
-        /// Generates a JWT token for the specified user.
-        /// </summary>
         private async Task<string> GenerateJwtToken(AppUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
@@ -306,9 +276,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        /// <summary>
-        /// Generates a new refresh token.
-        /// </summary>
+
         private RefreshToken GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
@@ -324,9 +292,9 @@ namespace ConstructionManagementAssistant.EF.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<BaseResponse<ResponseLogin>> RefreshTokenAsync(string token)
+        public async Task<BaseResponse<AuthResponse>> RefreshTokenAsync(string token)
         {
-            var response = new BaseResponse<ResponseLogin>();
+            var response = new BaseResponse<AuthResponse>();
 
             var user = await _userManager.Users
                 .Include(u => u.RefereshTokens)
@@ -360,17 +328,26 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
             response.Success = true;
             response.Message = "Token refreshed successfully";
-            response.Data = new ResponseLogin
+            response.Data = new AuthResponse
             {
                 Email = user.Email,
                 Name = user.Name,
                 UserName = user.UserName,
-                Token = jwtToken,
+                AccessToken = jwtToken,
                 RefereshToken = newRefreshToken.Token,
                 RefreshTokenExpiration = newRefreshToken.ExpiresOn
             };
 
             return response;
         }
+
+
+
+        public Task<BaseResponse<string>> LogoutAsync(ClaimsPrincipal userPrincipal)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

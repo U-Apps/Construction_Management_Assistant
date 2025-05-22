@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ConstructionManagementAssistant.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -97,9 +96,6 @@ namespace ConstructionManagementAssistant.API.Controllers
                 Success = false,
                 Message = "User not found"
             });
-
-
-
 
         }
 

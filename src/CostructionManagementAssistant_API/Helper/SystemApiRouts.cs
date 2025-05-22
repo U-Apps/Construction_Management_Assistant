@@ -132,6 +132,8 @@ public static class SystemApiRouts
         public const string GetAllUsersWithThereRoles = Base + "/getAllUsers";
         public const string ResetPassWord = Base + "/resetPassword";
         public const string ForgotPassword = Base + "/forgotPassword";
+        public const string SendConfirmationEmail = Base + "/sendConfirmationEmail";
+        public const string confirmEmail = Base + "/confirmEmail";
 
 
     }

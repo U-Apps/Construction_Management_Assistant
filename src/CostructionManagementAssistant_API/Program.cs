@@ -17,7 +17,9 @@ builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
 builder.Host.UseSerilogLoggging();
 
-var Jwt = builder.Configuration.GetSection("Jwt").Get<JWT>();
+builder.Services.Configure<JWT>(builder.Configuration.GetSection("Jwt"));
+var Jwt = builder.Configuration.GetSection("JWT").Get<JWT>();
+
 var key = Encoding.ASCII.GetBytes(Jwt!.Key);
 
 builder.Services.AddAuthentication(options =>
@@ -25,21 +27,24 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-
 .AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false; // Set to true in production
+    options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = Jwt.Issuer,
         ValidAudience = Jwt.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ClockSkew = TimeSpan.Zero
+        ValidIssuer = Jwt.Issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwt.Key)),
+        ClockSkew = TimeSpan.Zero // Remove delay of token when expire
     };
 });
+
+
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
 {
     options.Password.RequireDigit = false;
