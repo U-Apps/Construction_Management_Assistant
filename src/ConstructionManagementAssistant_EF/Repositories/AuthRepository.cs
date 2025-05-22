@@ -42,8 +42,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 };
             }
 
-            if (user.EmailConfirmed == false)
-            {
+            if (!await _userManager.IsEmailConfirmedAsync(user))
                 return new BaseResponse<AuthResponse>
                 {
                     Data = null,
@@ -52,7 +51,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                     Success = false,
 
                 };
-            }
+
 
             return new BaseResponse<AuthResponse>
             {
@@ -123,6 +122,12 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 };
             }
 
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = $"https://yourfrontend.com/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(token)}";
+
+            var html = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
+            await _emailService.SendEmailAsync(user.Email, "Confirm your email", html);
+
             var refreshToken = GenerateRefreshToken();
             user.RefereshTokens.Add(refreshToken);
             await _userManager.UpdateAsync(user);
@@ -138,7 +143,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                     RefereshToken = refreshToken.Token,
                     RefreshTokenExpiration = refreshToken.ExpiresOn
                 },
-                Message = "User created successfully",
+                Message = "Ur account creaetd succffully, check ur email for confirmation",
                 Success = true,
             };
         }
@@ -205,7 +210,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 return new BaseResponse<string> { Success = false, Message = "User not found" };
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = $"https://yourfrontend.com/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(token)}";
+            var confirmationLink = $"https://constructionmanagementassitantapi.runasp.net/api/v1/auth/confirmEmail?userId={user.Id}&token={Uri.EscapeDataString(token)}";
 
             var html = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
             await _emailService.SendEmailAsync(email, "Confirm your email", html);

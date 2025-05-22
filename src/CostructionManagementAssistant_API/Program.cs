@@ -47,6 +47,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
 {
+    options.SignIn.RequireConfirmedEmail = true;
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
