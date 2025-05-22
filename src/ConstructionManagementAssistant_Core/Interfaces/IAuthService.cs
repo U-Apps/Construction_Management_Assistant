@@ -14,7 +14,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto);
 
 
-        Task<BaseResponse<AuthResponse>> RefreshTokenAsync(string token);
+        Task<BaseResponse<AuthResponse>> RefreshAccessTokenByRefreshTokenAsync(string token);
 
         Task<BaseResponse<string>> LogoutAsync(ClaimsPrincipal userPrincipal);
 

@@ -298,19 +298,17 @@ namespace ConstructionManagementAssistant.EF.Repositories
             };
         }
 
-        public async Task<BaseResponse<AuthResponse>> RefreshTokenAsync(string token)
+        public async Task<BaseResponse<AuthResponse>> RefreshAccessTokenByRefreshTokenAsync(string token)
         {
             var response = new BaseResponse<AuthResponse>();
 
-            var user = await _userManager.Users
-                .Include(u => u.RefreshTokens)
-                .SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+
 
             if (user == null)
             {
                 response.Success = false;
                 response.Message = "Invalid Token";
-                response.Data = null;
                 return response;
             }
 
@@ -320,7 +318,6 @@ namespace ConstructionManagementAssistant.EF.Repositories
             {
                 response.Success = false;
                 response.Message = "Inactive or invalid token";
-                response.Data = null;
                 return response;
             }
 
@@ -347,9 +344,42 @@ namespace ConstructionManagementAssistant.EF.Repositories
             return response;
         }
 
-        public Task<BaseResponse<string>> LogoutAsync(ClaimsPrincipal userPrincipal)
+
+
+
+        public async Task<BaseResponse<string>> LogoutAsync(string refreshToken)
         {
-            throw new NotImplementedException();
+            // Find user by refresh token
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == refreshToken));
+            if (user == null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "User not found for the provided refresh token."
+                };
+            }
+
+            // Find the specific refresh token
+            var token = user.RefreshTokens.SingleOrDefault(t => t.Token == refreshToken && t.IsActive);
+            if (token == null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "No active refresh token found."
+                };
+            }
+
+            // Revoke the refresh token
+            token.RevokedOn = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "Logout successful."
+            };
         }
 
 

@@ -134,6 +134,7 @@ public static class SystemApiRouts
         public const string ForgotPassword = Base + "/forgotPassword";
         public const string SendConfirmationEmail = Base + "/sendConfirmationEmail";
         public const string confirmEmail = Base + "/confirmEmail";
+        public const string logout = Base + "/logout";
 
 
     }

@@ -1,5 +1,4 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ConstructionManagementAssistant.API.Controllers
 {
@@ -155,15 +154,19 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// 200 OK if logout is successful.<br/>
         /// 401 Unauthorized if the user is not authenticated or logout fails.
         /// </returns>
-        [Authorize]
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
+        [HttpGet(SystemApiRouts.Auth.logout)]
+        public async Task<IActionResult> RefreshToken()
         {
-            var response = await _authService.LogoutAsync(User);
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshToken))
+                return Unauthorized("Refresh token is missing.");
+
+            var response = await _authService.RefreshAccessTokenByRefreshTokenAsync(refreshToken);
             if (!response.Success)
                 return Unauthorized(response);
 
             return Ok(response);
         }
+
     }
 }
