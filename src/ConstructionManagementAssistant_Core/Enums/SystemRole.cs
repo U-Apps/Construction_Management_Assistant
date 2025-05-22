@@ -3,9 +3,9 @@
     public enum SystemRole
     {
         [Display(Name = "المدير")]
-        admin = 1,
+        Admin = 1,
         [Display(Name = "مهندس موقع")]
-        siteEngineer = 2
+        SiteEngineer = 2
 
     }
 }

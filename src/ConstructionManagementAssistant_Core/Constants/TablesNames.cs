@@ -14,6 +14,7 @@
         public const string Documents = "Documents";
         public const string Equipments = "Equipments";
         public const string EquipmentReservations = "EquipmentReservations";
+        public const string RefershToekns = "RefershToekns";
 
     }
 }
