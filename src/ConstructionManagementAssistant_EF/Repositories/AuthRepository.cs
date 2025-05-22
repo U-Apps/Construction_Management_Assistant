@@ -1,47 +1,55 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
 using ConstructionManagementAssistant.Core.Helper;
+using ConstructionManagementAssistant.Core.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ConstructionManagementAssistant.EF.Repositories
 {
+    /// <summary>
+    /// Provides authentication and user management services.
+    /// </summary>
     public class AuthRepository : IAuthService
     {
-        private readonly UserManager<ApplicationIdentity> _userManager;
-        private readonly IOptions<JWTSettings> _jwtOptions;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IOptions<JWT> _jwtOptions;
 
-        public AuthRepository(UserManager<ApplicationIdentity> userManager, IOptions<JWTSettings> jwtOptions)
+        public AuthRepository(UserManager<AppUser> userManager, IOptions<JWT> jwtOptions)
         {
             _userManager = userManager;
             _jwtOptions = jwtOptions;
         }
 
+        /// <inheritdoc />
         public async Task<BaseResponse<ResponseLogin>> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            {
                 return new BaseResponse<ResponseLogin>
                 {
                     Data = null,
                     Errors = null,
                     Message = "Email or password is wrong ... please try again",
                     Success = false,
-
                 };
+            }
 
             return new BaseResponse<ResponseLogin>
             {
                 Data = new ResponseLogin
                 {
-                    firstName = user.FirstName,
-                    lastName = user.LastName,
+                    Name = user.Name,
                     Email = user.Email,
-                    Token = await GenerateJwtToken(user)
-
+                    UserName = user.UserName,
+                    Token = await GenerateJwtToken(user),
+                    RefereshToken = user.RefereshTokens?.LastOrDefault(t => t.IsActive)?.Token,
+                    RefreshTokenExpiration = user.RefereshTokens?.LastOrDefault(t => t.IsActive)?.ExpiresOn ?? DateTime.UtcNow
                 },
                 Errors = null,
                 Message = "User login successfully",
@@ -49,69 +57,80 @@ namespace ConstructionManagementAssistant.EF.Repositories
             };
         }
 
+        /// <inheritdoc />
         public async Task<BaseResponse<ResponseLogin>> RegisterAsync(RegisterDto registerDto)
         {
-            var user = new ApplicationIdentity
+            var user = new AppUser
             {
-                FirstName = registerDto.FirstName,
-                LastName = registerDto.LastName,
+                Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
-                UserName = registerDto.Email.Substring(0, registerDto.Email.IndexOf('@')),
+                UserName = registerDto.Email.Split('@')[0],
                 Email = registerDto.Email,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                RefereshTokens = new List<RefreshToken>()
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
             {
-                var errorsMassgese = result.Errors.Select(x => x.Description);
+                var errorMessages = result.Errors.Select(x => x.Description).ToList();
                 return new BaseResponse<ResponseLogin>
                 {
                     Data = null,
-                    Errors = errorsMassgese.ToList(),
-                    Message = "invalid register",
+                    Errors = errorMessages,
+                    Message = "Invalid registration",
                     Success = false,
                 };
             }
-            var roles = await _userManager.AddToRoleAsync(user, registerDto.role.ToString());
-            if (!roles.Succeeded)
+
+            // Assign default user role (not Admin)
+            var roleResult = await _userManager.AddToRoleAsync(user, SystemRole.Admin.ToString());
+            if (!roleResult.Succeeded)
             {
                 await _userManager.DeleteAsync(user);
                 return new BaseResponse<ResponseLogin>
                 {
                     Data = null,
-                    Errors = null,
-                    Message = "something wrong ... can not assign role to this user",
+                    Errors = roleResult.Errors.Select(x => x.Description).ToList(),
+                    Message = "Could not assign role to this user",
                     Success = false,
                 };
             }
+
+            var refreshToken = GenerateRefreshToken();
+            user.RefereshTokens.Add(refreshToken);
+            await _userManager.UpdateAsync(user);
+
             return new BaseResponse<ResponseLogin>
             {
                 Data = new ResponseLogin
                 {
-                    firstName = registerDto.FirstName,
-                    lastName = registerDto.LastName,
+                    Name = registerDto.Name,
                     Email = registerDto.Email,
-                    Token = await GenerateJwtToken(user)
-
+                    UserName = user.UserName,
+                    Token = await GenerateJwtToken(user),
+                    RefereshToken = refreshToken.Token,
+                    RefreshTokenExpiration = refreshToken.ExpiresOn
                 },
-                Errors = null,
-                Message = "User Created successfully",
+                Message = "User created successfully",
                 Success = true,
             };
-
         }
 
+        /// <inheritdoc />
         public async Task<BaseResponse<string>> ForgotPasswordAsync(ForgotPasswordDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
+            {
+                // Do not reveal if email exists
                 return new BaseResponse<string>
                 {
                     Success = true,
-                    Message = "No Email Found"
+                    Message = "If the email exists, a reset token has been sent."
                 };
+            }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -123,6 +142,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
             };
         }
 
+        /// <inheritdoc />
         public async Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -132,7 +152,6 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 {
                     Success = false,
                     Message = "User not found",
-
                 };
             }
 
@@ -154,19 +173,21 @@ namespace ConstructionManagementAssistant.EF.Repositories
             };
         }
 
-        private async Task<string> GenerateJwtToken(ApplicationIdentity user)
+        /// <summary>
+        /// Generates a JWT token for the specified user.
+        /// </summary>
+        private async Task<string> GenerateJwtToken(AppUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-        new Claim(JwtRegisteredClaimNames.Email, user.Email),
-        new Claim(ClaimTypes.NameIdentifier, user.Id),
-        new Claim(ClaimTypes.GivenName, user.FirstName ?? ""),
-        new Claim(ClaimTypes.Surname, user.LastName ?? ""),
-        new Claim(ClaimTypes.Email, user.Email ?? "")
-    };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.GivenName, user.Name ?? ""),
+                new Claim(ClaimTypes.Email, user.Email ?? "")
+            };
 
             foreach (var role in roles)
             {
@@ -180,15 +201,78 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 issuer: _jwtOptions.Value.Issuer,
                 audience: _jwtOptions.Value.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(_jwtOptions.Value.DurationInDays),
+                expires: DateTime.UtcNow.AddMinutes(_jwtOptions.Value.DurationInMins),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        /// <summary>
+        /// Generates a new refresh token.
+        /// </summary>
+        private RefreshToken GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomNumber),
+                ExpiresOn = DateTime.UtcNow.AddDays(_jwtOptions.Value.DurationInDays),
+                CreatedOn = DateTime.UtcNow,
+            };
+        }
+
+        /// <inheritdoc />
+        public async Task<BaseResponse<ResponseLogin>> RefreshTokenAsync(string token)
+        {
+            var response = new BaseResponse<ResponseLogin>();
+
+            var user = await _userManager.Users
+                .Include(u => u.RefereshTokens)
+                .SingleOrDefaultAsync(u => u.RefereshTokens.Any(t => t.Token == token));
+
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "Invalid Token";
+                response.Data = null;
+                return response;
+            }
+
+            var refreshToken = user.RefereshTokens.SingleOrDefault(t => t.Token == token);
+
+            if (refreshToken == null || !refreshToken.IsActive)
+            {
+                response.Success = false;
+                response.Message = "Inactive or invalid token";
+                response.Data = null;
+                return response;
+            }
+
+            refreshToken.RevokedOn = DateTime.UtcNow;
+
+            var newRefreshToken = GenerateRefreshToken();
+            user.RefereshTokens.Add(newRefreshToken);
+            await _userManager.UpdateAsync(user);
+
+            var jwtToken = await GenerateJwtToken(user);
+
+            response.Success = true;
+            response.Message = "Token refreshed successfully";
+            response.Data = new ResponseLogin
+            {
+                Email = user.Email,
+                Name = user.Name,
+                UserName = user.UserName,
+                Token = jwtToken,
+                RefereshToken = newRefreshToken.Token,
+                RefreshTokenExpiration = newRefreshToken.ExpiresOn
+            };
+
+            return response;
+        }
     }
 }
-
-
-
-

@@ -26,6 +26,8 @@ public static class EFServices
             options.UseSqlServer(connectionString);
             options.EnableSensitiveDataLogging();
         });
+
+
         services.AddScoped<Supabase.Client>(sp =>
         {
             var options = new SupabaseOptions { AutoRefreshToken = true, AutoConnectRealtime = true };
@@ -34,7 +36,7 @@ public static class EFServices
             client.InitializeAsync().Wait(); // Ensure initialization before use
             return client;
         });
-        services.Configure<JWTSettings>(configuration.GetSection("JwtSettings"));
+        services.Configure<JWT>(configuration.GetSection("JwtSettings"));
         services.AddScoped<IAuthService, AuthRepository>();
     }
 

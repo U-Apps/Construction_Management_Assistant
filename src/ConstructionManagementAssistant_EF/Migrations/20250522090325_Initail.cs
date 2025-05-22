@@ -35,19 +35,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DocumentClassifications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DocumentClassifications", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Equipments",
                 columns: table => new
                 {
@@ -56,7 +43,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Model = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     SerialNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
                     PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -65,7 +51,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Equipments", x => x.Id);
-                    table.CheckConstraint("CK_Equipments_Status", "[Status] BETWEEN 0 AND 3");
                 });
 
             migrationBuilder.CreateTable(
@@ -90,6 +75,48 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_People", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,6 +148,135 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         name: "FK_SiteEngineers_People_Id",
                         column: x => x.Id,
                         principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefershToekns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RevokedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefershToekns", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefershToekns_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -199,8 +355,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     EquipmentId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "bit", nullable: false)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -281,7 +436,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     Path = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     TaskId = table.Column<int>(type: "int", nullable: true),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
-                    ClassificationId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -290,12 +444,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Documents_DocumentClassifications_ClassificationId",
-                        column: x => x.ClassificationId,
-                        principalTable: "DocumentClassifications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Documents_Projects_ProjectId",
                         column: x => x.ProjectId,
@@ -362,57 +510,40 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "DocumentClassifications",
-                columns: new[] { "Id", "Type" },
-                values: new object[,]
-                {
-                    { 1, "Project Documents" },
-                    { 2, "Design Documents" },
-                    { 3, "Engineering & Technical Documents" },
-                    { 4, "Legal & Compliance Documents" },
-                    { 5, "Financial Documents" },
-                    { 6, "Site & Execution Documents" },
-                    { 7, "HR & Administrative Documents" },
-                    { 8, "Quality Assurance & Control Documents" },
-                    { 9, "Health, Safety, and Environment (HSE) Documents" },
-                    { 10, "Close-Out & Handover Documents" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Equipments",
-                columns: new[] { "Id", "CreatedDate", "Model", "ModifiedDate", "Name", "Notes", "PurchaseDate", "SerialNumber", "Status" },
+                columns: new[] { "Id", "CreatedDate", "Model", "ModifiedDate", "Name", "Notes", "PurchaseDate", "SerialNumber" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "CAT 320D", null, "Excavator", "Heavy duty excavator for ground work", new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "EXC-2023-001", 0 },
-                    { 2, new DateTime(2022, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Komatsu D65PX-18", new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bulldozer", "Currently at downtown construction site", new DateTime(2022, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "BUL-2022-045", 1 },
-                    { 3, new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Volvo L120H", null, "Wheel Loader", "New addition to fleet", new DateTime(2023, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "WL-2023-008", 0 },
-                    { 4, new DateTime(2021, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "JCB 3CX", new DateTime(2023, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Backhoe Loader", "Hydraulic leak detected", new DateTime(2021, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "BHL-2021-112", 2 },
-                    { 5, new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bobcat S650", null, "Skid Steer Loader", "With pallet forks attachment", new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "SSL-2022-078", 0 },
-                    { 6, new DateTime(2020, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "CAT 120K", new DateTime(2023, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Motor Grader", "Road construction project", new DateTime(2020, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "GRD-2020-034", 1 },
-                    { 7, new DateTime(2021, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Volvo A30G", null, "Articulated Dump Truck", "30-ton capacity", new DateTime(2021, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "ADT-2021-056", 0 },
-                    { 8, new DateTime(2019, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "CAT D6T", new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Crawler Dozer", "Pending major engine overhaul", new DateTime(2019, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "CDZ-2019-023", 3 },
-                    { 9, new DateTime(2022, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "JCB 536-70", new DateTime(2023, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Telescopic Handler", "High reach capability", new DateTime(2022, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "TH-2022-091", 1 },
-                    { 10, new DateTime(2020, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "ICE 1412", null, "Pile Driver", "Foundation work equipment", new DateTime(2020, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "PD-2020-017", 0 },
-                    { 11, new DateTime(2021, 6, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Putzmeister M42", new DateTime(2023, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Concrete Mixer Truck", "9 cubic meter capacity", new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "CMT-2021-045", 1 },
-                    { 12, new DateTime(2022, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Schwing S36X", null, "Concrete Pump", "Boom pump 36 meters", new DateTime(2022, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "CP-2022-033", 0 },
-                    { 13, new DateTime(2023, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wacker Neuson AR36", null, "Concrete Vibrator", "Internal vibration system", new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "CV-2023-009", 1 },
-                    { 14, new DateTime(2021, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Husqvarna K760", new DateTime(2023, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Concrete Saw", "Blade replacement needed", new DateTime(2021, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "CS-2021-028", 2 },
-                    { 15, new DateTime(2020, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Allen Eng. SP-16", null, "Concrete Finisher", "16-foot finishing width", new DateTime(2020, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "CF-2020-019", 0 },
-                    { 16, new DateTime(2021, 3, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Liebherr 63EC", new DateTime(2023, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tower Crane", "High-rise construction project", new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "TC-2021-007", 1 },
-                    { 17, new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tadano ATF-220G-5", null, "Mobile Crane", "220-ton capacity", new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "MC-2022-014", 0 },
-                    { 18, new DateTime(2020, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Grove RT880E", new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Rough Terrain Crane", "Annual inspection", new DateTime(2020, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "RTC-2020-026", 2 },
-                    { 19, new DateTime(2021, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Toyota 8FGCU25", new DateTime(2023, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Forklift", "Warehouse operations", new DateTime(2021, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "FL-2021-038", 1 },
-                    { 20, new DateTime(2022, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Genie GS-3246", null, "Scissor Lift", "32ft working height", new DateTime(2022, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "SL-2022-021", 0 },
-                    { 21, new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bomag BW211D-40", null, "Vibratory Roller", "For asphalt compaction work", new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "VR-2023-005", 0 },
-                    { 22, new DateTime(2021, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wacker Neuson WP1550", new DateTime(2023, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Plate Compactor", "Trench backfilling", new DateTime(2021, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "PC-2021-029", 1 },
-                    { 23, new DateTime(2020, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vermeer RTX550", null, "Trencher", "Chain-type trencher", new DateTime(2020, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "TR-2020-031", 0 },
-                    { 24, new DateTime(2021, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Volvo ABG6820", new DateTime(2023, 6, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Asphalt Paver", "Screed calibration", new DateTime(2021, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "AP-2021-042", 2 },
-                    { 25, new DateTime(2019, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wirtgen W2000", new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cold Planer", "End of service life", new DateTime(2019, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "CP-2019-015", 3 },
-                    { 26, new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cummins QSK60", new DateTime(2023, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Generator", "Powering north site operations", new DateTime(2022, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "GEN-2022-032", 1 },
-                    { 27, new DateTime(2021, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Atlas Copco XAS185", null, "Air Compressor", "185 cfm capacity", new DateTime(2021, 11, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "AC-2021-027", 0 },
-                    { 28, new DateTime(2022, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Generac Light Tower", new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Light Tower", "Night shift operations", new DateTime(2022, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "LT-2022-019", 1 },
-                    { 29, new DateTime(2020, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Godwin HL100", null, "Water Pump", "High volume dewatering", new DateTime(2020, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "WP-2020-024", 0 },
-                    { 30, new DateTime(2021, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lincoln Vantage 400", new DateTime(2023, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Welding Machine", "Electrode feeder repair", new DateTime(2021, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "WM-2021-036", 2 }
+                    { 1, new DateTime(2023, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "CAT 320D", null, "Excavator", "Heavy duty excavator for ground work", new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "EXC-2023-001" },
+                    { 2, new DateTime(2022, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Komatsu D65PX-18", new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bulldozer", "Currently at downtown construction site", new DateTime(2022, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "BUL-2022-045" },
+                    { 3, new DateTime(2023, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Volvo L120H", null, "Wheel Loader", "New addition to fleet", new DateTime(2023, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "WL-2023-008" },
+                    { 4, new DateTime(2021, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "JCB 3CX", new DateTime(2023, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Backhoe Loader", "Hydraulic leak detected", new DateTime(2021, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "BHL-2021-112" },
+                    { 5, new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bobcat S650", null, "Skid Steer Loader", "With pallet forks attachment", new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "SSL-2022-078" },
+                    { 6, new DateTime(2020, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "CAT 120K", new DateTime(2023, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Motor Grader", "Road construction project", new DateTime(2020, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "GRD-2020-034" },
+                    { 7, new DateTime(2021, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Volvo A30G", null, "Articulated Dump Truck", "30-ton capacity", new DateTime(2021, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "ADT-2021-056" },
+                    { 8, new DateTime(2019, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "CAT D6T", new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Crawler Dozer", "Pending major engine overhaul", new DateTime(2019, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "CDZ-2019-023" },
+                    { 9, new DateTime(2022, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "JCB 536-70", new DateTime(2023, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Telescopic Handler", "High reach capability", new DateTime(2022, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "TH-2022-091" },
+                    { 10, new DateTime(2020, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "ICE 1412", null, "Pile Driver", "Foundation work equipment", new DateTime(2020, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "PD-2020-017" },
+                    { 11, new DateTime(2021, 6, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Putzmeister M42", new DateTime(2023, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Concrete Mixer Truck", "9 cubic meter capacity", new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "CMT-2021-045" },
+                    { 12, new DateTime(2022, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Schwing S36X", null, "Concrete Pump", "Boom pump 36 meters", new DateTime(2022, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "CP-2022-033" },
+                    { 13, new DateTime(2023, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wacker Neuson AR36", null, "Concrete Vibrator", "Internal vibration system", new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "CV-2023-009" },
+                    { 14, new DateTime(2021, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Husqvarna K760", new DateTime(2023, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Concrete Saw", "Blade replacement needed", new DateTime(2021, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "CS-2021-028" },
+                    { 15, new DateTime(2020, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Allen Eng. SP-16", null, "Concrete Finisher", "16-foot finishing width", new DateTime(2020, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "CF-2020-019" },
+                    { 16, new DateTime(2021, 3, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Liebherr 63EC", new DateTime(2023, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tower Crane", "High-rise construction project", new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "TC-2021-007" },
+                    { 17, new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tadano ATF-220G-5", null, "Mobile Crane", "220-ton capacity", new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "MC-2022-014" },
+                    { 18, new DateTime(2020, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Grove RT880E", new DateTime(2023, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Rough Terrain Crane", "Annual inspection", new DateTime(2020, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "RTC-2020-026" },
+                    { 19, new DateTime(2021, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Toyota 8FGCU25", new DateTime(2023, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Forklift", "Warehouse operations", new DateTime(2021, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "FL-2021-038" },
+                    { 20, new DateTime(2022, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Genie GS-3246", null, "Scissor Lift", "32ft working height", new DateTime(2022, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "SL-2022-021" },
+                    { 21, new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Bomag BW211D-40", null, "Vibratory Roller", "For asphalt compaction work", new DateTime(2023, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "VR-2023-005" },
+                    { 22, new DateTime(2021, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wacker Neuson WP1550", new DateTime(2023, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Plate Compactor", "Trench backfilling", new DateTime(2021, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "PC-2021-029" },
+                    { 23, new DateTime(2020, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vermeer RTX550", null, "Trencher", "Chain-type trencher", new DateTime(2020, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "TR-2020-031" },
+                    { 24, new DateTime(2021, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Volvo ABG6820", new DateTime(2023, 6, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Asphalt Paver", "Screed calibration", new DateTime(2021, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "AP-2021-042" },
+                    { 25, new DateTime(2019, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wirtgen W2000", new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cold Planer", "End of service life", new DateTime(2019, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "CP-2019-015" },
+                    { 26, new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cummins QSK60", new DateTime(2023, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Generator", "Powering north site operations", new DateTime(2022, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "GEN-2022-032" },
+                    { 27, new DateTime(2021, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Atlas Copco XAS185", null, "Air Compressor", "185 cfm capacity", new DateTime(2021, 11, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "AC-2021-027" },
+                    { 28, new DateTime(2022, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Generac Light Tower", new DateTime(2023, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Light Tower", "Night shift operations", new DateTime(2022, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "LT-2022-019" },
+                    { 29, new DateTime(2020, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Godwin HL100", null, "Water Pump", "High volume dewatering", new DateTime(2020, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "WP-2020-024" },
+                    { 30, new DateTime(2021, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lincoln Vantage 400", new DateTime(2023, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Welding Machine", "Electrode feeder repair", new DateTime(2021, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "WM-2021-036" }
                 });
 
             migrationBuilder.InsertData(
@@ -460,6 +591,15 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     { 38, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "salma.engineer@example.com", "سلمى", false, "أحمد", null, null, "0688898990", null, null },
                     { 39, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ziad.engineer@example.com", "زياد", false, "علي", null, null, "01118800001", null, null },
                     { 40, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "noor.engineer@example.com", "نور", false, "محمد", null, null, "06900112", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "b1e1a1c2-1111-4444-aaaa-000000000001", "Admin", "ADMIN" },
+                    { 2, "b1e1a1c2-2222-4444-bbbb-000000000002", "SiteEngineer", "SITEENGINEER" }
                 });
 
             migrationBuilder.InsertData(
@@ -935,6 +1075,26 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "UniqueEmail",
                 table: "Clients",
                 column: "Email",
@@ -946,18 +1106,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 table: "Clients",
                 column: "PhoneNumber",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "UniqueType",
-                table: "DocumentClassifications",
-                column: "Type",
-                unique: true,
-                filter: "[Type] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Documents_ClassificationId",
-                table: "Documents",
-                column: "ClassificationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_ProjectId",
@@ -1024,6 +1172,25 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 column: "SiteEngineerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RefershToekns_UserId",
+                table: "RefershToekns",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roles_Name",
+                table: "Roles",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "Roles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Stages_ProjectId",
                 table: "Stages",
                 column: "ProjectId");
@@ -1037,6 +1204,32 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 name: "IX_Tasks_StageId",
                 table: "Tasks",
                 column: "StageId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "Users",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_PhoneNumber",
+                table: "Users",
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "Users",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workers_SpecialtyId",
@@ -1054,19 +1247,40 @@ namespace ConstructionManagementAssistant.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "Documents");
 
             migrationBuilder.DropTable(
                 name: "EquipmentReservations");
 
             migrationBuilder.DropTable(
+                name: "RefershToekns");
+
+            migrationBuilder.DropTable(
                 name: "TaskAssignments");
 
             migrationBuilder.DropTable(
-                name: "DocumentClassifications");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Equipments");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Tasks");

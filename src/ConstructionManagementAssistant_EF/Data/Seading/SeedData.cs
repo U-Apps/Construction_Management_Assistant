@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ConstructionManagementAssistant.Core.Identity;
 
 namespace ConstructionManagementAssistant.EF.Data.Seading;
 
@@ -1765,16 +1765,54 @@ public static class SeedData
 
 
 
-  
-      public static List<IdentityRole> SeedRules()
+    //public static List<AppUser> SeedAppUsers()
+    //{
+    //    return new List<AppUser>
+    //    {
+    //        new AppUser
+    //        {
+    //            Id = 1,
+    //            UserName = "salhbnsmyd3",
+    //            Name = "saleh mohammed",
+    //            Email = "salhbnsmyd3@gmail.com",
+    //            NormalizedEmail = "SALHBNSMYD3@GMAIL.COM",
+    //            NormalizedUserName = "SALHBNSMYD3",
+    //            EmailConfirmed = true,
+    //            PhoneNumber = "777753928",
+    //            PhoneNumberConfirmed = true,
+    //            PasswordHash = null,
+    //            SecurityStamp = null,
+    //            ConcurrencyStamp = "b1e1a1c2-1111-4444-aaaa-000000000003",
+    //            TwoFactorEnabled = false,
+    //            LockoutEnd = null,
+    //            LockoutEnabled = false,
+    //            AccessFailedCount = 0,
+    //            RefereshTokens = new List<RefreshToken>()
+    //        }
+    //    };
+    //}
+
+    public static List<AppRole> SeedRoles()
     {
-        return new List<IdentityRole>
+        return new List<AppRole>
         {
-            new IdentityRole { Id="d324016b-09a7-4f1a-b387-065c14dc5296", Name="admin", NormalizedName= "ADMIN" },
-            new IdentityRole { Id = "73575c45-d1f0-464c-b734-d6c3c1393069", Name="siteEngineer", NormalizedName= "SITEENGINEER" },
+            new AppRole
+            {
+                Id = 1,
+                Name = "Admin",
+                NormalizedName = "ADMIN",
+                ConcurrencyStamp = "b1e1a1c2-1111-4444-aaaa-000000000001"
+            },
+            new AppRole
+            {
+                Id = 2,
+                Name = "SiteEngineer",
+                NormalizedName = "SITEENGINEER",
+                ConcurrencyStamp = "b1e1a1c2-2222-4444-bbbb-000000000002"
+            }
         };
     }
-  
+
     public static List<Equipment> SeedEquipment()
     {
         return new List<Equipment>

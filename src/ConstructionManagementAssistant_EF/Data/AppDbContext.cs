@@ -1,12 +1,12 @@
 ﻿using ConstructionManagementAssistant.Core.Constants;
+using ConstructionManagementAssistant.Core.Identity;
 using ConstructionManagementAssistant.EF.Data.Seading;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ProjectTask = ConstructionManagementAssistant.Core.Entites.ProjectTask;
 
 namespace ConstructionManagementAssistant.EF.Data
 {
-    public class AppDbContext : IdentityDbContext<ApplicationIdentity>
+    public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
     {
         #region DbSets
 
@@ -22,6 +22,7 @@ namespace ConstructionManagementAssistant.EF.Data
         public DbSet<Documnet> Documnets { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<EquipmentReservation> EquipmentReservations { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         #endregion
 
         public AppDbContext()
@@ -31,8 +32,8 @@ namespace ConstructionManagementAssistant.EF.Data
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
-
         }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -189,7 +190,6 @@ namespace ConstructionManagementAssistant.EF.Data
             });
             #endregion
 
-
             #region Equipment Configuration
             modelBuilder.Entity<Equipment>(builder =>
             {
@@ -233,33 +233,46 @@ namespace ConstructionManagementAssistant.EF.Data
 
             });
             #endregion
-            modelBuilder.Entity<ApplicationIdentity>(builder =>
+
+            #region App User
+            modelBuilder.Entity<AppUser>(builder =>
             {
+
+                builder.ToTable("Users");
                 builder.HasKey(x => x.Id);
 
-                builder.Property(x => x.FirstName).
+                builder.Property(x => x.Name).
                 IsRequired(true).
-                HasMaxLength(50).
+                HasMaxLength(100).
                 IsUnicode(true);
 
-                builder.Property(x => x.LastName).IsRequired(true)
-                .HasMaxLength(50)
-                .IsUnicode(true);
+                //builder.Property(x => x.LastName).IsRequired(true)
+                //.HasMaxLength(50)
+                //.IsUnicode(true);
 
                 builder.HasIndex(x => x.Email).IsUnique();
                 builder.HasIndex(x => x.PhoneNumber).IsUnique();
+                //builder.HasData(SeedData.SeedAppUsers());
 
-            }
-            );
-            modelBuilder.Entity<IdentityRole>(builder =>
+            });
+            #endregion
+
+            #region App Role
+            modelBuilder.Entity<AppRole>(builder =>
             {
-                builder.HasData(SeedData.SeedRules());
-            }
-           );
+                builder.ToTable("Roles");
 
+                builder.HasIndex(x => x.Name).IsUnique();
+                builder.HasData(SeedData.SeedRoles());
+            });
+            #endregion
 
-
-
+            #region Refersh Tokens
+            modelBuilder.Entity<RefreshToken>(builder =>
+            {
+                builder.ToTable(TablesNames.RefershToekns);
+            });
+            #endregion
 
         }
 

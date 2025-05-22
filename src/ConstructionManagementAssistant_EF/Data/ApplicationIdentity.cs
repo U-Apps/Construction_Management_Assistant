@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-namespace ConstructionManagementAssistant.EF.Data
+﻿namespace ConstructionManagementAssistant.EF.Data
 {
-    public class ApplicationIdentity : IdentityUser, IApplicationIdentity
-    {
+    //public class ApplicationIdentity : IdentityUser, IApplicationIdentity
+    //{
 
-        public string? FirstName { get; set; }
+    //    public string? FirstName { get; set; }
 
-        public string? LastName { get; set; }
-    }
+    //    public string? LastName { get; set; }
+    //}
 }
