@@ -126,11 +126,12 @@ public static class SystemApiRouts
 
     public static class Auth
     {
-        public const string Base = "api/v1/Auth";
+        public const string Base = "api/v1/auth";
         public const string Login = Base + "/login";
         public const string Register = Base + "/register";
         public const string GetAllUsersWithThereRoles = Base + "/getAllUsers";
-        public const string ResetPassWord = "api/resetPassword/{Email}";
+        public const string ResetPassWord = Base + "/resetPassword";
+        public const string ForgotPassword = Base + "/forgotPassword";
 
 
     }

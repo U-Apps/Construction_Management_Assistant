@@ -17,7 +17,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// عملية الدخول للنظام
         /// </summary>
         /// <param name="loginDto">بيانات الدخول</param>
-        [HttpPost("loginUser")]
+        [HttpPost(SystemApiRouts.Auth.Login)]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var response = await _authService.LoginAsync(loginDto);
@@ -35,7 +35,7 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// 1-Admin (مدير)
         /// 2- siteEngineer (مهندس موقع)
         /// </remarks>
-        [HttpPost("registerUser")]
+        [HttpPost(SystemApiRouts.Auth.Register)]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             var response = await _authService.RegisterAsync(registerDto);
@@ -45,13 +45,13 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Unauthorized(response);
         }
 
-        [HttpPost("GetUsers")]
-        public async Task<IActionResult> GetUsers()
-        {
-            throw new NotImplementedException();
-        }
+        //[HttpPost(SystemApiRouts.Auth.GetAllUsersWithThereRoles)]
+        //public async Task<IActionResult> GetUsers()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        [HttpPost("forgotPassword")]
+        [HttpPost(SystemApiRouts.Auth.ForgotPassword)]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
             var user = await _authService.ForgotPasswordAsync(dto);
@@ -61,7 +61,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             }
             return BadRequest(user);
         }
-        [HttpPost("resetPassword")]
+        [HttpPost(SystemApiRouts.Auth.ResetPassWord)]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
             var user = await _authService.ResetPasswordAsync(dto);

@@ -1,4 +1,5 @@
 using ConstructionManagementAssistant.API.Startup;
+using ConstructionManagementAssistant.Core.Identity;
 using ConstructionManagementAssistant.EF.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -16,8 +17,8 @@ builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
 builder.Host.UseSerilogLoggging();
 
-var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JWTSettings>();
-var key = Encoding.ASCII.GetBytes(jwtSettings!.Key);
+var Jwt = builder.Configuration.GetSection("Jwt").Get<JWT>();
+var key = Encoding.ASCII.GetBytes(Jwt!.Key);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -33,20 +34,20 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings.Issuer,
-        ValidAudience = jwtSettings.Audience,
+        ValidIssuer = Jwt.Issuer,
+        ValidAudience = Jwt.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ClockSkew = TimeSpan.Zero
     };
 });
-builder.Services.AddIdentity<ApplicationIdentity, IdentityRole>(options =>
+builder.Services.AddIdentity<AppUser, AppRole>(options =>
 {
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredUniqueChars = 0;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 4;
 })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
