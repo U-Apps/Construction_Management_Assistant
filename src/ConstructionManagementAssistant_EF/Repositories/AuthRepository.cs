@@ -153,7 +153,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetLink = $"https://localhost:7282/api/v1/auth/resetPassword?email={email}&token={Uri.EscapeDataString(token)}";
+            var resetLink = $"https://constructionmanagementassitantapi.runasp.net/api/v1/auth/resetPassword?email={email}&token={Uri.EscapeDataString(token)}";
 
             var html = $"<p>Reset your password by clicking <a href='{resetLink}'>here</a>.</p>";
             await _emailService.SendEmailAsync(email, "Reset Password", html);
@@ -200,7 +200,7 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 return new BaseResponse<string> { Success = false, Message = "User not found" };
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = $"https://localhost:7282/api/v1/auth/confirmEmail?userId={user.Id}&token={Uri.EscapeDataString(token)}";
+            var confirmationLink = $"https://constructionmanagementassitantapi.runasp.net/api/v1/auth/confirmEmail?userId={user.Id}&token={Uri.EscapeDataString(token)}";
 
             var html = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
             await _emailService.SendEmailAsync(email, "Confirm your email", html);

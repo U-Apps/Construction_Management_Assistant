@@ -1,6 +1,5 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
 using ConstructionManagementAssistant.Core.Models.Response;
-using System.Security.Claims;
 
 namespace ConstructionManagementAssistant.Core.Interfaces
 {
@@ -16,7 +15,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
 
         Task<BaseResponse<AuthResponse>> RefreshAccessTokenByRefreshTokenAsync(string token);
 
-        Task<BaseResponse<string>> LogoutAsync(ClaimsPrincipal userPrincipal);
+        Task<BaseResponse<string>> LogoutAsync(string refreshToken);
 
 
         Task<BaseResponse<string>> SendConfirmationEmailAsync(string email);
