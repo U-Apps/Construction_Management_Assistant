@@ -1,4 +1,5 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConstructionManagementAssistant.API.Controllers
 {
@@ -45,11 +46,6 @@ namespace ConstructionManagementAssistant.API.Controllers
             return Unauthorized(response);
         }
 
-        //[HttpPost(SystemApiRouts.Auth.GetAllUsersWithThereRoles)]
-        //public async Task<IActionResult> GetUsers()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         [HttpPost(SystemApiRouts.Auth.ForgotPassword)]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
@@ -72,9 +68,50 @@ namespace ConstructionManagementAssistant.API.Controllers
             return BadRequest(user);
 
         }
+        [HttpPost(SystemApiRouts.Auth.SendConfirmationEmail)]
+        public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
+        {
+            var send = await _authService.SendConfirmationEmailAsync(email);
+            if (send.Success)
+                return Ok("Confirmation email sent.");
+
+            return NotFound("User not found");
+        }
+        [HttpPost(SystemApiRouts.Auth.confirmEmail)]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto dto)
+        {
+            if (dto.UserId == null || dto.Token == null)
+                return BadRequest(new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "Invalid confirmation data"
+                });
+
+            var confirmed = await _authService.ConfirmEmailAsync(dto);
+            if (confirmed.Success)
+                return Ok(confirmed);
+
+
+            return NotFound(new BaseResponse<string>
+            {
+                Success = false,
+                Message = "User not found"
+            });
 
 
 
 
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var response = await _authService.LogoutAsync(User);
+            if (!response.Success)
+                return Unauthorized(response);
+
+            return Ok(response);
+        }
     }
 }
