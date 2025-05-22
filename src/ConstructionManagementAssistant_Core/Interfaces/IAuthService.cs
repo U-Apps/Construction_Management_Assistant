@@ -7,9 +7,9 @@ namespace ConstructionManagementAssistant.Core.Interfaces
     public interface IAuthService
     {
         Task<BaseResponse<AuthResponse>> LoginAsync(LoginDto loginDto);
-        Task<BaseResponse<AuthResponse>> RegisterAsync(RegisterDto registerDto);
+        Task<BaseResponse<string>> RegisterAsync(RegisterDto registerDto);
 
-        Task<BaseResponse<string>> ForgotPasswordAsync(ForgotPasswordDto dto);
+        Task<BaseResponse<string>> ForgotPasswordAsync(string email);
 
         Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto);
 
@@ -21,7 +21,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
 
         Task<BaseResponse<string>> SendConfirmationEmailAsync(string email);
 
-        Task<BaseResponse<string>> ConfirmEmailAsync(ConfirmEmailDto dto);
+        Task<BaseResponse<AuthResponse>> ConfirmEmailAsync(int userId, string token);
 
 
     }
