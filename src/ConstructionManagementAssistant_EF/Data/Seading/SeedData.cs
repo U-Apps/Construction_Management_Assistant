@@ -245,6 +245,7 @@ public static class SeedData
                 LastName = "محمد",
                 PhoneNumber = "01553456789",
                 Email = "ahmed.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -257,6 +258,7 @@ public static class SeedData
                 LastName = "علي",
                 PhoneNumber = "0987654321",
                 Email = "sara.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -269,6 +271,7 @@ public static class SeedData
                 LastName = "حسن",
                 PhoneNumber = "0112233445",
                 Email = "mohamed.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -281,6 +284,7 @@ public static class SeedData
                 LastName = "إبراهيم",
                 PhoneNumber = "0223344556",
                 Email = "leila.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -293,6 +297,7 @@ public static class SeedData
                 LastName = "يوسف",
                 PhoneNumber = "0334455667",
                 Email = "ali.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -305,6 +310,7 @@ public static class SeedData
                 LastName = "سعيد",
                 PhoneNumber = "0445566778",
                 Email = "fatima.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -317,6 +323,7 @@ public static class SeedData
                 LastName = "عبد الله",
                 PhoneNumber = "0556677889",
                 Email = "khaled.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1 ),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -329,6 +336,7 @@ public static class SeedData
                 LastName = "أحمد",
                 PhoneNumber = "0667788990",
                 Email = "mariam.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -341,6 +349,7 @@ public static class SeedData
                 LastName = "علي",
                 PhoneNumber = "0778899001",
                 Email = "youssef.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -353,6 +362,7 @@ public static class SeedData
                 LastName = "محمد",
                 PhoneNumber = "0889900112",
                 Email = "nora.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -365,6 +375,7 @@ public static class SeedData
                 LastName = "علي",
                 PhoneNumber = "0990011223",
                 Email = "hassan.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -377,6 +388,7 @@ public static class SeedData
                 LastName = "سعيد",
                 PhoneNumber = "0106622334",
                 Email = "mona.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -389,6 +401,7 @@ public static class SeedData
                 LastName = "خالد",
                 PhoneNumber = "00025533445",
                 Email = "omar.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -401,6 +414,7 @@ public static class SeedData
                 LastName = "إبراهيم",
                 PhoneNumber = "01113446656",
                 Email = "huda.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -413,6 +427,7 @@ public static class SeedData
                 LastName = "يوسف",
                 PhoneNumber = "0222005667",
                 Email = "yasser.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -425,6 +440,7 @@ public static class SeedData
                 LastName = "سعيد",
                 PhoneNumber = "4445555778",
                 Email = "nadia.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -437,6 +453,7 @@ public static class SeedData
                 LastName = "عبد الله",
                 PhoneNumber = "0566677889",
                 Email = "majed.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -449,6 +466,7 @@ public static class SeedData
                 LastName = "أحمد",
                 PhoneNumber = "0688898990",
                 Email = "salma.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -461,6 +479,7 @@ public static class SeedData
                 LastName = "علي",
                 PhoneNumber = "01118800001",
                 Email = "ziad.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -473,6 +492,7 @@ public static class SeedData
                 LastName = "محمد",
                 PhoneNumber = "06900112",
                 Email = "noor.engineer@example.com",
+                Password = "12345678",
                 HireDate = new DateOnly(2019, 8, 1),
                 CreatedDate = new DateTime(2023, 10, 1),
                 IsDeleted = false
@@ -899,7 +919,6 @@ public static class SeedData
         new Project
         {
             Id = 1,
-            UserId = 1,
             Name = "مشروع بناء مدرسة",
             Description = "بناء مدرسة ابتدائية في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -918,7 +937,6 @@ public static class SeedData
         new Project
         {
             Id = 2,
-            UserId = 1,
             Name = "مشروع بناء مستشفى",
             Description = "بناء مستشفى عام في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -937,7 +955,6 @@ public static class SeedData
         new Project
         {
             Id = 3,
-            UserId = 1,
             Name = "مشروع بناء مجمع سكني",
             Description = "بناء مجمع سكني فاخر",
             StartDate = new DateOnly(2022, 10, 1),
@@ -956,7 +973,6 @@ public static class SeedData
         new Project
         {
             Id = 4,
-            UserId = 1,
             Name = "مشروع بناء جسر",
             Description = "بناء جسر يربط بين منطقتين",
             StartDate = new DateOnly(2022, 10, 1),
@@ -975,7 +991,6 @@ public static class SeedData
         new Project
         {
             Id = 5,
-            UserId = 1,
             Name = "مشروع بناء مصنع",
             Description = "بناء مصنع لإنتاج المواد الغذائية",
             StartDate = new DateOnly(2022, 10, 1),
@@ -994,7 +1009,6 @@ public static class SeedData
         new Project
         {
             Id = 6,
-            UserId = 1,
             Name = "مشروع بناء فندق",
             Description = "بناء فندق خمس نجوم",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1013,7 +1027,6 @@ public static class SeedData
         new Project
         {
             Id = 7,
-            UserId = 1,
             Name = "مشروع بناء محطة قطار",
             Description = "بناء محطة قطار حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1032,7 +1045,6 @@ public static class SeedData
         new Project
         {
             Id = 8,
-            UserId = 1,
             Name = "مشروع بناء مركز تجاري",
             Description = "بناء مركز تجاري ضخم",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1051,7 +1063,6 @@ public static class SeedData
         new Project
         {
             Id = 9,
-            UserId = 1,
             Name = "مشروع بناء جامعة",
             Description = "بناء جامعة حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1070,7 +1081,6 @@ public static class SeedData
         new Project
         {
             Id = 10,
-            UserId = 1,
             Name = "مشروع بناء حديقة عامة",
             Description = "بناء حديقة عامة كبيرة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1089,7 +1099,6 @@ public static class SeedData
         new Project
         {
             Id = 11,
-            UserId = 1,
             Name = "مشروع بناء مكتبة عامة",
             Description = "بناء مكتبة عامة في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1108,7 +1117,6 @@ public static class SeedData
         new Project
         {
             Id = 12,
-            UserId = 1,
             Name = "مشروع بناء ملعب رياضي",
             Description = "بناء ملعب رياضي حديث",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1127,7 +1135,6 @@ public static class SeedData
         new Project
         {
             Id = 13,
-            UserId = 1,
             Name = "مشروع بناء محطة وقود",
             Description = "بناء محطة وقود حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1146,7 +1153,6 @@ public static class SeedData
         new Project
         {
             Id = 14,
-            UserId = 1,
             Name = "مشروع بناء مركز صحي",
             Description = "بناء مركز صحي في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1165,7 +1171,6 @@ public static class SeedData
         new Project
         {
             Id = 15,
-            UserId = 1,
             Name = "مشروع بناء مجمع تجاري",
             Description = "بناء مجمع تجاري ضخم",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1184,7 +1189,6 @@ public static class SeedData
         new Project
         {
             Id = 16,
-            UserId = 1,
             Name = "مشروع بناء محطة كهرباء",
             Description = "بناء محطة كهرباء حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1203,7 +1207,6 @@ public static class SeedData
         new Project
         {
             Id = 17,
-            UserId = 1,
             Name = "مشروع بناء محطة مياه",
             Description = "بناء محطة مياه حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1222,7 +1225,6 @@ public static class SeedData
         new Project
         {
             Id = 18,
-            UserId = 1,
             Name = "مشروع بناء مركز شرطة",
             Description = "بناء مركز شرطة حديث",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1241,7 +1243,6 @@ public static class SeedData
         new Project
         {
             Id = 19,
-            UserId = 1,
             Name = "مشروع بناء محطة إطفاء",
             Description = "بناء محطة إطفاء حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1260,7 +1261,6 @@ public static class SeedData
         new Project
         {
             Id = 20,
-            UserId = 1,
             Name = "مشروع بناء مركز ثقافي",
             Description = "بناء مركز ثقافي حديث",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1878,8 +1878,8 @@ public static class SeedData
         {
             new IdentityUserRole<int>
             {
-                UserId = 1,
-                RoleId = 1,
+                    RoleId = 1,
+                    UserId = 1
             }
         };
     }

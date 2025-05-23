@@ -13,8 +13,8 @@ public class Person : IEntity, ISoftDeletable
     public string? Address { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
-    public DateTime? DeletedDate { get; set; }
     public DateTime? ModifiedDate { get; set; }
+    public DateTime? DeletedDate { get; set; }
 
     public string GetFullName()
     {

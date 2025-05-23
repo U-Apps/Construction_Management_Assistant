@@ -69,6 +69,7 @@ public static class SiteEngineerProfile
             Address = addSiteEngineerDto.Address,
             HireDate = DateOnly.FromDateTime(DateTime.Now),
             CreatedDate = DateTime.Now,
+            Password = addSiteEngineerDto.Password
         };
     }
     public static void UpdateSiteEngineer(this SiteEngineer siteEngineer, UpdateSiteEngineerDto updateSiteEngineerDto)

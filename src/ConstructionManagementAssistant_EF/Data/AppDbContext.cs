@@ -151,19 +151,19 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.HasData(SeedData.SeedProjects());
 
 
-            builder.HasOne(e => e.User)
-           .WithMany(a => a.Projects)
-           .HasForeignKey(a => a.UserId)
-           .OnDelete(DeleteBehavior.Cascade);
+            // builder.HasOne(e => e.User)
+            //.WithMany(a => a.Projects)
+            //.HasForeignKey(a => a.UserId)
+            //.OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(e => e.SiteEngineer)
            .WithMany(a => a.Projects)
-           .HasForeignKey(a => a.UserId)
-           .OnDelete(DeleteBehavior.SetNull);
+           .HasForeignKey(a => a.SiteEngineerId)
+           .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(e => e.Client)
               .WithMany(a => a.Projects)
-              .HasForeignKey(a => a.UserId)
+              .HasForeignKey(a => a.ClientId)
               .OnDelete(DeleteBehavior.Cascade);
         });
         #endregion
@@ -210,7 +210,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
 
             builder.HasOne(ta => ta.Worker)
                 .WithMany(w => w.TaskAssignments)
-                .HasForeignKey(ta => ta.WorkerId);
+                .HasForeignKey(ta => ta.WorkerId).OnDelete(DeleteBehavior.NoAction);
 
             //builder.HasData(SeedData.SeedTaskAssignments());
         });
@@ -272,7 +272,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.HasOne(ea => ea.Project)
                 .WithMany(p => p.EquipmentReservations)
                 .HasForeignKey(ea => ea.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             //builder.HasData(SeedData.SeedEquipmentReservations());
 
@@ -292,10 +292,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             IsRequired(true).
             HasMaxLength(100).
             IsUnicode(true);
-
-            //builder.Property(x => x.LastName).IsRequired(true)
-            //.HasMaxLength(50)
-            //.IsUnicode(true);
 
             builder.HasIndex(x => x.Email).IsUnique();
             builder.HasIndex(x => x.PhoneNumber).IsUnique();

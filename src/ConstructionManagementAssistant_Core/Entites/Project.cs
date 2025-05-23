@@ -5,8 +5,6 @@ public class Project : IEntity, ISoftDeletable
     #region Properties
 
     public int Id { get; set; }
-    public int UserId { get; set; }
-    public AppUser User { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
     public DateOnly? StartDate { get; set; }

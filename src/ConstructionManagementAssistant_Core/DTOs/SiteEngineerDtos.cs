@@ -50,6 +50,10 @@
         public required string LastName { get; set; }
         [EmailAddress]
         public string Email { get; set; }
+
+
+        public string Password { get; set; }
+
         [Phone]
         public required string PhoneNumber { get; set; }
         public string NationalNumber { get; set; }

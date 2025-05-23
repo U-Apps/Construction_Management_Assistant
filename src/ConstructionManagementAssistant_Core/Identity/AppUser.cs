@@ -10,6 +10,5 @@ public class AppUser : IdentityUser<int>
     public ICollection<Client> Clients { get; set; } = new List<Client>();
     public ICollection<Worker> Workers { get; set; } = new List<Worker>();
     public ICollection<SiteEngineer> SiteEngineers { get; set; } = new List<SiteEngineer>();
-    public ICollection<Project> Projects { get; set; } = new List<Project>();
     public ICollection<Equipment> Equipments { get; set; } = new List<Equipment>();
 }
