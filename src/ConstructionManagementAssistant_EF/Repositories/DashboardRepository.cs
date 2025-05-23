@@ -1,7 +1,5 @@
 using ConstructionManagementAssistant.Core.DTOs.StatisticsDTO;
 
-namespace ConstructionManagementAssistant.Core.Repositories;
-
 public class DashboardRepository : IDashboardRepository
 {
     private readonly AppDbContext _context;
@@ -11,16 +9,18 @@ public class DashboardRepository : IDashboardRepository
         _context = context;
     }
 
-    public async Task<TeamStatisticsDto> GetTeamStatisticsAsync()
+    public async Task<TeamStatisticsDto> GetTeamStatisticsAsync(string userId)
     {
-        var totalWorkers = await _context.Workers.CountAsync(w => !w.IsDeleted);
-        var assignedWorkers = await _context.Workers
-            .CountAsync(w => !w.IsDeleted && w.TaskAssignments.Any());
-        var unAssignedWorkers = await _context.Workers
-           .CountAsync(w => !w.IsDeleted && w.TaskAssignments.Any());
+        int userIdInt = int.Parse(userId);
 
-        var totalClients = await _context.Clients.CountAsync(c => !c.IsDeleted);
-        var totalSiteEngineers = await _context.SiteEngineers.CountAsync(c => !c.IsDeleted);
+        var totalWorkers = await _context.Workers.CountAsync(w => !w.IsDeleted && w.UserId == userIdInt);
+        var assignedWorkers = await _context.Workers
+            .CountAsync(w => !w.IsDeleted && w.TaskAssignments.Any() && w.UserId == userIdInt);
+        var unAssignedWorkers = await _context.Workers
+           .CountAsync(w => !w.IsDeleted && !w.TaskAssignments.Any() && w.UserId == userIdInt);
+
+        var totalClients = await _context.Clients.CountAsync(c => !c.IsDeleted && c.UserId == userIdInt);
+        var totalSiteEngineers = await _context.SiteEngineers.CountAsync(c => !c.IsDeleted && c.UserId == userIdInt);
 
         return new TeamStatisticsDto
         {
@@ -32,13 +32,15 @@ public class DashboardRepository : IDashboardRepository
         };
     }
 
-    public async Task<ProjectStatisticsDto> GetProjectsStatistics()
+    public async Task<ProjectStatisticsDto> GetProjectsStatistics(string userId)
     {
-        var total = await _context.Projects.CountAsync(p => !p.IsDeleted);
-        var active = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Status == ProjectStatus.Active);
-        var cancelled = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Status == ProjectStatus.Cancelled);
-        var completed = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Status == ProjectStatus.Completed);
-        var pending = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Status == ProjectStatus.Pending);
+        int userIdInt = int.Parse(userId);
+
+        var total = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Client.UserId == userIdInt);
+        var active = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Client.UserId == userIdInt && p.Status == ProjectStatus.Active);
+        var cancelled = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Client.UserId == userIdInt && p.Status == ProjectStatus.Cancelled);
+        var completed = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Client.UserId == userIdInt && p.Status == ProjectStatus.Completed);
+        var pending = await _context.Projects.CountAsync(p => !p.IsDeleted && p.Client.UserId == userIdInt && p.Status == ProjectStatus.Pending);
 
         return new ProjectStatisticsDto
         {
@@ -50,19 +52,23 @@ public class DashboardRepository : IDashboardRepository
         };
     }
 
-    public async Task<TaskStatisticsDto> GetTasksStatisticsAync()
+    public async Task<TaskStatisticsDto> GetTasksStatisticsAync(string userId)
     {
+        int userIdInt = int.Parse(userId);
         var tasks = _context.Set<ProjectTask>();
         var now = DateOnly.FromDateTime(DateTime.Now);
 
-        var total = await tasks.CountAsync();
-        var completed = await tasks.CountAsync(t => t.IsCompleted);
-        var active = await tasks.CountAsync(t => !t.IsCompleted);
+        var total = await tasks.CountAsync(t => t.Stage.Project.Client.UserId == userIdInt);
+
+        var completed = await tasks.CountAsync(t => t.Stage.Project.Client.UserId == userIdInt && t.IsCompleted);
+
+        var active = await tasks.CountAsync(t => t.Stage.Project.Client.UserId == userIdInt && !t.IsCompleted);
+
         var overdue = await tasks.CountAsync(t =>
             !t.IsCompleted &&
             t.ExpectedEndDate != null &&
-            t.ExpectedEndDate < now
-        );
+            t.ExpectedEndDate < now &&
+            t.Stage.Project.Client.UserId == userIdInt);
 
         return new TaskStatisticsDto
         {
@@ -73,14 +79,17 @@ public class DashboardRepository : IDashboardRepository
         };
     }
 
-    public async Task<EquipmentStatisticsDto> GetEquipmentStatisticsAsync()
+    public async Task<EquipmentStatisticsDto> GetEquipmentStatisticsAsync(string userId)
     {
-        var totalEquipment = await _context.Equipments.CountAsync();
+        int userIdInt = int.Parse(userId);
+
+        var totalEquipment = await _context.Equipments.CountAsync(e => e.UserId == userIdInt);
         var reservedEquipment = await _context.Equipments
-            .CountAsync(e => e.Assignments != null && e.Assignments.Any(r =>
+            .CountAsync(e => e.UserId == userIdInt && e.Assignments != null && e.Assignments.Any(r =>
                 r.StartDate <= DateTime.Now && r.EndDate >= DateTime.Now));
         var availableEquipment = totalEquipment - reservedEquipment;
-        var totalReservation = await _context.EquipmentReservations.CountAsync();
+        var totalReservation = await _context.EquipmentReservations.CountAsync(r =>
+            _context.Equipments.Any(e => e.Id == r.EquipmentId && e.UserId == userIdInt));
 
         return new EquipmentStatisticsDto
         {
@@ -91,18 +100,25 @@ public class DashboardRepository : IDashboardRepository
         };
     }
 
-    public async Task<DocumentsStatisticsDto> GetDocumentsStatisticsAsync()
+    public async Task<DocumentsStatisticsDto> GetDocumentsStatisticsAsync(string userId)
     {
-        var totalDocuments = await _context.Documents.CountAsync(d => !d.IsDeleted);
-        var totalImages = await _context.Documents.CountAsync(d => !d.IsDeleted && (
-            d.FileType.ToLower().Contains("image") ||
-            d.FileType.ToLower() == ".jpg" ||
-            d.FileType.ToLower() == ".jpeg" ||
-            d.FileType.ToLower() == ".png" ||
-            d.FileType.ToLower() == ".gif" ||
-            d.FileType.ToLower() == ".bmp" ||
-            d.FileType.ToLower() == ".webp"
-        ));
+        int userIdInt = int.Parse(userId);
+
+        var totalDocuments = await _context.Documents.CountAsync(d =>
+            !d.IsDeleted && d.Project.Client.UserId == userIdInt);
+
+        var totalImages = await _context.Documents.CountAsync(d =>
+            !d.IsDeleted &&
+            (
+                d.FileType.ToLower().Contains("image") ||
+                d.FileType.ToLower() == ".jpg" ||
+                d.FileType.ToLower() == ".jpeg" ||
+                d.FileType.ToLower() == ".png" ||
+                d.FileType.ToLower() == ".gif" ||
+                d.FileType.ToLower() == ".bmp" ||
+                d.FileType.ToLower() == ".webp"
+            ) &&
+            d.Project.Client.UserId == userIdInt);
         var totalOtherFiles = totalDocuments - totalImages;
 
         return new DocumentsStatisticsDto
