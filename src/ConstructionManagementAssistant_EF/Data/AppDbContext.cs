@@ -93,8 +93,13 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
         {
             builder.ToTable(TablesNames.WorkerSpecialties);
             builder.Property(e => e.Name).HasMaxLength(100);
-            builder.HasIndex(e => e.Name, "UniqueSpecialtyName").IsUnique(true);
+            //builder.HasIndex(e => e.Name, "UniqueSpecialtyName").IsUnique(true); // could be duplicated between officess
             builder.HasData(SeedData.SeedWorkerSpecialties());
+
+            builder.HasOne(e => e.User)
+              .WithMany(a => a.WorkerSpecialties)
+              .HasForeignKey(a => a.UserId)
+                 .OnDelete(DeleteBehavior.Cascade);
         });
         #endregion
 

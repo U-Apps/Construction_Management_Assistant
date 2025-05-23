@@ -11,10 +11,11 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
         _logger = logger;
     }
 
-    public async Task<List<GetWorkerSpecialtyDto>> GetAllWorkerSpecialties()
+    public async Task<List<GetWorkerSpecialtyDto>> GetAllWorkerSpecialties(string userId)
     {
         return await GetAllDataWithSelectionAsync(
             orderBy: x => x.Name,
+            criteria: x => x.UserId == int.Parse(userId),
             selector: WorkerSpecialtyProfile.ToGetWorkerSpecialtyDto());
     }
 
@@ -25,7 +26,7 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
             criteria: x => x.Id == id);
     }
 
-    public async Task<BaseResponse<string>> AddWorkerSpecialtyAsync(AddWorkerSpecialtyDto specialtyInfo)
+    public async Task<BaseResponse<string>> AddWorkerSpecialtyAsync(string userId, AddWorkerSpecialtyDto specialtyInfo)
     {
 
         _logger.LogInformation("Adding a new worker specialty: {SpecialtyName}", specialtyInfo.Name);
@@ -38,6 +39,7 @@ public class WorkerSpecialtyRepository : BaseRepository<WorkerSpecialty>, IWorke
         }
 
         var newSpecialty = specialtyInfo.ToWorkerSpecialty();
+        newSpecialty.UserId = int.Parse(userId);
         await AddAsync(newSpecialty);
         await _context.SaveChangesAsync();
 

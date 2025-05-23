@@ -1,6 +1,10 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBase
 {
 
@@ -14,7 +18,9 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     [ProducesResponseType(typeof(BaseResponse<GetClientDto>), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BaseResponse<List<GetWorkerSpecialtyDto>>>> GetAllWorkerSpecialties()
     {
-        var result = await _unitOfWork.WorkerSpecialties.GetAllWorkerSpecialties();
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await _unitOfWork.WorkerSpecialties.GetAllWorkerSpecialties(userId);
         if (result == null || !result.Any())
             return NotFound(new BaseResponse<List<GetWorkerSpecialtyDto>> { Success = false, Message = "لم يتم العثور على التخصصات" });
 
@@ -68,7 +74,9 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResponse<string>>> CreateWorkerSpecialty(AddWorkerSpecialtyDto WorkerSpecialty)
     {
-        var result = await _unitOfWork.WorkerSpecialties.AddWorkerSpecialtyAsync(WorkerSpecialty);
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await _unitOfWork.WorkerSpecialties.AddWorkerSpecialtyAsync(userId, WorkerSpecialty);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);

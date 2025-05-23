@@ -4,6 +4,7 @@ using ConstructionManagementAssistant.EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250523231120_UserId_WokreSpciality")]
+    partial class UserId_WokreSpciality
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -5266,7 +5269,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -5343,8 +5346,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         {
                             Id = 10,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "مهندس مدني",
-                            UserId = 1
+                            Name = "مهندس مدني"
                         });
                 });
 
@@ -6376,8 +6378,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.HasOne("ConstructionManagementAssistant.Core.Identity.AppUser", "User")
                         .WithMany("WorkerSpecialties")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
                 });

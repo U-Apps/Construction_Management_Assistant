@@ -508,60 +508,70 @@ public static class SeedData
             new WorkerSpecialty
             {
                 Id = 1,
+                UserId = 1,
                 Name = "نجار",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 2,
+                UserId = 1,
                 Name = "حداد",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 3,
+                UserId = 1,
                 Name = "سباك",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 4,
+                UserId = 1,
                 Name = "كهربائي",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 5,
+                UserId = 1,
                 Name = "بناء",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 6,
+                UserId = 1,
                 Name = "دهان",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 7,
+                UserId = 1,
                 Name = "مبلط",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 8,
+                UserId = 1,
                 Name = "مقاول",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 9,
+                UserId = 1,
                 Name = "مهندس معماري",
                 CreatedDate = new DateTime(2023, 10, 1),
             },
             new WorkerSpecialty
             {
                 Id = 10,
+                UserId = 1,
                 Name = "مهندس مدني",
                 CreatedDate = new DateTime(2023, 10, 1),
             }
