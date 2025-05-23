@@ -9,12 +9,15 @@
 
 
         public async Task<PagedResult<DocumentResponse>> GetAllDocumentsAsync(
+            string userId,
             int? projectId,
             int pageNumber = 1,
             int pageSize = 10,
             string? searchTerm = null)
         {
             Expression<Func<Document, bool>> filter = x => true;
+
+            filter = filter.AndAlso(x => x.Project.Client.UserId == int.Parse(userId));
 
             if (projectId.HasValue)
                 filter = filter.AndAlso(d => d.ProjectId == projectId.Value);

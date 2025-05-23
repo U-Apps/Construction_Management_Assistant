@@ -10,13 +10,13 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         Task<DocumentResponse?> GetDocumentByIdAsync(Guid id);
 
         /// <summary>
-        /// Get paged documents by project id.
+        /// Get paged documents by project id, filtered by user.
         /// </summary>
         Task<PagedResult<DocumentResponse>> GetAllDocumentsAsync(
-            int? projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null);
+            string userId, int? projectId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null);
 
         /// <summary>
-        /// Get all documents by task id.
+        /// Get all documents by task id, filtered by user.
         /// </summary>
         Task<List<DocumentResponse>> GetAllDocumentsByTaskIdAsync(int taskId);
 

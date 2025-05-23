@@ -1,7 +1,11 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 
 [ApiController]
+[Authorize]
 public class DocumentsController(IUnitOfWork _unitOfWork) : ControllerBase
 {
     #region 1. GET Methods
@@ -21,7 +25,11 @@ public class DocumentsController(IUnitOfWork _unitOfWork) : ControllerBase
         [FromQuery, Range(10, 50)] int pageSize = 10,
         [FromQuery] string? searchTerm = null)
     {
-        var result = await _unitOfWork.Documents.GetAllDocumentsAsync(projectId, pageNumber, pageSize, searchTerm);
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var result = await _unitOfWork.Documents.GetAllDocumentsAsync(userId, projectId, pageNumber, pageSize, searchTerm);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<DocumentResponse>>
