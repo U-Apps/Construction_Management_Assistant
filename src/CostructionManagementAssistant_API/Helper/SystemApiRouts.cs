@@ -131,6 +131,7 @@ public static class SystemApiRouts
         public const string Register = Base + "/register";
         public const string GetAllUsersWithThereRoles = Base + "/getAllUsers";
         public const string ResetPassWord = Base + "/resetPassword";
+        public const string RedirctToResetPasswordPage = Base + "/redirctToResetPasswordPage";
         public const string ForgotPassword = Base + "/forgotPassword";
         public const string SendConfirmationEmail = Base + "/sendConfirmationEmail";
         public const string confirmEmail = Base + "/confirmEmail";
@@ -150,6 +151,14 @@ public static class SystemApiRouts
         public const string DeleteDocument = Base + "/{id}";
         // Add new route for getting all documents by task id
         public const string GetAllDocumentsByTaskId = Base + "/ByTask/{taskId}";
+    }
+
+    public static class Dashboard
+    {
+        public const string Base = "api/v1/Dashboard";
+        public const string GetMetrics = Base + "/metrics";
+        public const string GetProjectTimeline = Base + "/project-timeline";
+        public const string GetUpcomingTasks = Base + "/upcoming-tasks";
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
+﻿using ConstructionManagementAssistant.Core.Constants;
+using ConstructionManagementAssistant.Core.DTOs.Auth;
 using ConstructionManagementAssistant.Core.Helper;
 using ConstructionManagementAssistant.Core.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -136,76 +137,21 @@ namespace ConstructionManagementAssistant.EF.Repositories
             }
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = $"https://localhost:7282/api/v1/auth/confirmEmail?userId={user.Id}&token={Uri.EscapeDataString(token)}";
+            var confirmationLink = $"{BaseAddress.Remote}/api/v1/auth/confirmEmail?userId={user.Id}&token={Uri.EscapeDataString(token)}";
 
-            var html = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
+            var html = $@"
+                <div style='font-family:Segoe UI,Arial,sans-serif;max-width:500px;margin:40px auto;padding:30px;border-radius:10px;background:#f9f9f9;border:1px solid #e0e0e0;'>
+                    <h2 style='color:#2d7ff9;'>Welcome to Construction Management Assistant!</h2>
+                    <p style='font-size:16px;color:#333;'>Thank you for registering, <b>{user.Name}</b>!</p>
+                    <p style='font-size:15px;color:#333;'>Please confirm your email address to activate your account.</p>
+                    <a href='{confirmationLink}' style='display:inline-block;margin:20px 0;padding:12px 24px;background:#2d7ff9;color:#fff;text-decoration:none;border-radius:5px;font-size:16px;'>Confirm Email</a>
+                    <p style='font-size:13px;color:#888;'>If you did not create an account, you can safely ignore this email.</p>
+                </div>
+            ";
             await _emailService.SendEmailAsync(user.Email, "Confirm your email", html);
 
             return new BaseResponse<string> { Success = true, Message = "User added Succfully, check your email please" };
 
-        }
-
-        public async Task<BaseResponse<string>> ForgotPasswordAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-                return new BaseResponse<string> { Success = false, Message = "User not found" };
-
-
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetLink = $"https://constructionmanagementassitantapi.runasp.net/api/v1/auth/resetPassword?email={email}&token={Uri.EscapeDataString(token)}";
-
-            var html = $"<p>Reset your password by clicking <a href='{resetLink}'>here</a>.</p>";
-            await _emailService.SendEmailAsync(email, "Reset Password", html);
-
-
-            return new BaseResponse<string> { Success = true, Message = "check your email please to reset the password" }; ;
-        }
-
-        public async Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto)
-        {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
-            if (user == null)
-            {
-                return new BaseResponse<string>
-                {
-                    Success = false,
-                    Message = "User not found",
-
-                };
-            }
-
-            var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
-            if (!result.Succeeded)
-            {
-                return new BaseResponse<string>
-                {
-                    Success = false,
-                    Message = "Password reset failed.",
-                    Errors = result.Errors.Select(e => e.Description).ToList()
-                };
-            }
-
-            return new BaseResponse<string>
-            {
-                Success = true,
-                Message = "Password reset successfully."
-            };
-        }
-
-        public async Task<BaseResponse<string>> SendConfirmationEmailAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-                return new BaseResponse<string> { Success = false, Message = "User not found" };
-
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = $"https://constructionmanagementassitantapi.runasp.net/api/v1/auth/confirmEmail?userId={user.Id}&token={Uri.EscapeDataString(token)}";
-
-            var html = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
-            await _emailService.SendEmailAsync(email, "Confirm your email", html);
-
-            return new BaseResponse<string> { Success = true, Message = "check your email please" }; ;
         }
 
         public async Task<BaseResponse<AuthResponse>> ConfirmEmailAsync(int userId, string token)
@@ -251,6 +197,81 @@ namespace ConstructionManagementAssistant.EF.Repositories
             };
 
         }
+
+
+        public async Task<BaseResponse<string>> ForgotPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new BaseResponse<string> { Success = false, Message = "User not found" };
+
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = $"https://construction-management-app.vercel.app/reset-password?email={email}&token={Uri.EscapeDataString(token)}";
+
+            var html = $@"
+                <div style='font-family:Segoe UI,Arial,sans-serif;max-width:500px;margin:40px auto;padding:30px;border-radius:10px;background:#f9f9f9;border:1px solid #e0e0e0;'>
+                    <h2 style='color:#2d7ff9;'>Password Reset Request</h2>
+                    <p style='font-size:16px;color:#333;'>We received a request to reset your password. Click the button below to reset it:</p>
+                    <a href='{resetLink}' style='display:inline-block;margin:20px 0;padding:12px 24px;background:#2d7ff9;color:#fff;text-decoration:none;border-radius:5px;font-size:16px;'>Reset Password</a>
+                    <p style='font-size:13px;color:#888;'>If you did not request a password reset, you can safely ignore this email.</p>
+                </div>
+            ";
+            await _emailService.SendEmailAsync(email, "Reset Password", html);
+
+
+            return new BaseResponse<string> { Success = true, Message = "check your email please to reset the password" }; ;
+        }
+
+        public async Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "User not found",
+
+                };
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+            if (!result.Succeeded)
+            {
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "Password reset failed.",
+                    Errors = result.Errors.Select(e => e.Description).ToList()
+                };
+            }
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "Password reset successfully."
+            };
+        }
+
+
+
+        public async Task<BaseResponse<string>> SendConfirmationEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new BaseResponse<string> { Success = false, Message = "User not found" };
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = $"{BaseAddress.Remote}/api/v1/auth/confirmEmail?userId={user.Id}&token={Uri.EscapeDataString(token)}";
+
+            var html = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
+            await _emailService.SendEmailAsync(email, "Confirm your email", html);
+
+            return new BaseResponse<string> { Success = true, Message = "check your email please" }; ;
+        }
+
+
 
         private async Task<string> GenerateJwtToken(AppUser user)
         {
@@ -343,8 +364,6 @@ namespace ConstructionManagementAssistant.EF.Repositories
 
             return response;
         }
-
-
 
 
         public async Task<BaseResponse<string>> LogoutAsync(string refreshToken)

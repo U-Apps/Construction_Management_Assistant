@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.EF.Repositories;
+﻿using ConstructionManagementAssistant.Core.Repositories;
+
+namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -13,7 +15,7 @@ public class UnitOfWork : IUnitOfWork
     public IEquipmentRepository Equipment { get; private set; }
     public IEquipmentReservationRepository EquipmentReservations { get; private set; }
     public IDocumentRepository Documents { get; private set; }
-
+    public IDashboardRepository Dashboard { get; private set; } // Add this line
 
     private readonly AppDbContext _appDbContext;
     private readonly ILogger<UnitOfWork> _logger;
@@ -34,6 +36,7 @@ public class UnitOfWork : IUnitOfWork
         Equipment = new EquipmentRepository(_appDbContext);
         EquipmentReservations = new EquipmentReservationRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentReservationRepository>>());
         Documents = new DocumentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>(), serviceProvider.GetRequiredService<Supabase.Client>());
+        Dashboard = new DashboardRepository(_appDbContext); // Add this line
     }
 
     public void Dispose()

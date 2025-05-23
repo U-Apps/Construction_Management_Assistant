@@ -62,15 +62,15 @@ namespace ConstructionManagementAssistant.API.Controllers
         /// 200 OK if the confirmation email was sent.<br/>
         /// 404 Not Found if the user does not exist.
         /// </returns>
-        [HttpPost(SystemApiRouts.Auth.SendConfirmationEmail)]
-        public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
-        {
-            var send = await _authService.SendConfirmationEmailAsync(email);
-            if (send.Success)
-                return Ok("Confirmation email sent.");
+        //[HttpPost(SystemApiRouts.Auth.SendConfirmationEmail)]
+        //public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
+        //{
+        //    var send = await _authService.SendConfirmationEmailAsync(email);
+        //    if (send.Success)
+        //        return Ok("Confirmation email sent.");
 
-            return NotFound("User not found");
-        }
+        //    return NotFound("User not found");
+        //}
 
         /// <summary>
         /// Confirms a user's email address using a user ID and confirmation token.
@@ -88,12 +88,12 @@ namespace ConstructionManagementAssistant.API.Controllers
             if (result.Success)
             {
                 // Redirect to frontend with success
-                return Redirect($"https://yourfrontend.com/email-confirmed?success=true&email={result.Data.Email}");
+                return Redirect($"http://construction-management-app.vercel.app/verify-email?success=true&email={result.Data.Email}");
             }
             else
             {
                 // Redirect to frontend with error message
-                return Redirect($"https://yourfrontend.com/email-confirmed?success=false&message={Uri.EscapeDataString(result.Message)}");
+                return Redirect($"http://construction-management-app.vercel.app/verify-email?success=false&message={Uri.EscapeDataString(result.Message)}");
             }
         }
 
@@ -116,6 +116,7 @@ namespace ConstructionManagementAssistant.API.Controllers
             return BadRequest(user);
         }
 
+
         /// <summary>
         /// Resets the user's password using the provided token and new password.
         /// </summary>
@@ -130,22 +131,22 @@ namespace ConstructionManagementAssistant.API.Controllers
         public async Task<IActionResult> ResetPassword(
             [FromQuery] string email,
             [FromQuery] string token,
-            [FromQuery] string? newPassowrd = null)
+            [FromQuery] string newPassowrd)
         {
             var dto = new ResetPasswordDto { Email = email, Token = token, NewPassword = newPassowrd };
             var result = await _authService.ResetPasswordAsync(dto);
-
             if (result.Success)
             {
                 // Redirect to frontend with success
-                return Redirect($"https://yourfrontend.com/reset-password?success=true&");
+                return Redirect($"https://construction-management-app.vercel.app/reset-password?success=true");
             }
             else
             {
                 // Redirect to frontend with error message
-                return Redirect($"https://yourfrontend.com/reset-password?success=false&message={Uri.EscapeDataString(result.Message)}");
+                return Redirect($"https://construction-management-app.vercel.app/reset-password?success=false");
             }
         }
+
 
         /// <summary>
         /// Logs out the currently authenticated user and invalidates their refresh token.
@@ -167,6 +168,28 @@ namespace ConstructionManagementAssistant.API.Controllers
 
             return Ok(response);
         }
+
+
+        /// <summary>
+        /// Logs out the currently authenticated user and invalidates their refresh token.
+        /// </summary>
+        /// <returns>
+        /// 200 OK if logout is successful.<br/>
+        /// 401 Unauthorized if the user is not authenticated or logout fails.
+        /// </returns>
+        //[HttpGet(SystemApiRouts.Auth.logout)]
+        //public async Task<IActionResult> RefreshToken()
+        //{
+        //    var refreshToken = Request.Cookies["refreshToken"];
+        //    if (string.IsNullOrEmpty(refreshToken))
+        //        return Unauthorized("Refresh token is missing.");
+
+        //    var response = await _authService.RefreshAccessTokenByRefreshTokenAsync(refreshToken);
+        //    if (!response.Success)
+        //        return Unauthorized(response);
+
+        //    return Ok(response);
+        //}
 
     }
 }

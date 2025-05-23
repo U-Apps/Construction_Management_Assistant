@@ -1,4 +1,5 @@
-﻿using Supabase;
+﻿using ConstructionManagementAssistant.Core.Constants;
+using Supabase;
 
 namespace ConstructionManagementAssistant.EF.Helper;
 
@@ -11,7 +12,7 @@ public static class EFServices
     /// <param name="configuration">The configuration.</param>
     public static void AddEFServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("RemoteConnection");
+        var connectionString = configuration.GetConnectionString(ConnectionStrings.RemoteConnection);
 
         if (string.IsNullOrEmpty(connectionString))
         {
