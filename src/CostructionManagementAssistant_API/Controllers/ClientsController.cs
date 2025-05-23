@@ -39,14 +39,7 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
         ClientType? clientType = null)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId))
-        {
-            return Unauthorized(new BaseResponse<PagedResult<GetClientDto>>
-            {
-                Success = false,
-                Message = "المستخدم غير مصرح أو المعرف مفقود",
-            });
-        }
+
 
         var result = await _unitOfWork.Clients.GetAllClients(userId, pageNumber, pageSize, searchTerm, clientType);
         if (result.Items == null || result.Items.Count == 0)

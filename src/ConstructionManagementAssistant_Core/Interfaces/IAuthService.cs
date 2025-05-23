@@ -8,6 +8,9 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         Task<BaseResponse<AuthResponse>> LoginAsync(LoginDto loginDto);
         Task<BaseResponse<string>> RegisterAsync(RegisterDto registerDto);
 
+        Task<BaseResponse<AuthResponse>> ConfirmEmailAsync(int userId, string token);
+
+
         Task<BaseResponse<string>> ForgotPasswordAsync(string email);
 
         Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordDto dto);
@@ -18,9 +21,6 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         Task<BaseResponse<string>> LogoutAsync(string refreshToken);
 
 
-        Task<BaseResponse<string>> SendConfirmationEmailAsync(string email);
-
-        Task<BaseResponse<AuthResponse>> ConfirmEmailAsync(int userId, string token);
 
 
     }
