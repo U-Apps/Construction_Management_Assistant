@@ -1,6 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
+
 public class EquipmentReservationController(IUnitOfWork _unitOfWork) : ControllerBase
 {
     /// <summary>
@@ -83,7 +88,11 @@ public class EquipmentReservationController(IUnitOfWork _unitOfWork) : Controlle
     [ProducesResponseType(typeof(List<GetEquipmentReservationDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllReservations()
     {
-        var result = await _unitOfWork.EquipmentReservations.GetAllEquipmentReservationsAsync();
+
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await _unitOfWork.EquipmentReservations.GetAllEquipmentReservationsAsync(userId);
         return Ok(result);
     }
 

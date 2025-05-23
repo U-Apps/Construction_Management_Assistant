@@ -1,6 +1,10 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
 {
     #region Get 
@@ -22,7 +26,10 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
         [Range(1, 50)] int pageSize = 10,
         ProjectStatus? status = null, string? searchTerm = null)
     {
-        var result = await _unitOfWork.Projects.GetAllProjects(pageNumber, pageSize, status, searchTerm);
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await _unitOfWork.Projects.GetAllProjects(userId, pageNumber, pageSize, status, searchTerm);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<GetProjectsDto>>
@@ -52,7 +59,10 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<List<ProjectNameDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllProjectNames()
     {
-        var projectNames = await _unitOfWork.Projects.GetAllProjectNames();
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var projectNames = await _unitOfWork.Projects.GetAllProjectNames(userId);
         if (projectNames == null || projectNames.Count == 0)
         {
             return NotFound(new BaseResponse<List<ProjectNameDto>>

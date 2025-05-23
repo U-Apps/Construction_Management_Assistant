@@ -6,12 +6,13 @@ namespace ConstructionManagementAssistant.Core.Interfaces
     {
         Task<ProjectDetailsDto?> GetProjectById(int id);
         Task<PagedResult<GetProjectsDto>> GetAllProjects(
+            string userId,
             int pageNumber,
             int pageSize,
             ProjectStatus? status = null,
             string? searchTerm = null);
 
-        Task<List<ProjectNameDto>> GetAllProjectNames();
+        Task<List<ProjectNameDto>> GetAllProjectNames(string userId);
 
         Task<BaseResponse<string>> CancelProjectAsync(int projectId, string? cancelationReason);
         Task<BaseResponse<string>> PendProjectAsync(int projectId);

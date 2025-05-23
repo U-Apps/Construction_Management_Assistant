@@ -131,10 +131,10 @@
         return reservations;
     }
 
-    public async Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync()
+    public async Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync(string userId)
     {
         var now = DateTime.Now;
-        var reservations = await _context.EquipmentReservations
+        var reservations = await _context.EquipmentReservations.Where(x => x.Equipment.UserId == int.Parse(userId))
             .Select(a => new GetEquipmentReservationDto
             {
                 Id = a.Id,
@@ -150,13 +150,6 @@
 
 
         return reservations;
-    }
-    private async Task<bool> HasOverlappingReservationAsync(int equipmentId, DateTime startDate, DateTime endDate)
-    {
-        return await _context.EquipmentReservations
-            .AnyAsync(r =>
-                r.EquipmentId == equipmentId &&
-                (startDate < r.EndDate && endDate > r.StartDate));
     }
 
 }

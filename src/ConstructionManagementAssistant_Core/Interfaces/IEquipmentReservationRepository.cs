@@ -7,6 +7,6 @@ public interface IEquipmentReservationRepository
     Task<BaseResponse<string>> DeleteEquipmentReservationAsync(int equipmentReservationId);
     Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByEquipmentIdAsync(int equipmentId);
     Task<List<GetEquipmentReservationDto>> GetEquipmentReservationsByProjectIdAsync(int projectId);
-    Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync();
+    Task<List<GetEquipmentReservationDto>> GetAllEquipmentReservationsAsync(string userId);
 
 }

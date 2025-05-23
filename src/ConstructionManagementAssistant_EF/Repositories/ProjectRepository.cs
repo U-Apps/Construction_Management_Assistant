@@ -28,23 +28,26 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
 
 
 
-    public async Task<List<ProjectNameDto>> GetAllProjectNames()
+    public async Task<List<ProjectNameDto>> GetAllProjectNames(string userId)
     {
         var pagedResult = await GetAllDataWithSelectionAsync(
             orderBy: x => x.Name,
-            criteria: x => x.Status != ProjectStatus.Cancelled || x.Status != ProjectStatus.Pending,
+            criteria: x => x.Client.UserId == int.Parse(userId) && (x.Status != ProjectStatus.Cancelled || x.Status != ProjectStatus.Pending),
             selector: ProjectProfile.ToGetProjectNameDto());
 
         return pagedResult;
     }
 
     public async Task<PagedResult<GetProjectsDto>> GetAllProjects(
+        string userId,
         int pageNumber = 1,
         int pageSize = 10,
         ProjectStatus? status = null,
         string? searchTerm = null)
     {
         Expression<Func<Project, bool>> filter = x => true;
+
+        filter = filter.AndAlso(x => x.Client.UserId == int.Parse(userId));
 
         if (status.HasValue)
         {
