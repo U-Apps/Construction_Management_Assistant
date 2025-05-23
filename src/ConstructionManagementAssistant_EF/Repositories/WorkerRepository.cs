@@ -12,12 +12,15 @@
         }
 
         public async Task<PagedResult<GetWorkerDto>> GetAllWorkers(
+            string userId,
             int pageNumber = 1,
             int pageSize = 10,
             string? searchTerm = null,
             bool? isAvailable = null)
         {
             Expression<Func<Worker, bool>> filter = x => true;
+
+            filter = filter.AndAlso(x => x.UserId == int.Parse(userId));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -41,10 +44,11 @@
 
             return pagedResult;
         }
-        public async Task<List<WorkerNameDto>> GetWorkersNames()
+        public async Task<List<WorkerNameDto>> GetWorkersNames(string userId)
         {
             return await GetAllDataWithSelectionAsync(
                 orderBy: x => x.FirstName,
+                criteria: x => x.UserId == int.Parse(userId),
                 selector: WorkerProfile.ToGetWorkerNameDto());
         }
 
@@ -63,7 +67,7 @@
             return worker;
         }
 
-        public async Task<BaseResponse<string>> AddWorkerAsync(AddWorkerDto workerDto)
+        public async Task<BaseResponse<string>> AddWorkerAsync(string userId, AddWorkerDto workerDto)
         {
             try
             {
@@ -84,6 +88,7 @@
                 }
 
                 var newWorker = workerDto.ToWorker();
+                newWorker.UserId = int.Parse(userId);
                 await AddAsync(newWorker);
                 await _context.SaveChangesAsync();
 

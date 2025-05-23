@@ -1,6 +1,10 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
 {
 
@@ -23,12 +27,16 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     [HttpGet(SystemApiRouts.Workers.GetAllWorkers)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<GetWorkerDto>>), StatusCodes.Status200OK)]
     public async Task<ActionResult<BaseResponse<PagedResult<GetWorkerDto>>>> GetAllWorkers(int pageNumber = 1,
-                                                                                           [Range(1, 50)] int pageSize = 10,
-                                                                                           string? searchTerm = null,
-                                                                                           bool? isAvailable = null,
-                                                                                           int? SpecialtyId = null)
+    [Range(1, 50)] int pageSize = 10,
+    string? searchTerm = null,
+    bool? isAvailable = null,
+    int? SpecialtyId = null)
     {
-        var result = await _unitOfWork.Workers.GetAllWorkers(pageNumber, pageSize, searchTerm, isAvailable);
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var result = await _unitOfWork.Workers.GetAllWorkers(userId, pageNumber, pageSize, searchTerm, isAvailable);
         if (result.Items == null || !result.Items.Any())
             return NotFound(new BaseResponse<PagedResult<GetClientDto>>
             {
@@ -52,7 +60,10 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<List<WorkerNameDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetWorkerNames()
     {
-        var result = await _unitOfWork.Workers.GetWorkersNames();
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await _unitOfWork.Workers.GetWorkersNames(userId);
         return Ok(new BaseResponse<List<WorkerNameDto>>
         {
             Success = true,
@@ -91,7 +102,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
 
     #endregion
 
-    #region Put Methods
+    #region Post Methods
 
 
     /// <summary>
@@ -103,7 +114,9 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResponse<string>>> CreateWorker(AddWorkerDto workerdto)
     {
-        var result = await _unitOfWork.Workers.AddWorkerAsync(workerdto);
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await _unitOfWork.Workers.AddWorkerAsync(userId, workerdto);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);
