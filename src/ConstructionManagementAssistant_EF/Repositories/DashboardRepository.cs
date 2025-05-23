@@ -34,4 +34,24 @@ public class DashboardRepository(AppDbContext _context) : IDashboardRepository
     {
         throw new System.NotImplementedException();
     }
+
+    public Task<int> GetAssignedWorkersAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> GetUnAssignedWorkersAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> GetTotalProjectsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> GetOverdueTaskssync()
+    {
+        throw new NotImplementedException();
+    }
 }
