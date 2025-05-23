@@ -18,9 +18,8 @@ namespace ConstructionManagementAssistant.Core.DTOs
         public int? SiteEngineerId { get; init; }
         [Range(1, int.MaxValue)]
         public required int ClientId { get; init; }
-        [FutureDate]
         public DateOnly? StartDate { get; init; }
-        [FutureDate(nameof(StartDate))]
+
         public DateOnly? ExpectedEndDate { get; init; }
     }
 
