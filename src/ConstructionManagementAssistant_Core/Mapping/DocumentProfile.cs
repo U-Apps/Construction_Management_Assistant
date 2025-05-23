@@ -7,24 +7,6 @@
             return document =>
              new DocumentResponse()
              {
-
-
-                 Id = document.Id,
-                 Name = document.Name,
-                 Description = document.Description,
-                 TaskId = document.TaskId,
-                 TaskName = document.Task != null ? document.Task.Name : null,
-                 ProjectId = document.ProjectId,
-                 ProjectName = document.Project.Name,
-                 CreatedDate = document.CreatedDate
-             };
-
-        }
-        public static Expression<Func<Document, DocumentDetailsResponse>> ToDocumentDetailsResponse()
-        {
-            return document =>
-             new DocumentDetailsResponse()
-             {
                  Id = document.Id,
                  Name = document.Name,
                  Description = document.Description,
@@ -38,6 +20,7 @@
              };
 
         }
+
         public static DocumentResponse ToDocumentResponse(this Document document)
         {
             var r = new DocumentResponse();
@@ -51,6 +34,8 @@
             r.ProjectId = document.ProjectId;
             r.ProjectName = document.Project.Name;
             r.CreatedDate = document.CreatedDate;
+            r.FileType = document.FileType;
+            r.FileUrl = document.Path;
 
             return r;
 
