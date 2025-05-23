@@ -50,14 +50,14 @@ public class DocumentsController(IUnitOfWork _unitOfWork) : ControllerBase
         var result = await _unitOfWork.Documents.GetDocumentByIdAsync(id);
         if (result is null)
         {
-            return NotFound(new BaseResponse<DocumentDetailsResponse>
+            return NotFound(new BaseResponse<DocumentResponse>
             {
                 Success = false,
                 Message = "لا يوجد مستند بهذا المعرف"
             });
         }
 
-        return Ok(new BaseResponse<DocumentDetailsResponse>
+        return Ok(new BaseResponse<DocumentResponse>
         {
             Success = true,
             Message = "تم جلب المستند بنجاح",

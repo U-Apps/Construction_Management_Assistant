@@ -53,10 +53,10 @@
         }
 
 
-        public async Task<DocumentDetailsResponse?> GetDocumentByIdAsync(Guid id)
+        public async Task<DocumentResponse?> GetDocumentByIdAsync(Guid id)
         {
             var doc = await FindWithSelectionAsync(
-                selector: DocumentProfile.ToDocumentDetailsResponse(),
+                selector: DocumentProfile.ToDocumentResponse(),
                 criteria: d => d.Id == id);
 
             if (doc == null)

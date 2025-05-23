@@ -7,7 +7,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
         /// <summary>
         /// Get document details by document id.
         /// </summary>
-        Task<DocumentDetailsResponse?> GetDocumentByIdAsync(Guid id);
+        Task<DocumentResponse?> GetDocumentByIdAsync(Guid id);
 
         /// <summary>
         /// Get paged documents by project id.
