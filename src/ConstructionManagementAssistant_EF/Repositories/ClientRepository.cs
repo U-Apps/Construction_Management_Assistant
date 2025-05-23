@@ -25,15 +25,19 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
     }
 
     public async Task<PagedResult<GetClientDto>> GetAllClients(
+        string UserId,
         int pageNumber = 1,
         int pageSize = 10,
         string? searchTerm = null,
         ClientType? clientType = null)
     {
-        _logger.LogInformation("Fetching all clients with filters - Page: {PageNumber}, Size: {PageSize}, SearchTerm: {SearchTerm}, ClientType: {ClientType}",
-            pageNumber, pageSize, searchTerm, clientType);
+        _logger.LogInformation("Fetching all clients with filters - Page: {PageNumber}, Size: {PageSize}, SearchTerm: {SearchTerm}, ClientType: {ClientType}, Username: {Username}",
+            pageNumber, pageSize, searchTerm, clientType, UserId);
 
         Expression<Func<Client, bool>> filter = x => true;
+
+        filter = filter.AndAlso(c => c.User.Id == int.Parse(UserId));
+
 
         if (!string.IsNullOrEmpty(searchTerm))
         {
@@ -45,6 +49,7 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
 
         if (clientType is not null)
             filter = filter.AndAlso(c => c.ClientType == clientType);
+
 
         var pagedResult = await GetPagedDataWithSelectionAsync(
             orderBy: x => x.FullName,
@@ -58,7 +63,7 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
         return pagedResult;
     }
 
-    public async Task<BaseResponse<string>> AddClientAsync(AddClientDto clientDto)
+    public async Task<BaseResponse<string>> AddClientAsync(string UserId, AddClientDto clientDto)
     {
         _logger.LogInformation("Adding a new client: {FullName}", clientDto.FullName);
 
@@ -89,6 +94,7 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
 
         var newClient = clientDto.ToClient();
         newClient.ClientType = clientType.Value;
+        newClient.UserId = int.Parse(UserId);
 
         await AddAsync(newClient);
         await _context.SaveChangesAsync();
@@ -177,10 +183,11 @@ public class ClientRepository(AppDbContext _context, ILogger<ClientRepository> _
         };
     }
 
-    public async Task<List<ClientNameDto>> GetClientsNames()
+    public async Task<List<ClientNameDto>> GetClientsNames(string UserId)
     {
         var pagedResult = await GetAllDataWithSelectionAsync(
                  orderBy: x => x.FullName,
+                 criteria: x => x.UserId == int.Parse(UserId),
                  selector: ClientProfile.ToGetClientNameDto());
 
         _logger.LogInformation("Fetched clients names", pagedResult);

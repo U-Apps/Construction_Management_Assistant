@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ConstructionManagementAssistant.API.Controllers;
 
@@ -37,9 +38,17 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
         string? searchTerm = null,
         ClientType? clientType = null)
     {
-        var user = User.Identity.Name;
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized(new BaseResponse<PagedResult<GetClientDto>>
+            {
+                Success = false,
+                Message = "المستخدم غير مصرح أو المعرف مفقود",
+            });
+        }
 
-        var result = await _unitOfWork.Clients.GetAllClients(pageNumber, pageSize, searchTerm, clientType);
+        var result = await _unitOfWork.Clients.GetAllClients(userId, pageNumber, pageSize, searchTerm, clientType);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<GetClientDto>>
@@ -66,7 +75,9 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<List<ClientNameDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetClientNames()
     {
-        var result = await _unitOfWork.Clients.GetClientsNames();
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var result = await _unitOfWork.Clients.GetClientsNames(userId);
         return Ok(new BaseResponse<List<ClientNameDto>>
         {
             Success = true,
@@ -117,7 +128,10 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateClient(AddClientDto client)
     {
-        var result = await _unitOfWork.Clients.AddClientAsync(client);
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        var result = await _unitOfWork.Clients.AddClientAsync(userId, client);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);
