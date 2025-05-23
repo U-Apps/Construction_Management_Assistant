@@ -11,4 +11,5 @@ public interface ITaskRepository : IBaseRepository<ProjectTask>
     Task<BaseResponse<string>> UnCheckTaskAsync(int taskId);
     Task<BaseResponse<string>> UpdateTaskAsync(UpdateTaskDto taskDto);
     Task<BaseResponse<string>> DeleteTaskAsync(int id);
+    Task<IEnumerable<GetUpcomingTaskDto>> GetUpcomingTasksAsync(int daysAhead = 7);
 }

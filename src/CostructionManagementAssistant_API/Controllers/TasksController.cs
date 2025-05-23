@@ -147,4 +147,17 @@ public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
 
         return Ok(response);
     }
+
+    /// <summary>
+    /// الحصول على المهام القادمة
+    /// </summary>
+    /// <param name="daysAhead">عدد الأيام القادمة (الافتراضي 7 أيام)</param>
+    /// <returns>قائمة المهام القادمة</returns>
+    [HttpGet(SystemApiRouts.Tasks.GetUpcomingTasks)]
+    [ProducesResponseType(typeof(IEnumerable<GetUpcomingTaskDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUpcomingTasks([FromQuery] int daysAhead = 7)
+    {
+        var upcomingTasks = await _unitOfWork.Tasks.GetUpcomingTasksAsync(daysAhead);
+        return Ok(upcomingTasks);
+    }
 }

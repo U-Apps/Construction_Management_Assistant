@@ -31,6 +31,21 @@ public static class TaskProfile
         };
     }
 
+    public static Expression<Func<Entites.ProjectTask, GetUpcomingTaskDto>> ToGetUpcomingTaskDto()
+    {
+        return task => new GetUpcomingTaskDto
+        {
+            Id = task.Id,
+            Name = task.Name,
+            Description = task.Description,
+            StartDate = task.StartDate,
+            ExpectedEndDate = task.ExpectedEndDate,
+            StageName = task.Stage.Name,
+            ProjectName = task.Stage.Project.Name,
+            IsCompleted = task.IsCompleted
+        };
+    }
+
     public static Entites.ProjectTask ToTask(this AddTaskDto addTaskDto)
     {
         return new Entites.ProjectTask
