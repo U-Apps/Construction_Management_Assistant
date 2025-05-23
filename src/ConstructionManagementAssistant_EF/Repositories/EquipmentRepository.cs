@@ -11,6 +11,7 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
     }
 
     public async Task<PagedResult<GetEquipmentDto>> GetAllEquipment(
+        string userId,
         int pageNumber,
         int pageSize,
         string? searchTerm = null,
@@ -18,6 +19,8 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
     {
         // Build filter expression
         Expression<Func<Equipment, bool>> filter = x => true;
+
+        filter = filter.AndAlso(x => x.UserId == int.Parse(userId));
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
@@ -101,9 +104,10 @@ public class EquipmentRepository : BaseRepository<Equipment>, IEquipmentReposito
         return equipment;
     }
 
-    public async Task<BaseResponse<string>> AddEquipmentAsync(AddEquipmentDto dto)
+    public async Task<BaseResponse<string>> AddEquipmentAsync(string userId, AddEquipmentDto dto)
     {
         var entity = dto.ToEquipment();
+        entity.UserId = int.Parse(userId);
         _context.Equipments.Add(entity);
         await _context.SaveChangesAsync();
         return new BaseResponse<string> { Success = true, Message = "تمت إضافة المعدة بنجاح" };

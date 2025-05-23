@@ -1,7 +1,11 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 
 [ApiController]
+[Authorize]
 public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
 {
     #region Get Methods
@@ -32,7 +36,10 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
         string? searchTerm = null,
         EquipmentStatus? status = null)
     {
-        var result = await _unitOfWork.Equipment.GetAllEquipment(pageNumber, pageSize, searchTerm, status);
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var result = await _unitOfWork.Equipment.GetAllEquipment(userId, pageNumber, pageSize, searchTerm, status);
         if (result.Items == null || result.Items.Count == 0)
         {
             return NotFound(new BaseResponse<PagedResult<GetEquipmentDto>>
@@ -104,7 +111,10 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateEquipment(AddEquipmentDto dto)
     {
-        var result = await _unitOfWork.Equipment.AddEquipmentAsync(dto);
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var result = await _unitOfWork.Equipment.AddEquipmentAsync(userId, dto);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);
