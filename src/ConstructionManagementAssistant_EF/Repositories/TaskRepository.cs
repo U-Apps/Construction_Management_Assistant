@@ -58,7 +58,10 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
     {
         try
         {
-            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Stages.Select(x => x.Id).Contains(taskDto.StageId));
+
+            var stage = await _context.Stages.FindAsync(taskDto.StageId);
+            var project = await _context.Projects.FindAsync(stage.ProjectId);
+
             if (project is null)
                 return new BaseResponse<string>
                 {
@@ -66,7 +69,7 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
                     Message = "المشروع غير موجود"
                 };
 
-            if (project.Status == ProjectStatus.Cancelled || project.Status != ProjectStatus.Pending)
+            if (project.Status == ProjectStatus.Cancelled || project.Status == ProjectStatus.Pending)
             {
                 return new BaseResponse<string>
                 {
@@ -197,9 +200,9 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
         var upcomingTasks = await _context.Tasks
             .Include(t => t.Stage)
                 .ThenInclude(s => s.Project)
-            .Where(t => !t.IsCompleted && 
-                       t.ExpectedEndDate.HasValue && 
-                       t.ExpectedEndDate.Value >= today && 
+            .Where(t => !t.IsCompleted &&
+                       t.ExpectedEndDate.HasValue &&
+                       t.ExpectedEndDate.Value >= today &&
                        t.ExpectedEndDate.Value <= endDate)
             .Select(TaskProfile.ToGetUpcomingTaskDto())
             .OrderBy(t => t.ExpectedEndDate)
