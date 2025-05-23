@@ -1,6 +1,7 @@
-﻿namespace ConstructionManagementAssistant.Core.Entites
+﻿
+namespace ConstructionManagementAssistant.Core.Entites
 {
-    public class Documnet : ISoftDeletable
+    public class Document : ISoftDeletable
     {
         #region Properties
         public Guid Id { get; set; }

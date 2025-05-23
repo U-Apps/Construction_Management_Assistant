@@ -2,7 +2,7 @@
 {
     public static class DocumentProfile
     {
-        public static Expression<Func<Documnet, DocumentResponse>> ToDocumentResponse()
+        public static Expression<Func<Document, DocumentResponse>> ToDocumentResponse()
         {
             return document =>
              new DocumentResponse()
@@ -20,7 +20,7 @@
              };
 
         }
-        public static Expression<Func<Documnet, DocumentDetailsResponse>> ToDocumentDetailsResponse()
+        public static Expression<Func<Document, DocumentDetailsResponse>> ToDocumentDetailsResponse()
         {
             return document =>
              new DocumentDetailsResponse()
@@ -38,7 +38,7 @@
              };
 
         }
-        public static DocumentResponse ToDocumentResponse(this Documnet document)
+        public static DocumentResponse ToDocumentResponse(this Document document)
         {
             var r = new DocumentResponse();
 
@@ -55,9 +55,9 @@
             return r;
 
         }
-        public static Documnet ToDocument(this UploadFileRequest request)
+        public static Document ToDocument(this UploadFileRequest request)
         {
-            return new Documnet
+            return new Document
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,

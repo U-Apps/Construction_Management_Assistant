@@ -93,8 +93,8 @@ public class DashboardRepository : IDashboardRepository
 
     public async Task<DocumentsStatisticsDto> GetDocumentsStatisticsAsync()
     {
-        var totalDocuments = await _context.Documnets.CountAsync(d => !d.IsDeleted);
-        var totalImages = await _context.Documnets.CountAsync(d => !d.IsDeleted && (
+        var totalDocuments = await _context.Documents.CountAsync(d => !d.IsDeleted);
+        var totalImages = await _context.Documents.CountAsync(d => !d.IsDeleted && (
             d.FileType.ToLower().Contains("image") ||
             d.FileType.ToLower() == ".jpg" ||
             d.FileType.ToLower() == ".jpeg" ||

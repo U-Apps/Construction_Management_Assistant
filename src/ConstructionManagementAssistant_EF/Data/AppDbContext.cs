@@ -19,7 +19,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
     public DbSet<Stage> Stages { get; set; }
     public DbSet<ProjectTask> Tasks { get; set; }
     public DbSet<TaskAssignment> TaskAssignments { get; set; }
-    public DbSet<Documnet> Documnets { get; set; }
+    public DbSet<Document> Documents { get; set; }
     public DbSet<Equipment> Equipments { get; set; }
     public DbSet<EquipmentReservation> EquipmentReservations { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -66,6 +66,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
         {
             builder.ToTable(TablesNames.SiteEngineers);
             builder.HasData(SeedData.SeedSiteEngineers());
+
+            builder.HasOne(e => e.User)
+              .WithMany(a => a.SiteEngineers)
+              .HasForeignKey(a => a.UserId)
+              .OnDelete(DeleteBehavior.Cascade);
         });
         #endregion
 
@@ -74,6 +79,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
         {
             builder.ToTable(TablesNames.Workers);
             builder.HasData(SeedData.SeedWorkers());
+
+            builder.HasOne(e => e.User)
+              .WithMany(a => a.Workers)
+              .HasForeignKey(a => a.UserId)
+                 .OnDelete(DeleteBehavior.Cascade);
+
         });
         #endregion
 
@@ -99,6 +110,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.AddEnumCheckConstraint<ClientType>(TablesNames.Clients, nameof(Client.ClientType));
             builder.HasQueryFilter(e => !e.IsDeleted);
             builder.HasData(SeedData.SeedClients());
+
+            builder.HasOne(e => e.User)
+                  .WithMany(a => a.Clients)
+                  .HasForeignKey(a => a.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
         #endregion
 
@@ -133,6 +149,22 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.AddEnumCheckConstraint<ProjectStatus>(TablesNames.Projects, nameof(Project.Status));
             builder.HasQueryFilter(e => !e.IsDeleted);
             builder.HasData(SeedData.SeedProjects());
+
+
+            builder.HasOne(e => e.User)
+           .WithMany(a => a.Projects)
+           .HasForeignKey(a => a.UserId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(e => e.SiteEngineer)
+           .WithMany(a => a.Projects)
+           .HasForeignKey(a => a.UserId)
+           .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(e => e.Client)
+              .WithMany(a => a.Projects)
+              .HasForeignKey(a => a.UserId)
+              .OnDelete(DeleteBehavior.Cascade);
         });
         #endregion
 
@@ -143,6 +175,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.Property(s => s.Name).HasMaxLength(200);
             builder.Property(s => s.Description).HasMaxLength(1000);
             builder.HasData(SeedData.SeedStages());
+
+            builder.HasOne(e => e.Project)
+               .WithMany(a => a.Stages)
+               .HasForeignKey(a => a.ProjectId)
+               .OnDelete(DeleteBehavior.Cascade);
+
         });
         #endregion
 
@@ -153,6 +191,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.Property(t => t.Name).HasMaxLength(200);
             builder.Property(t => t.Description).HasMaxLength(1000);
             builder.HasData(SeedData.SeedTasks());
+
+            builder.HasOne(e => e.Stage)
+               .WithMany(a => a.Tasks)
+               .HasForeignKey(a => a.StageId)
+               .OnDelete(DeleteBehavior.Cascade);
         });
         #endregion
 
@@ -174,7 +217,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
         #endregion
 
         #region Documnet Configuration
-        modelBuilder.Entity<Documnet>(builder =>
+        modelBuilder.Entity<Document>(builder =>
         {
             builder.ToTable(TablesNames.Documents);
             builder.Property(e => e.Name).HasMaxLength(50);
@@ -202,6 +245,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
                 .WithOne(a => a.Equipment)
                 .HasForeignKey(a => a.EquipmentId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(e => e.User)
+               .WithMany(a => a.Equipments)
+               .HasForeignKey(a => a.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(SeedData.SeedEquipment());
         });
@@ -251,7 +299,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
 
             builder.HasIndex(x => x.Email).IsUnique();
             builder.HasIndex(x => x.PhoneNumber).IsUnique();
-            //builder.HasData(SeedData.SeedAppUsers());
+            builder.HasData(SeedData.SeedAppUsers());
 
         });
         #endregion

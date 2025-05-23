@@ -1,4 +1,5 @@
 ﻿using ConstructionManagementAssistant.Core.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace ConstructionManagementAssistant.EF.Data.Seading;
 
@@ -11,6 +12,7 @@ public static class SeedData
             new Client
             {
                 Id = 1,
+                UserId = 1,
                 FullName = "أحمد محمد",
                 Email = "ahmed@example.com",
                 PhoneNumber = "1121456789",
@@ -21,6 +23,7 @@ public static class SeedData
             new Client
             {
                 Id = 2,
+                UserId = 1,
                 FullName = "سارة علي",
                 Email = "sara@example.com",
                 PhoneNumber = "2927654321",
@@ -31,6 +34,7 @@ public static class SeedData
             new Client
             {
                 Id = 3,
+                UserId = 1,
                 FullName = "محمد حسن",
                 Email = "mohamed@example.com",
                 PhoneNumber = "31128833445",
@@ -41,6 +45,7 @@ public static class SeedData
             new Client
             {
                 Id = 4,
+                UserId = 1,
                 FullName = "ليلى إبراهيم",
                 Email = "leila@example.com",
                 PhoneNumber = "4243344556",
@@ -51,6 +56,7 @@ public static class SeedData
             new Client
             {
                 Id = 5,
+                UserId = 1,
                 FullName = "علي يوسف",
                 Email = "ali@example.com",
                 PhoneNumber = "0344455667",
@@ -61,6 +67,7 @@ public static class SeedData
             new Client
             {
                 Id = 6,
+                UserId = 1,
                 FullName = "فاطمة سعيد",
                 Email = "fatima@example.com",
                 PhoneNumber = "5445566778",
@@ -71,6 +78,7 @@ public static class SeedData
             new Client
             {
                 Id = 7,
+                UserId = 1,
                 FullName = "خالد عبد الله",
                 Email = "khaled@example.com",
                 PhoneNumber = "6556677889",
@@ -81,6 +89,7 @@ public static class SeedData
             new Client
             {
                 Id = 8,
+                UserId = 1,
                 FullName = "مريم أحمد",
                 Email = "mariam@example.com",
                 PhoneNumber = "7667788990",
@@ -91,6 +100,7 @@ public static class SeedData
             new Client
             {
                 Id = 9,
+                UserId = 1,
                 FullName = "يوسف علي",
                 Email = "youssef@example.com",
                 PhoneNumber = "0878899001",
@@ -101,6 +111,7 @@ public static class SeedData
             new Client
             {
                 Id = 10,
+                UserId = 1,
                 FullName = "نورا محمد",
                 Email = "nora@example.com",
                 PhoneNumber = "9889900112",
@@ -111,6 +122,7 @@ public static class SeedData
             new Client
             {
                 Id = 11,
+                UserId = 1,
                 FullName = "حسن علي",
                 Email = "hassan@example.com",
                 PhoneNumber = "14490011223",
@@ -121,6 +133,7 @@ public static class SeedData
             new Client
             {
                 Id = 12,
+                UserId = 1,
                 FullName = "منى سعيد",
                 Email = "mona@example.com",
                 PhoneNumber = "01022122334",
@@ -131,6 +144,7 @@ public static class SeedData
             new Client
             {
                 Id = 13,
+                UserId = 1,
                 FullName = "عمر خالد",
                 Email = "omar@example.com",
                 PhoneNumber = "01112233445",
@@ -141,6 +155,7 @@ public static class SeedData
             new Client
             {
                 Id = 14,
+                UserId = 1,
                 FullName = "هدى إبراهيم",
                 Email = "huda@example.com",
                 PhoneNumber = "2223344556",
@@ -151,6 +166,7 @@ public static class SeedData
             new Client
             {
                 Id = 15,
+                UserId = 1,
                 FullName = "ياسر يوسف",
                 Email = "yasser@example.com",
                 PhoneNumber = "03744455667",
@@ -161,6 +177,7 @@ public static class SeedData
             new Client
             {
                 Id = 16,
+                UserId = 1,
                 FullName = "نادية سعيد",
                 Email = "nadia@example.com",
                 PhoneNumber = "0045566778",
@@ -171,6 +188,7 @@ public static class SeedData
             new Client
             {
                 Id = 17,
+                UserId = 1,
                 FullName = "ماجد عبد الله",
                 Email = "majed@example.com",
                 PhoneNumber = "9956677889",
@@ -181,6 +199,7 @@ public static class SeedData
             new Client
             {
                 Id = 18,
+                UserId = 1,
                 FullName = "سلمى أحمد",
                 Email = "salma@example.com",
                 PhoneNumber = "0667788990",
@@ -191,6 +210,7 @@ public static class SeedData
             new Client
             {
                 Id = 19,
+                UserId = 1,
                 FullName = "زياد علي",
                 Email = "ziad@example.com",
                 PhoneNumber = "0228899001",
@@ -201,6 +221,7 @@ public static class SeedData
             new Client
             {
                 Id = 20,
+                UserId = 1,
                 FullName = "نور محمد",
                 Email = "noor@example.com",
                 PhoneNumber = "0874900112",
@@ -219,6 +240,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 21,
+                UserId = 1,
                 FirstName = "أحمد",
                 LastName = "محمد",
                 PhoneNumber = "01553456789",
@@ -230,6 +252,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 22,
+                UserId = 1,
                 FirstName = "سارة",
                 LastName = "علي",
                 PhoneNumber = "0987654321",
@@ -241,6 +264,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 23,
+                UserId = 1,
                 FirstName = "محمد",
                 LastName = "حسن",
                 PhoneNumber = "0112233445",
@@ -252,6 +276,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 24,
+                UserId = 1,
                 FirstName = "ليلى",
                 LastName = "إبراهيم",
                 PhoneNumber = "0223344556",
@@ -263,6 +288,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 25,
+                UserId = 1,
                 FirstName = "علي",
                 LastName = "يوسف",
                 PhoneNumber = "0334455667",
@@ -274,6 +300,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 26,
+                UserId = 1,
                 FirstName = "فاطمة",
                 LastName = "سعيد",
                 PhoneNumber = "0445566778",
@@ -285,6 +312,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 27,
+                UserId = 1,
                 FirstName = "خالد",
                 LastName = "عبد الله",
                 PhoneNumber = "0556677889",
@@ -296,6 +324,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 28,
+                UserId = 1,
                 FirstName = "مريم",
                 LastName = "أحمد",
                 PhoneNumber = "0667788990",
@@ -307,6 +336,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 29,
+                UserId = 1,
                 FirstName = "يوسف",
                 LastName = "علي",
                 PhoneNumber = "0778899001",
@@ -318,6 +348,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 30,
+                UserId = 1,
                 FirstName = "نورا",
                 LastName = "محمد",
                 PhoneNumber = "0889900112",
@@ -329,6 +360,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 31,
+                UserId = 1,
                 FirstName = "حسن",
                 LastName = "علي",
                 PhoneNumber = "0990011223",
@@ -340,6 +372,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 32,
+                UserId = 1,
                 FirstName = "منى",
                 LastName = "سعيد",
                 PhoneNumber = "0106622334",
@@ -351,6 +384,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 33,
+                UserId = 1,
                 FirstName = "عمر",
                 LastName = "خالد",
                 PhoneNumber = "00025533445",
@@ -362,6 +396,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 34,
+                UserId = 1,
                 FirstName = "هدى",
                 LastName = "إبراهيم",
                 PhoneNumber = "01113446656",
@@ -373,6 +408,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 35,
+                UserId = 1,
                 FirstName = "ياسر",
                 LastName = "يوسف",
                 PhoneNumber = "0222005667",
@@ -384,6 +420,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 36,
+                UserId = 1,
                 FirstName = "نادية",
                 LastName = "سعيد",
                 PhoneNumber = "4445555778",
@@ -395,6 +432,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 37,
+                UserId = 1,
                 FirstName = "ماجد",
                 LastName = "عبد الله",
                 PhoneNumber = "0566677889",
@@ -406,6 +444,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 38,
+                UserId = 1,
                 FirstName = "سلمى",
                 LastName = "أحمد",
                 PhoneNumber = "0688898990",
@@ -417,6 +456,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 39,
+                UserId = 1,
                 FirstName = "زياد",
                 LastName = "علي",
                 PhoneNumber = "01118800001",
@@ -428,6 +468,7 @@ public static class SeedData
             new SiteEngineer
             {
                 Id = 40,
+                UserId = 1,
                 FirstName = "نور",
                 LastName = "محمد",
                 PhoneNumber = "06900112",
@@ -514,6 +555,7 @@ public static class SeedData
             new Worker
             {
                 Id = 1,
+                UserId = 1,
                 FirstName = "محمد",
                 SecondName = "علي",
                 ThirdName = "حسن",
@@ -529,6 +571,7 @@ public static class SeedData
             new Worker
             {
                 Id = 2,
+                UserId = 1,
                 FirstName = "أحمد",
                 SecondName = "خالد",
                 ThirdName = "سعيد",
@@ -544,6 +587,7 @@ public static class SeedData
             new Worker
             {
                 Id = 3,
+                UserId = 1,
                 FirstName = "علي",
                 SecondName = "ياسر",
                 ThirdName = "طارق",
@@ -559,6 +603,7 @@ public static class SeedData
             new Worker
             {
                 Id = 4,
+                UserId = 1,
                 FirstName = "خالد",
                 SecondName = "عمر",
                 ThirdName = "مصطفى",
@@ -575,6 +620,7 @@ public static class SeedData
             new Worker
             {
                 Id = 5,
+                UserId = 1,
                 FirstName = "ياسر",
                 SecondName = "حسن",
                 ThirdName = "سعد",
@@ -591,6 +637,7 @@ public static class SeedData
             new Worker
             {
                 Id = 6,
+                UserId = 1,
                 FirstName = "طارق",
                 SecondName = "سعيد",
                 ThirdName = "محمد",
@@ -607,6 +654,7 @@ public static class SeedData
             new Worker
             {
                 Id = 7,
+                UserId = 1,
                 FirstName = "مصطفى",
                 SecondName = "عبدالله",
                 ThirdName = "أحمد",
@@ -623,6 +671,7 @@ public static class SeedData
             new Worker
             {
                 Id = 8,
+                UserId = 1,
                 FirstName = "سعيد",
                 SecondName = "علي",
                 ThirdName = "خالد",
@@ -639,6 +688,7 @@ public static class SeedData
             new Worker
             {
                 Id = 9,
+                UserId = 1,
                 FirstName = "عمر",
                 SecondName = "ياسر",
                 ThirdName = "طارق",
@@ -655,6 +705,7 @@ public static class SeedData
             new Worker
             {
                 Id = 10,
+                UserId = 1,
                 FirstName = "حسن",
                 SecondName = "محمد",
                 ThirdName = "أحمد",
@@ -671,6 +722,7 @@ public static class SeedData
             new Worker
             {
                 Id = 11,
+                UserId = 1,
                 FirstName = "فهد",
                 SecondName = "عبدالرحمن",
                 ThirdName = "ناصر",
@@ -687,6 +739,7 @@ public static class SeedData
             new Worker
             {
                 Id = 12,
+                UserId = 1,
                 FirstName = "ناصر",
                 SecondName = "سلمان",
                 ThirdName = "فيصل",
@@ -703,6 +756,7 @@ public static class SeedData
             new Worker
             {
                 Id = 13,
+                UserId = 1,
                 FirstName = "فيصل",
                 SecondName = "عبدالعزيز",
                 ThirdName = "راشد",
@@ -719,6 +773,7 @@ public static class SeedData
             new Worker
             {
                 Id = 14,
+                UserId = 1,
                 FirstName = "راشد",
                 SecondName = "عبدالله",
                 ThirdName = "سعد",
@@ -735,6 +790,7 @@ public static class SeedData
             new Worker
             {
                 Id = 15,
+                UserId = 1,
                 FirstName = "سعد",
                 SecondName = "عبدالمحسن",
                 ThirdName = "فهد",
@@ -751,6 +807,7 @@ public static class SeedData
             new Worker
             {
                 Id = 16,
+                UserId = 1,
                 FirstName = "عبدالله",
                 SecondName = "عبدالرحمن",
                 ThirdName = "ناصر",
@@ -767,6 +824,7 @@ public static class SeedData
             new Worker
             {
                 Id = 17,
+                UserId = 1,
                 FirstName = "عبدالرحمن",
                 SecondName = "فيصل",
                 ThirdName = "راشد",
@@ -783,6 +841,7 @@ public static class SeedData
             new Worker
             {
                 Id = 18,
+                UserId = 1,
                 FirstName = "عبدالعزيز",
                 SecondName = "سعد",
                 ThirdName = "فهد",
@@ -799,6 +858,7 @@ public static class SeedData
             new Worker
             {
                 Id = 19,
+                UserId = 1,
                 FirstName = "سلمان",
                 SecondName = "راشد",
                 ThirdName = "عبدالله",
@@ -815,6 +875,7 @@ public static class SeedData
             new Worker
             {
                 Id = 20,
+                UserId = 1,
                 FirstName = "عبدالمحسن",
                 SecondName = "فهد",
                 CreatedDate = new DateTime(2023, 10, 1),
@@ -838,6 +899,7 @@ public static class SeedData
         new Project
         {
             Id = 1,
+            UserId = 1,
             Name = "مشروع بناء مدرسة",
             Description = "بناء مدرسة ابتدائية في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -856,6 +918,7 @@ public static class SeedData
         new Project
         {
             Id = 2,
+            UserId = 1,
             Name = "مشروع بناء مستشفى",
             Description = "بناء مستشفى عام في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -874,6 +937,7 @@ public static class SeedData
         new Project
         {
             Id = 3,
+            UserId = 1,
             Name = "مشروع بناء مجمع سكني",
             Description = "بناء مجمع سكني فاخر",
             StartDate = new DateOnly(2022, 10, 1),
@@ -892,6 +956,7 @@ public static class SeedData
         new Project
         {
             Id = 4,
+            UserId = 1,
             Name = "مشروع بناء جسر",
             Description = "بناء جسر يربط بين منطقتين",
             StartDate = new DateOnly(2022, 10, 1),
@@ -910,6 +975,7 @@ public static class SeedData
         new Project
         {
             Id = 5,
+            UserId = 1,
             Name = "مشروع بناء مصنع",
             Description = "بناء مصنع لإنتاج المواد الغذائية",
             StartDate = new DateOnly(2022, 10, 1),
@@ -928,6 +994,7 @@ public static class SeedData
         new Project
         {
             Id = 6,
+            UserId = 1,
             Name = "مشروع بناء فندق",
             Description = "بناء فندق خمس نجوم",
             StartDate = new DateOnly(2022, 10, 1),
@@ -946,6 +1013,7 @@ public static class SeedData
         new Project
         {
             Id = 7,
+            UserId = 1,
             Name = "مشروع بناء محطة قطار",
             Description = "بناء محطة قطار حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -964,6 +1032,7 @@ public static class SeedData
         new Project
         {
             Id = 8,
+            UserId = 1,
             Name = "مشروع بناء مركز تجاري",
             Description = "بناء مركز تجاري ضخم",
             StartDate = new DateOnly(2022, 10, 1),
@@ -982,6 +1051,7 @@ public static class SeedData
         new Project
         {
             Id = 9,
+            UserId = 1,
             Name = "مشروع بناء جامعة",
             Description = "بناء جامعة حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1000,6 +1070,7 @@ public static class SeedData
         new Project
         {
             Id = 10,
+            UserId = 1,
             Name = "مشروع بناء حديقة عامة",
             Description = "بناء حديقة عامة كبيرة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1018,6 +1089,7 @@ public static class SeedData
         new Project
         {
             Id = 11,
+            UserId = 1,
             Name = "مشروع بناء مكتبة عامة",
             Description = "بناء مكتبة عامة في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1036,6 +1108,7 @@ public static class SeedData
         new Project
         {
             Id = 12,
+            UserId = 1,
             Name = "مشروع بناء ملعب رياضي",
             Description = "بناء ملعب رياضي حديث",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1054,6 +1127,7 @@ public static class SeedData
         new Project
         {
             Id = 13,
+            UserId = 1,
             Name = "مشروع بناء محطة وقود",
             Description = "بناء محطة وقود حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1072,6 +1146,7 @@ public static class SeedData
         new Project
         {
             Id = 14,
+            UserId = 1,
             Name = "مشروع بناء مركز صحي",
             Description = "بناء مركز صحي في المدينة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1090,6 +1165,7 @@ public static class SeedData
         new Project
         {
             Id = 15,
+            UserId = 1,
             Name = "مشروع بناء مجمع تجاري",
             Description = "بناء مجمع تجاري ضخم",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1108,6 +1184,7 @@ public static class SeedData
         new Project
         {
             Id = 16,
+            UserId = 1,
             Name = "مشروع بناء محطة كهرباء",
             Description = "بناء محطة كهرباء حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1126,6 +1203,7 @@ public static class SeedData
         new Project
         {
             Id = 17,
+            UserId = 1,
             Name = "مشروع بناء محطة مياه",
             Description = "بناء محطة مياه حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1144,6 +1222,7 @@ public static class SeedData
         new Project
         {
             Id = 18,
+            UserId = 1,
             Name = "مشروع بناء مركز شرطة",
             Description = "بناء مركز شرطة حديث",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1162,6 +1241,7 @@ public static class SeedData
         new Project
         {
             Id = 19,
+            UserId = 1,
             Name = "مشروع بناء محطة إطفاء",
             Description = "بناء محطة إطفاء حديثة",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1180,6 +1260,7 @@ public static class SeedData
         new Project
         {
             Id = 20,
+            UserId = 1,
             Name = "مشروع بناء مركز ثقافي",
             Description = "بناء مركز ثقافي حديث",
             StartDate = new DateOnly(2022, 10, 1),
@@ -1765,32 +1846,43 @@ public static class SeedData
 
 
 
-    //public static List<AppUser> SeedAppUsers()
-    //{
-    //    return new List<AppUser>
-    //    {
-    //        new AppUser
-    //        {
-    //            Id = 1,
-    //            UserName = "salhbnsmyd3",
-    //            Name = "saleh mohammed",
-    //            Email = "salhbnsmyd3@gmail.com",
-    //            NormalizedEmail = "SALHBNSMYD3@GMAIL.COM",
-    //            NormalizedUserName = "SALHBNSMYD3",
-    //            EmailConfirmed = true,
-    //            PhoneNumber = "777753928",
-    //            PhoneNumberConfirmed = true,
-    //            PasswordHash = null,
-    //            SecurityStamp = null,
-    //            ConcurrencyStamp = "b1e1a1c2-1111-4444-aaaa-000000000003",
-    //            TwoFactorEnabled = false,
-    //            LockoutEnd = null,
-    //            LockoutEnabled = false,
-    //            AccessFailedCount = 0,
-    //            RefereshTokens = new List<RefreshToken>()
-    //        }
-    //    };
-    //}
+    public static List<AppUser> SeedAppUsers()
+    {
+        return new List<AppUser>
+        {
+            new AppUser
+            {
+                Id = 1,
+                Name = "saleh mohammed",
+                UserName = "salhbnsmyd3",
+                Email = "salhbnsmyd3@gmail.com",
+                NormalizedEmail = "SALHBNSMYD3@GMAIL.COM",
+                NormalizedUserName = "SALHBNSMYD3",
+                EmailConfirmed = true,
+                PhoneNumber = "777753928",
+                PhoneNumberConfirmed = true,
+                PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
+                SecurityStamp = "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX",
+                ConcurrencyStamp = "446eab07-ad33-4b55-9268-2d4e60fb6b62",
+                TwoFactorEnabled = false,
+                LockoutEnd = null,
+                LockoutEnabled = false,
+                AccessFailedCount = 0,
+            }
+        };
+    }
+
+    public static List<IdentityUserRole<int>> SeedUserRoles()
+    {
+        return new List<IdentityUserRole<int>>
+        {
+            new IdentityUserRole<int>
+            {
+                UserId = 1,
+                RoleId = 1,
+            }
+        };
+    }
 
     public static List<AppRole> SeedRoles()
     {
@@ -1819,56 +1911,66 @@ public static class SeedData
         {
             // Heavy Machinery (1-10)
             new Equipment {
+                UserId = 1,
                 Id = 1, Name = "Excavator", Model = "CAT 320D", SerialNumber = "EXC-2023-001",
                 PurchaseDate = new DateTime(2023, 1, 15),
                 Notes = "Heavy duty excavator for ground work", CreatedDate = new DateTime(2023, 1, 20)
             },
             new Equipment {
+                UserId = 1,
                 Id = 2, Name = "Bulldozer", Model = "Komatsu D65PX-18", SerialNumber = "BUL-2022-045",
                 PurchaseDate = new DateTime(2022, 11, 10),
                 Notes = "Currently at downtown construction site", CreatedDate = new DateTime(2022, 11, 15),
                 ModifiedDate = new DateTime(2023, 5, 1)
             },
             new Equipment {
+                UserId = 1,
                 Id = 3, Name = "Wheel Loader", Model = "Volvo L120H", SerialNumber = "WL-2023-008",
                 PurchaseDate = new DateTime(2023, 2, 18),
                 Notes = "New addition to fleet", CreatedDate = new DateTime(2023, 2, 20)
             },
             new Equipment {
+                UserId = 1,
                 Id = 4, Name = "Backhoe Loader", Model = "JCB 3CX", SerialNumber = "BHL-2021-112",
                  PurchaseDate = new DateTime(2021, 5, 12),
                 Notes = "Hydraulic leak detected", CreatedDate = new DateTime(2021, 5, 15),
                 ModifiedDate = new DateTime(2023, 6, 5)
             },
             new Equipment {
+                UserId = 1,
                 Id = 5, Name = "Skid Steer Loader", Model = "Bobcat S650", SerialNumber = "SSL-2022-078",
                 PurchaseDate = new DateTime(2022, 8, 22),
                 Notes = "With pallet forks attachment", CreatedDate = new DateTime(2022, 8, 25)
             },
             new Equipment {
+                UserId = 1,
                 Id = 6, Name = "Motor Grader", Model = "CAT 120K", SerialNumber = "GRD-2020-034",
                 PurchaseDate = new DateTime(2020, 3, 10),
                 Notes = "Road construction project", CreatedDate = new DateTime(2020, 3, 12),
                 ModifiedDate = new DateTime(2023, 4, 18)
             },
             new Equipment {
+                UserId = 1,
                 Id = 7, Name = "Articulated Dump Truck", Model = "Volvo A30G", SerialNumber = "ADT-2021-056",
                 PurchaseDate = new DateTime(2021, 7, 8),
                 Notes = "30-ton capacity", CreatedDate = new DateTime(2021, 7, 10)
             },
             new Equipment {
+                UserId = 1,
                 Id = 8, Name = "Crawler Dozer", Model = "CAT D6T", SerialNumber = "CDZ-2019-023",
                 PurchaseDate = new DateTime(2019, 2, 15),
                 Notes = "Pending major engine overhaul", CreatedDate = new DateTime(2019, 2, 20),
                 ModifiedDate = new DateTime(2023, 3, 10)
             },
             new Equipment {
+                UserId = 1,
                 Id = 9, Name = "Telescopic Handler", Model = "JCB 536-70", SerialNumber = "TH-2022-091",
                 PurchaseDate = new DateTime(2022, 9, 5),
                 Notes = "High reach capability", CreatedDate = new DateTime(2022, 9, 8),
                 ModifiedDate = new DateTime(2023, 5, 15)
             },
             new Equipment {
+                UserId = 1,
                 Id = 10, Name = "Pile Driver", Model = "ICE 1412", SerialNumber = "PD-2020-017",
                 PurchaseDate = new DateTime(2020, 4, 18),
                 Notes = "Foundation work equipment", CreatedDate = new DateTime(2020, 4, 20)
@@ -1876,28 +1978,33 @@ public static class SeedData
 
             // Concrete Equipment (11-15)
             new Equipment {
+                UserId = 1,
                 Id = 11, Name = "Concrete Mixer Truck", Model = "Putzmeister M42", SerialNumber = "CMT-2021-045",
                 PurchaseDate = new DateTime(2021, 6, 14),
                 Notes = "9 cubic meter capacity", CreatedDate = new DateTime(2021, 6, 16),
                 ModifiedDate = new DateTime(2023, 5, 12)
             },
             new Equipment {
+                UserId = 1,
                 Id = 12, Name = "Concrete Pump", Model = "Schwing S36X", SerialNumber = "CP-2022-033",
                 PurchaseDate = new DateTime(2022, 4, 5),
                 Notes = "Boom pump 36 meters", CreatedDate = new DateTime(2022, 4, 8)
             },
             new Equipment {
+                UserId = 1,
                 Id = 13, Name = "Concrete Vibrator", Model = "Wacker Neuson AR36", SerialNumber = "CV-2023-009",
                 PurchaseDate = new DateTime(2023, 3, 10),
                 Notes = "Internal vibration system", CreatedDate = new DateTime(2023, 3, 12)
             },
             new Equipment {
+                UserId = 1,
                 Id = 14, Name = "Concrete Saw", Model = "Husqvarna K760", SerialNumber = "CS-2021-028",
                  PurchaseDate = new DateTime(2021, 8, 22),
                 Notes = "Blade replacement needed", CreatedDate = new DateTime(2021, 8, 25),
                 ModifiedDate = new DateTime(2023, 6, 8)
             },
             new Equipment {
+                UserId = 1,
                 Id = 15, Name = "Concrete Finisher", Model = "Allen Eng. SP-16", SerialNumber = "CF-2020-019",
                 PurchaseDate = new DateTime(2020, 5, 30),
                 Notes = "16-foot finishing width", CreatedDate = new DateTime(2020, 6, 2)
@@ -1905,29 +2012,34 @@ public static class SeedData
 
             // Cranes and Lifting (16-20)
             new Equipment {
+                UserId = 1,
                 Id = 16, Name = "Tower Crane", Model = "Liebherr 63EC", SerialNumber = "TC-2021-007",
                 PurchaseDate = new DateTime(2021, 3, 15),
                 Notes = "High-rise construction project", CreatedDate = new DateTime(2021, 3, 18),
                 ModifiedDate = new DateTime(2023, 4, 22)
             },
             new Equipment {
+                UserId = 1,
                 Id = 17, Name = "Mobile Crane", Model = "Tadano ATF-220G-5", SerialNumber = "MC-2022-014",
                 PurchaseDate = new DateTime(2022, 2, 10),
                 Notes = "220-ton capacity", CreatedDate = new DateTime(2022, 2, 12)
             },
             new Equipment {
+                UserId = 1,
                 Id = 18, Name = "Rough Terrain Crane", Model = "Grove RT880E", SerialNumber = "RTC-2020-026",
                  PurchaseDate = new DateTime(2020, 7, 8),
                 Notes = "Annual inspection", CreatedDate = new DateTime(2020, 7, 10),
                 ModifiedDate = new DateTime(2023, 6, 1)
             },
             new Equipment {
+                UserId = 1,
                 Id = 19, Name = "Forklift", Model = "Toyota 8FGCU25", SerialNumber = "FL-2021-038",
                 PurchaseDate = new DateTime(2021, 9, 12),
                 Notes = "Warehouse operations", CreatedDate = new DateTime(2021, 9, 15),
                 ModifiedDate = new DateTime(2023, 5, 18)
             },
             new Equipment {
+                UserId = 1,
                 Id = 20, Name = "Scissor Lift", Model = "Genie GS-3246", SerialNumber = "SL-2022-021",
                 PurchaseDate = new DateTime(2022, 3, 5),
                 Notes = "32ft working height", CreatedDate = new DateTime(2022, 3, 8)
@@ -1935,28 +2047,33 @@ public static class SeedData
 
             // Earthmoving and Compaction (21-25)
             new Equipment {
+                UserId = 1,
                 Id = 21, Name = "Vibratory Roller", Model = "Bomag BW211D-40", SerialNumber = "VR-2023-005",
                 PurchaseDate = new DateTime(2023, 4, 5),
                 Notes = "For asphalt compaction work", CreatedDate = new DateTime(2023, 4, 5)
             },
             new Equipment {
+                UserId = 1,
                 Id = 22, Name = "Plate Compactor", Model = "Wacker Neuson WP1550", SerialNumber = "PC-2021-029",
                 PurchaseDate = new DateTime(2021, 10, 15),
                 Notes = "Trench backfilling", CreatedDate = new DateTime(2021, 10, 18),
                 ModifiedDate = new DateTime(2023, 5, 22)
             },
             new Equipment {
+                UserId = 1,
                 Id = 23, Name = "Trencher", Model = "Vermeer RTX550", SerialNumber = "TR-2020-031",
                 PurchaseDate = new DateTime(2020, 8, 12),
                 Notes = "Chain-type trencher", CreatedDate = new DateTime(2020, 8, 15)
             },
             new Equipment {
+                UserId = 1,
                 Id = 24, Name = "Asphalt Paver", Model = "Volvo ABG6820", SerialNumber = "AP-2021-042",
                  PurchaseDate = new DateTime(2021, 4, 20),
                 Notes = "Screed calibration", CreatedDate = new DateTime(2021, 4, 22),
                 ModifiedDate = new DateTime(2023, 6, 3)
             },
             new Equipment {
+                UserId = 1,
                 Id = 25, Name = "Cold Planer", Model = "Wirtgen W2000", SerialNumber = "CP-2019-015",
                 PurchaseDate = new DateTime(2019, 6, 5),
                 Notes = "End of service life", CreatedDate = new DateTime(2019, 6, 8),
@@ -1965,28 +2082,33 @@ public static class SeedData
 
             // Support Equipment (26-30)
             new Equipment {
+                UserId = 1,
                 Id = 26, Name = "Generator", Model = "Cummins QSK60", SerialNumber = "GEN-2022-032",
                 PurchaseDate = new DateTime(2022, 9, 12),
                 Notes = "Powering north site operations", CreatedDate = new DateTime(2022, 9, 15),
                 ModifiedDate = new DateTime(2023, 5, 20)
             },
             new Equipment {
+                UserId = 1,
                 Id = 27, Name = "Air Compressor", Model = "Atlas Copco XAS185", SerialNumber = "AC-2021-027",
                 PurchaseDate = new DateTime(2021, 11, 8),
                 Notes = "185 cfm capacity", CreatedDate = new DateTime(2021, 11, 10)
             },
             new Equipment {
+                UserId = 1,
                 Id = 28, Name = "Light Tower", Model = "Generac Light Tower", SerialNumber = "LT-2022-019",
                 PurchaseDate = new DateTime(2022, 5, 15),
                 Notes = "Night shift operations", CreatedDate = new DateTime(2022, 5, 18),
                 ModifiedDate = new DateTime(2023, 5, 25)
             },
             new Equipment {
+                UserId = 1,
                 Id = 29, Name = "Water Pump", Model = "Godwin HL100", SerialNumber = "WP-2020-024",
                 PurchaseDate = new DateTime(2020, 9, 3),
                 Notes = "High volume dewatering", CreatedDate = new DateTime(2020, 9, 5)
             },
             new Equipment {
+                UserId = 1,
                 Id = 30, Name = "Welding Machine", Model = "Lincoln Vantage 400", SerialNumber = "WM-2021-036",
                  PurchaseDate = new DateTime(2021, 7, 20),
                 Notes = "Electrode feeder repair", CreatedDate = new DateTime(2021, 7, 22),

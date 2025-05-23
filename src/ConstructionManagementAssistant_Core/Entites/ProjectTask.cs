@@ -18,7 +18,7 @@ namespace ConstructionManagementAssistant.Core.Entites
         public Stage? Stage { get; set; }
 
         public ICollection<TaskAssignment> TaskAssignments = [];
-        public ICollection<Documnet>? Documents { get; set; }
+        public ICollection<Document>? Documents { get; set; }
         #endregion
     }
 }

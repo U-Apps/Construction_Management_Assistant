@@ -5,6 +5,8 @@ public class Project : IEntity, ISoftDeletable
     #region Properties
 
     public int Id { get; set; }
+    public int UserId { get; set; }
+    public AppUser User { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
     public DateOnly? StartDate { get; set; }
@@ -29,9 +31,9 @@ public class Project : IEntity, ISoftDeletable
     #region Navigation Properties
 
     public SiteEngineer? SiteEngineer { get; set; }
-    public Client? Client { get; set; }
+    public Client Client { get; set; }
     public ICollection<EquipmentReservation> EquipmentReservations { get; set; }
-    public ICollection<Documnet> Documents { get; set; }
+    public ICollection<Document> Documents { get; set; }
     public ICollection<Stage>? Stages { get; set; }
 
     #endregion

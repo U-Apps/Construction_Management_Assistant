@@ -1,7 +1,7 @@
 ﻿namespace ConstructionManagementAssistant.EF.Repositories
 {
     public class DocumentRepository(AppDbContext _context, ILogger<DocumentRepository> _logger, Supabase.Client supabase)
-            : BaseRepository<Documnet>(_context), IDocumentRepository
+            : BaseRepository<Document>(_context), IDocumentRepository
     {
 
 
@@ -14,7 +14,7 @@
             int pageSize = 10,
             string? searchTerm = null)
         {
-            Expression<Func<Documnet, bool>> filter = x => true;
+            Expression<Func<Document, bool>> filter = x => true;
 
             if (projectId.HasValue)
                 filter = filter.AndAlso(d => d.ProjectId == projectId.Value);
@@ -43,7 +43,7 @@
 
         public async Task<List<DocumentResponse>> GetAllDocumentsByTaskIdAsync(int taskId)
         {
-            var docs = await _context.Documnets
+            var docs = await _context.Documents
                 .Where(d => d.TaskId == taskId)
                 .OrderByDescending(d => d.CreatedDate)
                 .Select(DocumentProfile.ToDocumentResponse())
