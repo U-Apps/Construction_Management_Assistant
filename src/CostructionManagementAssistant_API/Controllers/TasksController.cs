@@ -1,6 +1,9 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class TasksController(IUnitOfWork _unitOfWork) : ControllerBase
 {
     /// <summary>
