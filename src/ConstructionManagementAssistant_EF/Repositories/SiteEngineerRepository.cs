@@ -28,12 +28,15 @@
         }
 
         public async Task<PagedResult<GetSiteEngineerDto>> GetAllSiteEngineers(
+            string userId,
             int pageNumber = 1,
             int pageSize = 10,
             string? searchTerm = null,
             bool? isAvailable = null)
         {
             Expression<Func<SiteEngineer, bool>> filter = x => true;
+
+            filter = filter.AndAlso(x => x.UserId == int.Parse(userId));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -55,14 +58,15 @@
                 pageSize: pageSize);
         }
 
-        public async Task<List<SiteEngineerNameDto>> GetSiteEngineersNames()
+        public async Task<List<SiteEngineerNameDto>> GetSiteEngineersNames(string userId)
         {
             return await GetAllDataWithSelectionAsync(
                 orderBy: x => x.FirstName,
+                criteria: x => x.UserId == int.Parse(userId),
                 selector: SiteEngineerProfile.ToGetSiteEngineerNameDto());
         }
 
-        public async Task<BaseResponse<string>> AddSiteEngineerAsync(AddSiteEngineerDto siteEngineerDto)
+        public async Task<BaseResponse<string>> AddSiteEngineerAsync(string userId, AddSiteEngineerDto siteEngineerDto)
         {
             try
             {
@@ -83,6 +87,7 @@
                 }
 
                 var newSiteEngineer = siteEngineerDto.ToSiteEngineer();
+                newSiteEngineer.UserId = int.Parse(userId);
                 await AddAsync(newSiteEngineer);
                 await _context.SaveChangesAsync();
 

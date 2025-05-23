@@ -1,6 +1,10 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
 {
 
@@ -26,7 +30,11 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
         string? searchTerm = null,
         bool? isAvailable = null)
     {
-        var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(pageNumber, pageSize, searchTerm, isAvailable);
+
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(userId, pageNumber, pageSize, searchTerm, isAvailable);
 
         if (result.Items == null || result.Items.Count == 0)
             return NotFound(new BaseResponse<PagedResult<GetSiteEngineerDto>>
@@ -51,7 +59,10 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<List<SiteEngineerNameDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSiteEngineerNames()
     {
-        var result = await _unitOfWork.SiteEngineers.GetSiteEngineersNames();
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var result = await _unitOfWork.SiteEngineers.GetSiteEngineersNames(userId);
         return Ok(new BaseResponse<List<SiteEngineerNameDto>>
         {
             Success = true,
@@ -103,7 +114,10 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateSiteEngineer(AddSiteEngineerDto siteEngineer)
     {
-        var result = await _unitOfWork.SiteEngineers.AddSiteEngineerAsync(siteEngineer);
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+
+        var result = await _unitOfWork.SiteEngineers.AddSiteEngineerAsync(userId, siteEngineer);
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);
