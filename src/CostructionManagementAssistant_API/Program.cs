@@ -17,37 +17,18 @@ builder.Services.AddCoreServices();
 builder.Services.AddEFServices(builder.Configuration);
 builder.Host.UseSerilogLoggging();
 
-builder.Services.Configure<JWT>(builder.Configuration.GetSection("Jwt"));
 var Jwt = builder.Configuration.GetSection("JWT").Get<JWT>();
+builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 
 var key = Encoding.ASCII.GetBytes(Jwt!.Key);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.SaveToken = true;
-    options.RequireHttpsMetadata = false; // Set to true in production
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidAudience = Jwt.Audience,
-        ValidIssuer = Jwt.Issuer,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwt.Key)),
-        ClockSkew = TimeSpan.Zero // Remove delay of token when expire
-    };
-});
+
+
+
 
 
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
 {
-    options.SignIn.RequireConfirmedEmail = true;
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
@@ -55,8 +36,33 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
     options.Password.RequiredUniqueChars = 0;
     options.Password.RequiredLength = 4;
 })
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+     .AddEntityFrameworkStores<AppDbContext>()
+     .AddDefaultTokenProviders();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+        ValidIssuer = Jwt.Issuer,
+        ValidAudience = Jwt.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwt.Key)),
+        ClockSkew = TimeSpan.Zero,
+    };
+});
+
+
+
 
 builder.Services.AddCors(options =>
 {
@@ -71,12 +77,12 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 app.UseSerilogRequestLogging();
 app.UseOpenApi();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseSwaggerTool();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<RedirectToSwaggerMiddleware>();
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapControllers();
 app.Run();

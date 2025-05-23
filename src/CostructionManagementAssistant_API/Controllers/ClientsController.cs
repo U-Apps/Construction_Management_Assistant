@@ -1,6 +1,10 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
+
 public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
 {
 
@@ -33,6 +37,8 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
         string? searchTerm = null,
         ClientType? clientType = null)
     {
+        var user = User.Identity.Name;
+
         var result = await _unitOfWork.Clients.GetAllClients(pageNumber, pageSize, searchTerm, clientType);
         if (result.Items == null || result.Items.Count == 0)
         {
@@ -78,6 +84,7 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     [HttpGet(SystemApiRouts.Clients.GetClientById)]
     [ProducesResponseType(typeof(BaseResponse<ClientDetailsDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<ClientDetailsDto>), StatusCodes.Status404NotFound)]
+
     public async Task<IActionResult> GetClientById(int Id)
     {
         var result = await _unitOfWork.Clients.GetClientById(Id);

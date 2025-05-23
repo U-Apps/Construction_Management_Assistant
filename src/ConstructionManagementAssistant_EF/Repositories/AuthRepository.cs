@@ -298,7 +298,8 @@ namespace ConstructionManagementAssistant.EF.Repositories
                 issuer: _jwtOptions.Value.Issuer,
                 audience: _jwtOptions.Value.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtOptions.Value.DurationInMinutes),
+                //expires: DateTime.UtcNow.AddMinutes(_jwtOptions.Value.DurationInMinutes),
+                expires: DateTime.UtcNow.AddDays(_jwtOptions.Value.DurationInMinutes),
                 signingCredentials: creds
             );
 
