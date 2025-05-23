@@ -52,4 +52,16 @@ namespace ConstructionManagementAssistant.Core.DTOs
         //public DateOnly? StartDate { get; set; }
         //public DateOnly? EndDate { get; set; }
     }
+
+    public class GetUpcomingTaskDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public DateOnly? StartDate { get; set; }
+        public DateOnly? ExpectedEndDate { get; set; }
+        public string StageName { get; set; }
+        public string ProjectName { get; set; }
+        public bool IsCompleted { get; set; }
+    }
 }

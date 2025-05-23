@@ -113,6 +113,7 @@ public static class SystemApiRouts
         public const string CompleteTask = Base + "/CompleteTask/{Id}";
         public const string UnCheckTask = Base + "/UnCheckTask/{Id}";
         public const string AssignWorkersToTask = Base + "/AssignWorkersToTask";
+        public const string GetUpcomingTasks = Base + "/upcoming";
     }
 
     public static class TaskAssignments

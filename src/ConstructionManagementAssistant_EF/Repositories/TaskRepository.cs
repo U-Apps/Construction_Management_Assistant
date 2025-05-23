@@ -188,4 +188,23 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
             Message = "تم تحديث المهمة بنجاح"
         };
     }
+
+    public async Task<IEnumerable<GetUpcomingTaskDto>> GetUpcomingTasksAsync(int daysAhead = 7)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Now);
+        var endDate = today.AddDays(daysAhead);
+
+        var upcomingTasks = await _context.Tasks
+            .Include(t => t.Stage)
+                .ThenInclude(s => s.Project)
+            .Where(t => !t.IsCompleted && 
+                       t.ExpectedEndDate.HasValue && 
+                       t.ExpectedEndDate.Value >= today && 
+                       t.ExpectedEndDate.Value <= endDate)
+            .Select(TaskProfile.ToGetUpcomingTaskDto())
+            .OrderBy(t => t.ExpectedEndDate)
+            .ToListAsync();
+
+        return upcomingTasks;
+    }
 }
