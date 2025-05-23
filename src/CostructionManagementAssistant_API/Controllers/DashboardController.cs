@@ -1,33 +1,47 @@
-﻿namespace ConstructionManagementAssistant.API.Controllers;
+﻿using ConstructionManagementAssistant.Core.DTOs.StatisticsDTO;
+
+namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
 public class DashboardController(IUnitOfWork unitOfWork) : ControllerBase
 {
-
-    [HttpGet(SystemApiRouts.Dashboard.GetMetrics)]
-    public async Task<IActionResult> GetMetrics()
+    [HttpGet(SystemApiRouts.Dashboard.GetTeamStatistics)]
+    [ProducesResponseType(typeof(TeamStatisticsDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetTeamStatistics()
     {
-        var result = new
-        {
-            ActiveProjects = await unitOfWork.Dashboard.GetActiveProjectsCountAsync(),
-            PendingTasks = await unitOfWork.Dashboard.GetPendingTasksCountAsync(),
-            Workers = await unitOfWork.Dashboard.GetWorkersCountAsync(),
-            Documents = await unitOfWork.Dashboard.GetDocumentsCountAsync()
-        };
+        var result = await unitOfWork.Dashboard.GetTeamStatisticsAsync();
         return Ok(result);
     }
 
-    //[HttpGet(SystemApiRouts.Dashboard.GetProjectTimeline)]
-    //public async Task<IActionResult> GetProjectTimeline()
-    //{
-    //    var timeline = await _dashboardRepository.GetProjectTimelineAsync();
-    //    return Ok(timeline);
-    //}
+    [HttpGet(SystemApiRouts.Dashboard.GetProjectStatistics)]
+    [ProducesResponseType(typeof(ProjectStatisticsDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProjectStatistics()
+    {
+        var result = await unitOfWork.Dashboard.GetProjectsStatistics();
+        return Ok(result);
+    }
 
-    //[HttpGet(SystemApiRouts.Dashboard.GetUpcomingTasks)]
-    //public async Task<IActionResult> GetUpcomingTasks()
-    //{
-    //    var tasks = await _dashboardRepository.GetUpcomingTasksAsync();
-    //    return Ok(tasks);
-    //}
+    [HttpGet(SystemApiRouts.Dashboard.GetTaskStatistics)]
+    [ProducesResponseType(typeof(TaskStatisticsDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetTaskStatistics()
+    {
+        var result = await unitOfWork.Dashboard.GetTasksStatisticsAync();
+        return Ok(result);
+    }
+
+    [HttpGet(SystemApiRouts.Dashboard.GetEquipmentStatistics)]
+    [ProducesResponseType(typeof(EquipmentStatisticsDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetEquipmentStatistics()
+    {
+        var result = await unitOfWork.Dashboard.GetEquipmentStatisticsAsync();
+        return Ok(result);
+    }
+
+    [HttpGet(SystemApiRouts.Dashboard.GetDocumentsStatistics)]
+    [ProducesResponseType(typeof(DocumentsStatisticsDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetDocumentsStatistics()
+    {
+        var result = await unitOfWork.Dashboard.GetDocumentsStatisticsAsync();
+        return Ok(result);
+    }
 }

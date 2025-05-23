@@ -16,7 +16,7 @@ public static class EFServices
 
         if (string.IsNullOrEmpty(connectionString))
         {
-            throw new InvalidOperationException("Connection string 'RemoteConnection' is not configured.");
+            throw new InvalidOperationException($"Connection string '{connectionString}' is not configured.");
         }
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();

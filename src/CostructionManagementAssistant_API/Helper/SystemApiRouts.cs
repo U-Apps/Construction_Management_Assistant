@@ -156,9 +156,11 @@ public static class SystemApiRouts
     public static class Dashboard
     {
         public const string Base = "api/v1/Dashboard";
-        public const string GetMetrics = Base + "/metrics";
-        public const string GetProjectTimeline = Base + "/project-timeline";
-        public const string GetUpcomingTasks = Base + "/upcoming-tasks";
+        public const string GetTeamStatistics = Base + "/team-statistics";
+        public const string GetProjectStatistics = Base + "/project-statistics";
+        public const string GetTaskStatistics = Base + "/task-statistics";
+        public const string GetEquipmentStatistics = Base + "/equipment-statistics";
+        public const string GetDocumentsStatistics = Base + "/documents-statistics";
     }
 
 }
