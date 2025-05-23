@@ -137,13 +137,11 @@ namespace ConstructionManagementAssistant.API.Controllers
             var result = await _authService.ResetPasswordAsync(dto);
             if (result.Success)
             {
-                // Redirect to frontend with success
-                return Redirect($"https://construction-management-app.vercel.app/reset-password?success=true");
+                return Ok(result);
             }
             else
             {
-                // Redirect to frontend with error message
-                return Redirect($"https://construction-management-app.vercel.app/reset-password?success=false");
+                return BadRequest(result);
             }
         }
 

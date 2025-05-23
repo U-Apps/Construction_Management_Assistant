@@ -12,7 +12,7 @@ public static class EFServices
     /// <param name="configuration">The configuration.</param>
     public static void AddEFServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(ConnectionStrings.LocalConnection);
+        var connectionString = configuration.GetConnectionString(ConnectionStrings.RemoteConnection);
 
         if (string.IsNullOrEmpty(connectionString))
         {
