@@ -65,7 +65,7 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
         {
             filter = filter.AndAlso(p =>
                 p.Client.FullName.Contains(searchTerm) ||
-                p.SiteEngineer.GetFullName().Contains(searchTerm));
+                p.SiteEngineer.Name.Contains(searchTerm));
         }
 
         var pagedResult = await GetPagedDataWithSelectionAsync(
@@ -100,7 +100,7 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
             // Validate SiteEngineerId (if provided)
             if (addProjectDto.SiteEngineerId.HasValue)
             {
-                var siteEngineerExists = await _context.SiteEngineers.AnyAsync(se => se.Id == addProjectDto.SiteEngineerId.Value);
+                var siteEngineerExists = await _context.Users.AnyAsync(se => se.Id == addProjectDto.SiteEngineerId.Value);
                 if (!siteEngineerExists)
                 {
                     _logger.LogWarning("SiteEngineerId {SiteEngineerId} not found when adding project: {ProjectName}", addProjectDto.SiteEngineerId, addProjectDto.ProjectName);

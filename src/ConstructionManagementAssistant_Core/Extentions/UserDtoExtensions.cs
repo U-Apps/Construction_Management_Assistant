@@ -7,6 +7,7 @@ public static class UserDtoExtensions
         if (user == null) throw new ArgumentNullException(nameof(user));
         return new UserDto
         {
+            Id = user.Id,
             Name = user.Name,
             UserName = user.UserName,
             Email = user.Email,

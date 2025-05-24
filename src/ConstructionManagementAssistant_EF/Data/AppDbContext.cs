@@ -1,6 +1,7 @@
 ﻿using ConstructionManagementAssistant.Core.Constants;
 using ConstructionManagementAssistant.Core.Identity;
 using ConstructionManagementAssistant.EF.Data.Seading;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ProjectTask = ConstructionManagementAssistant.Core.Entites.ProjectTask;
 
@@ -11,7 +12,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
     #region DbSets
 
     public DbSet<Person> People { get; set; }
-    public DbSet<SiteEngineer> SiteEngineers { get; set; }
+    //public DbSet<SiteEngineer> SiteEngineers { get; set; }
     public DbSet<Worker> Workers { get; set; }
     public DbSet<WorkerSpecialty> WorkerSpecialties { get; set; }
     public DbSet<Client> Clients { get; set; }
@@ -61,18 +62,18 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
         });
         #endregion
 
-        #region SiteEngineer Configuration
-        modelBuilder.Entity<SiteEngineer>(builder =>
-        {
-            builder.ToTable(TablesNames.SiteEngineers);
-            builder.HasData(SeedData.SeedSiteEngineers());
+        //#region SiteEngineer Configuration
+        //modelBuilder.Entity<SiteEngineer>(builder =>
+        //{
+        //    builder.ToTable(TablesNames.SiteEngineers);
+        //    builder.HasData(SeedData.SeedSiteEngineers());
 
-            builder.HasOne(e => e.User)
-              .WithMany(a => a.SiteEngineers)
-              .HasForeignKey(a => a.UserId)
-              .OnDelete(DeleteBehavior.Cascade);
-        });
-        #endregion
+        //    builder.HasOne(e => e.User)
+        //      .WithMany(a => a.SiteEngineers)
+        //      .HasForeignKey(a => a.UserId)
+        //      .OnDelete(DeleteBehavior.Cascade);
+        //});
+        //#endregion
 
         #region Worker Configuration
         modelBuilder.Entity<Worker>(builder =>
@@ -161,10 +162,10 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             //.HasForeignKey(a => a.UserId)
             //.OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(e => e.SiteEngineer)
-           .WithMany(a => a.Projects)
-           .HasForeignKey(a => a.SiteEngineerId)
-           .OnDelete(DeleteBehavior.NoAction);
+            // builder.HasOne(e => e.SiteEngineer)
+            //.WithMany(a => a.Projects)
+            //.HasForeignKey(a => a.SiteEngineerId)
+            //.OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(e => e.Client)
               .WithMany(a => a.Projects)
@@ -298,9 +299,16 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             HasMaxLength(100).
             IsUnicode(true);
 
+
+            builder.HasOne(e => e.BelongToUser)
+           .WithMany(a => a.AppUsers)
+           .HasForeignKey(a => a.BelongToUserId)
+           .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasIndex(x => x.Email).IsUnique();
             builder.HasIndex(x => x.PhoneNumber).IsUnique();
             builder.HasData(SeedData.SeedAppUsers());
+            builder.HasData(SeedData.SeedSiteEnginners());
 
         });
         #endregion
@@ -319,6 +327,13 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
         modelBuilder.Entity<RefreshToken>(builder =>
         {
             builder.ToTable(TablesNames.RefershToekns);
+        });
+        #endregion
+
+        #region User Roles
+        modelBuilder.Entity<IdentityUserRole<int>>(builder =>
+        {
+            builder.HasData(SeedData.SeedUserRoles());
         });
         #endregion
 

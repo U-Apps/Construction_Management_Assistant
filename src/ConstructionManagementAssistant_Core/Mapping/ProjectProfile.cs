@@ -69,7 +69,7 @@ public static class ProjectProfile
             Description = Project.Description,
             SiteAddress = Project.SiteAddress,
             GeographicalCoordinates = Project.GeographicalCoordinates,
-            SiteEngineerName = Project.SiteEngineer != null ? Project.SiteEngineer.GetFullName() : null,
+            SiteEngineerName = Project.SiteEngineer != null ? Project.SiteEngineer.Name : null,
             ClientName = Project.Client != null ? Project.Client.FullName : string.Empty,
             StartDate = Project.StartDate,
             ExpectedEndDate = Project.ExpectedEndDate,

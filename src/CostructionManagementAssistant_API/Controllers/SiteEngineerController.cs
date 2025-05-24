@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace ConstructionManagementAssistant.API.Controllers;
@@ -23,7 +24,7 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// </remarks>
     /// <returns>قائمة المهندسين</returns>
     [HttpGet(SystemApiRouts.SiteEngineers.GetAllSiteEngineer)]
-    [ProducesResponseType(typeof(BaseResponse<PagedResult<GetSiteEngineerDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<PagedResult<UserDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllSiteEngineers(
         int pageNumber = 1,
         [Range(1, 50)] int pageSize = 10,
@@ -34,18 +35,18 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
 
-        var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(userId, pageNumber, pageSize, searchTerm, isAvailable);
+        var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(userId, pageNumber, pageSize, searchTerm);
 
-        if (result.Items == null || result.Items.Count == 0)
-            return NotFound(new BaseResponse<PagedResult<GetSiteEngineerDto>>
+        if (result.Data.Items == null || result.Data.Items.Count == 0)
+            return NotFound(new BaseResponse<PagedResult<UserDto>>
             {
                 Message = "لم يتم العثور على المهندسين",
                 Success = false
             });
 
-        return Ok(new BaseResponse<PagedResult<GetSiteEngineerDto>>
+        return Ok(new BaseResponse<PagedResult<UserDto>>
         {
-            Data = result,
+            Data = result.Data,
             Message = "تم جلب المهندسين بنجاح ",
             Success = true
         });
@@ -56,14 +57,14 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// الحصول على أسماء جميع المهندسين
     /// </summary>
     [HttpGet(SystemApiRouts.SiteEngineers.GetSiteEngineerNames)]
-    [ProducesResponseType(typeof(BaseResponse<List<SiteEngineerNameDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<List<UserNameDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSiteEngineerNames()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
 
         var result = await _unitOfWork.SiteEngineers.GetSiteEngineersNames(userId);
-        return Ok(new BaseResponse<List<SiteEngineerNameDto>>
+        return Ok(new BaseResponse<List<UserNameDto>>
         {
             Success = true,
             Message = "تم جلب أسماء المهندسين بنجاح",
@@ -79,21 +80,21 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <param name="Id">معرف المهندس</param>
     /// <returns>تفاصيل المهندس</returns>
     [HttpGet(SystemApiRouts.SiteEngineers.GetSiteEngineerById)]
-    [ProducesResponseType(typeof(BaseResponse<SiteEngineerDetailsDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<SiteEngineerDetailsDto>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(BaseResponse<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<UserDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSiteEngineerById(int Id)
     {
         var result = await _unitOfWork.SiteEngineers.GetSiteEngineerById(Id);
         if (result is null)
-            return NotFound(new BaseResponse<SiteEngineerDetailsDto>
+            return NotFound(new BaseResponse<UserDto>
             {
                 Message = "لا يوجد مهندس بهذا المعرف",
                 Success = false
             });
 
-        return Ok(new BaseResponse<SiteEngineerDetailsDto>
+        return Ok(new BaseResponse<UserDto>
         {
-            Data = result,
+            Data = result.Data,
             Message = "تم جلب المهندس بنجاح ",
             Success = true
         });
@@ -112,7 +113,7 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     [HttpPost(SystemApiRouts.SiteEngineers.AddSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateSiteEngineer(AddSiteEngineerDto siteEngineer)
+    public async Task<IActionResult> CreateSiteEngineer(RegisterDto siteEngineer)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -128,25 +129,25 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
 
 
 
-    #region Put Methods
+    //#region Put Methods
 
-    /// <summary>
-    /// تحديث مهندس موجود
-    /// </summary>
-    /// <param name="siteEngineer">بيانات المهندس المحدثة</param>
-    /// <returns>لا يوجد محتوى</returns>
-    [HttpPut(SystemApiRouts.SiteEngineers.UpdateSiteEngineer)]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateSiteEngineer(UpdateSiteEngineerDto siteEngineer)
-    {
-        var result = await _unitOfWork.SiteEngineers.UpdateSiteEngineerAsync(siteEngineer);
-        if (!result.Success)
-            return BadRequest(result);
-        return Ok(result);
-    }
+    ///// <summary>
+    ///// تحديث مهندس موجود
+    ///// </summary>
+    ///// <param name="siteEngineer">بيانات المهندس المحدثة</param>
+    ///// <returns>لا يوجد محتوى</returns>
+    //[HttpPut(SystemApiRouts.SiteEngineers.UpdateSiteEngineer)]
+    //[ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+    //[ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    //public async Task<IActionResult> UpdateSiteEngineer(UpdateSiteEngineerDto siteEngineer)
+    //{
+    //    var result = await _unitOfWork.SiteEngineers.UpdateSiteEngineerAsync(siteEngineer);
+    //    if (!result.Success)
+    //        return BadRequest(result);
+    //    return Ok(result);
+    //}
 
-    #endregion
+    //#endregion
 
 
 

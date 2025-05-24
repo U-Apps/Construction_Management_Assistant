@@ -28,7 +28,7 @@ public class Project : IEntity, ISoftDeletable
 
     #region Navigation Properties
 
-    public SiteEngineer? SiteEngineer { get; set; }
+    public AppUser? SiteEngineer { get; set; }
     public Client Client { get; set; }
     public ICollection<EquipmentReservation> EquipmentReservations { get; set; }
     public ICollection<Document> Documents { get; set; }

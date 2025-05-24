@@ -25,10 +25,10 @@ public class DashboardRepository : IDashboardRepository
                .CountAsync(w => !w.IsDeleted && !w.TaskAssignments.Any() && w.UserId == userIdInt);
 
             var totalClients = await _context.Clients.CountAsync(c => !c.IsDeleted && c.UserId == userIdInt);
-            var totalSiteEngineers = await _context.SiteEngineers.CountAsync(c => !c.IsDeleted && c.UserId == userIdInt);
+            //var totalSiteEngineers = await _context.SiteEngineers.CountAsync(c => !c.IsDeleted && c.UserId == userIdInt);
 
             _logger.LogInformation("Team stats for userId {UserId}: Workers={TotalWorkers}, Assigned={AssignedWorkers}, Unassigned={UnAssignedWorkers}, Clients={TotalClients}, SiteEngineers={TotalSiteEngineers}",
-                userId, totalWorkers, assignedWorkers, unAssignedWorkers, totalClients, totalSiteEngineers);
+                userId, totalWorkers, assignedWorkers, unAssignedWorkers, totalClients);
 
             return new TeamStatisticsDto
             {
@@ -36,7 +36,7 @@ public class DashboardRepository : IDashboardRepository
                 AssignedWorkers = assignedWorkers,
                 UnAssignedWorkers = unAssignedWorkers,
                 TotalClients = totalClients,
-                TotalSiteEngineers = totalSiteEngineers,
+                //TotalSiteEngineers = totalSiteEngineers,
             };
         }
         catch (Exception ex)

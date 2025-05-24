@@ -4,6 +4,7 @@ using ConstructionManagementAssistant.EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250524161718_addSiteEngineerToProjects")]
+    partial class addSiteEngineerToProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -5998,113 +6001,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            UserId = 21,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 22,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 23,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 24,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 25,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 26,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 27,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 28,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 29,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 30,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 31,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 32,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 33,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 34,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 35,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 36,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 37,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 38,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 39,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 40,
-                            RoleId = 2
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>

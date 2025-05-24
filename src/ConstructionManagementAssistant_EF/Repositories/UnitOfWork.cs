@@ -1,4 +1,7 @@
-﻿namespace ConstructionManagementAssistant.EF.Repositories;
+﻿using ConstructionManagementAssistant.Core.Identity;
+using Microsoft.AspNetCore.Identity;
+
+namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -25,7 +28,7 @@ public class UnitOfWork : IUnitOfWork
 
         Clients = new ClientRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<ClientRepository>>());
         Projects = new ProjectRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<ProjectRepository>>());
-        SiteEngineers = new SiteEngineerRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<SiteEngineerRepository>>());
+        SiteEngineers = new SiteEngineerRepository(_appDbContext, serviceProvider.GetRequiredService<UserManager<AppUser>>(), serviceProvider.GetRequiredService<ILogger<SiteEngineerRepository>>());
         WorkerSpecialties = new WorkerSpecialtyRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<WorkerSpecialtyRepository>>());
         Workers = new WorkerRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<WorkerRepository>>());
         Stages = new StageRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<StageRepository>>());

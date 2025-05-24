@@ -4,6 +4,7 @@ using ConstructionManagementAssistant.EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250524161447_deletSiteEngineer")]
+    partial class deletSiteEngineer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -946,7 +949,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مدرسة",
                             SiteAddress = "المدينة، شارع 1",
-                            SiteEngineerId = 21,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -961,7 +963,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مستشفى",
                             SiteAddress = "المدينة، شارع 2",
-                            SiteEngineerId = 22,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -976,7 +977,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مجمع سكني",
                             SiteAddress = "المدينة، شارع 3",
-                            SiteEngineerId = 23,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -991,7 +991,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء جسر",
                             SiteAddress = "المدينة، شارع 4",
-                            SiteEngineerId = 24,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1006,7 +1005,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مصنع",
                             SiteAddress = "المدينة، شارع 5",
-                            SiteEngineerId = 25,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1021,7 +1019,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء فندق",
                             SiteAddress = "المدينة، شارع 6",
-                            SiteEngineerId = 26,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1036,7 +1033,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء محطة قطار",
                             SiteAddress = "المدينة، شارع 7",
-                            SiteEngineerId = 27,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1051,7 +1047,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مركز تجاري",
                             SiteAddress = "المدينة، شارع 8",
-                            SiteEngineerId = 28,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1066,7 +1061,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء جامعة",
                             SiteAddress = "المدينة، شارع 9",
-                            SiteEngineerId = 29,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1081,7 +1075,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء حديقة عامة",
                             SiteAddress = "المدينة، شارع 10",
-                            SiteEngineerId = 30,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1096,7 +1089,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مكتبة عامة",
                             SiteAddress = "المدينة، شارع 11",
-                            SiteEngineerId = 31,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1111,7 +1103,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء ملعب رياضي",
                             SiteAddress = "المدينة، شارع 12",
-                            SiteEngineerId = 32,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1126,7 +1117,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء محطة وقود",
                             SiteAddress = "المدينة، شارع 13",
-                            SiteEngineerId = 33,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 0
                         },
@@ -1142,7 +1132,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مركز صحي",
                             SiteAddress = "المدينة، شارع 14",
-                            SiteEngineerId = 34,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 2
                         },
@@ -1158,7 +1147,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مجمع تجاري",
                             SiteAddress = "المدينة، شارع 15",
-                            SiteEngineerId = 35,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 2
                         },
@@ -1174,7 +1162,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء محطة كهرباء",
                             SiteAddress = "المدينة، شارع 16",
-                            SiteEngineerId = 36,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 2
                         },
@@ -1189,7 +1176,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء محطة مياه",
                             SiteAddress = "المدينة، شارع 17",
-                            SiteEngineerId = 37,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 1
                         },
@@ -1204,7 +1190,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مركز شرطة",
                             SiteAddress = "المدينة، شارع 18",
-                            SiteEngineerId = 38,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 1
                         },
@@ -1221,7 +1206,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء محطة إطفاء",
                             SiteAddress = "المدينة، شارع 19",
-                            SiteEngineerId = 39,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 3
                         },
@@ -1238,7 +1222,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             IsDeleted = false,
                             Name = "مشروع بناء مركز ثقافي",
                             SiteAddress = "المدينة، شارع 20",
-                            SiteEngineerId = 40,
                             StartDate = new DateOnly(2022, 10, 1),
                             Status = 3
                         });
@@ -5998,113 +5981,6 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            UserId = 21,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 22,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 23,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 24,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 25,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 26,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 27,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 28,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 29,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 30,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 31,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 32,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 33,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 34,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 35,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 36,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 37,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 38,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 39,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 40,
-                            RoleId = 2
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>

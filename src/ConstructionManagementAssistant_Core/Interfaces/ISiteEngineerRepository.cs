@@ -1,15 +1,19 @@
-﻿using ConstructionManagementAssistant.Core.Models.Response;
+﻿using ConstructionManagementAssistant.Core.DTOs.Auth;
+using ConstructionManagementAssistant.Core.Models.Response;
 
-namespace ConstructionManagementAssistant.Core.Interfaces
+namespace ConstructionManagementAssistant.Core.Interfaces;
+
+public interface ISiteEngineerRepository
 {
-    public interface ISiteEngineerRepository : IBaseRepository<SiteEngineer>
-    {
-        public Task<SiteEngineerDetailsDto?> GetSiteEngineerById(int id);
-        public Task<PagedResult<GetSiteEngineerDto>> GetAllSiteEngineers(string userId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, bool? isAvailable = null);
-        Task<List<SiteEngineerNameDto>> GetSiteEngineersNames(string userId);
+    Task<BaseResponse<UserDto?>> GetSiteEngineerById(int id);
+    Task<BaseResponse<PagedResult<UserDto>>> GetAllSiteEngineers(
+           string userId,
+           int pageNumber = 1,
+           int pageSize = 10,
+           string? searchTerm = null);
+    Task<List<UserNameDto>> GetSiteEngineersNames(string userId);
 
-        public Task<BaseResponse<string>> AddSiteEngineerAsync(string userId, AddSiteEngineerDto siteEngineerDto);
-        public Task<BaseResponse<string>> UpdateSiteEngineerAsync(UpdateSiteEngineerDto siteEngineerDto);
-        public Task<BaseResponse<string>> DeleteSiteEngineerAsync(int id);
-    }
+    Task<BaseResponse<string>> AddSiteEngineerAsync(string userId, RegisterDto registerDto);
+    //public Task<BaseResponse<string>> UpdateSiteEngineerAsync(UpdateSiteEngineerDto siteEngineerDto);
+    Task<BaseResponse<string>> DeleteSiteEngineerAsync(int id);
 }
