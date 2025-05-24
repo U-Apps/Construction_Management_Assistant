@@ -13,18 +13,27 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
 
     public async Task<GetTaskDetailsDto?> GetTaskById(int id)
     {
-        var task = await FindWithSelectionAsync(
-            selector: TaskProfile.ToGetTaskDetailsDto(),
-            criteria: x => x.Id == id);
-
-        if (task == null)
+        _logger.LogInformation("Fetching task with ID: {Id}", id);
+        try
         {
-            _logger.LogWarning("task with ID: {Id} not found", id);
-            return null;
+            var task = await FindWithSelectionAsync(
+                selector: TaskProfile.ToGetTaskDetailsDto(),
+                criteria: x => x.Id == id);
 
+            if (task == null)
+            {
+                _logger.LogWarning("Task with ID: {Id} not found", id);
+                return null;
+            }
+
+            _logger.LogInformation("Task with ID: {Id} fetched successfully", id);
+            return task;
         }
-
-        return task;
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching task with ID: {Id}", id);
+            throw;
+        }
     }
 
     public async Task<PagedResult<GetTaskDto>> GetAllTasks(
@@ -33,44 +42,57 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
         int pageSize = 10,
         string? searchTerm = null)
     {
-        Expression<Func<ConstructionManagementAssistant.Core.Entites.ProjectTask, bool>> filter = x => x.StageId == stageId;
-
-        if (!string.IsNullOrEmpty(searchTerm))
+        _logger.LogInformation("Fetching tasks for stageId: {StageId}, page: {PageNumber}, size: {PageSize}, search: {SearchTerm}", stageId, pageNumber, pageSize, searchTerm);
+        try
         {
-            filter = filter.AndAlso(t =>
-                t.Name.Contains(searchTerm) ||
-                t.Description.Contains(searchTerm));
+            Expression<Func<ConstructionManagementAssistant.Core.Entites.ProjectTask, bool>> filter = x => x.StageId == stageId;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                filter = filter.AndAlso(t =>
+                    t.Name.Contains(searchTerm) ||
+                    t.Description.Contains(searchTerm));
+            }
+
+            var pagedResult = await GetPagedDataWithSelectionAsync(
+                orderBy: x => x.Name,
+                selector: TaskProfile.ToGetTaskDto(),
+                criteria: filter,
+                pageNumber: pageNumber,
+                pageSize: pageSize);
+
+            _logger.LogInformation("Fetched {Count} tasks for stageId: {StageId}", pagedResult.Items.Count, stageId);
+
+            return pagedResult;
         }
-
-
-
-        var pagedResult = await GetPagedDataWithSelectionAsync(
-            orderBy: x => x.Name,
-            selector: TaskProfile.ToGetTaskDto(),
-            criteria: filter,
-            pageNumber: pageNumber,
-            pageSize: pageSize);
-
-        return pagedResult;
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching tasks for stageId: {StageId}", stageId);
+            throw;
+        }
     }
 
     public async Task<BaseResponse<string>> AddTaskAsync(AddTaskDto taskDto)
     {
+        _logger.LogInformation("Adding a new task: {TaskName} to stage {StageId}", taskDto.Name, taskDto.StageId);
         try
         {
-
             var stage = await _context.Stages.FindAsync(taskDto.StageId);
             var project = await _context.Projects.FindAsync(stage.ProjectId);
 
             if (project is null)
+            {
+                _logger.LogWarning("Project not found for stageId: {StageId}", taskDto.StageId);
                 return new BaseResponse<string>
                 {
                     Success = false,
                     Message = "المشروع غير موجود"
                 };
+            }
 
             if (project.Status == ProjectStatus.Cancelled || project.Status == ProjectStatus.Pending)
             {
+                _logger.LogWarning("Project {ProjectId} is not active (status: {Status})", project.Id, project.Status);
                 return new BaseResponse<string>
                 {
                     Success = false,
@@ -78,11 +100,9 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
                 };
             }
 
-
-            _logger.LogInformation("Adding a new task: {TaskName}", taskDto.Name);
             if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
             {
-                _logger.LogWarning("Task name is not unique: {TaskName}", taskDto.Name);
+                _logger.LogWarning("Task name is not unique: {TaskName} for stage {StageId}", taskDto.Name, taskDto.StageId);
                 return new BaseResponse<string>
                 {
                     Success = false,
@@ -106,55 +126,81 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
             _logger.LogError(ex, "Error occurred while adding a task: {TaskName}", taskDto.Name);
             throw;
         }
-
     }
-
 
     public async Task<BaseResponse<string>> UpdateTaskAsync(UpdateTaskDto taskDto)
     {
-        var task = await GetByIdAsync(taskDto.Id);
-        if (task is null)
-            return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
-
-        //if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
-        //{
-        //    return new BaseResponse<string>
-        //    {
-        //        Success = false,
-        //        Message = "يوجد مهمة بنفس الاسم"
-        //    };
-        //}
-
-        task.UpdateTask(taskDto);
-        await _context.SaveChangesAsync();
-
-        return new BaseResponse<string>
+        _logger.LogInformation("Updating task with ID: {Id}", taskDto.Id);
+        try
         {
-            Success = true,
-            Message = "تم تحديث المهمة بنجاح"
-        };
+            var task = await GetByIdAsync(taskDto.Id);
+            if (task is null)
+            {
+                _logger.LogWarning("Task with ID: {Id} not found for update", taskDto.Id);
+                return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
+            }
+
+            // Uncomment and log if you want to check for unique name on update
+            //if (!await IsTaskNameUniqueAsync(taskDto.Name, taskDto.StageId))
+            //{
+            //    _logger.LogWarning("Task name is not unique: {TaskName} for stage {StageId}", taskDto.Name, taskDto.StageId);
+            //    return new BaseResponse<string>
+            //    {
+            //        Success = false,
+            //        Message = "يوجد مهمة بنفس الاسم"
+            //    };
+            //}
+
+            task.UpdateTask(taskDto);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Task with ID: {Id} updated successfully", taskDto.Id);
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم تحديث المهمة بنجاح"
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating task with ID: {Id}", taskDto.Id);
+            throw;
+        }
     }
 
     public async Task<BaseResponse<string>> DeleteTaskAsync(int id)
     {
-        var task = await GetByIdAsync(id);
-        if (task is null)
+        _logger.LogInformation("Deleting task with ID: {Id}", id);
+        try
         {
+            var task = await GetByIdAsync(id);
+            if (task is null)
+            {
+                _logger.LogWarning("Task with ID: {Id} not found for delete", id);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "المهمة غير موجودة"
+                };
+            }
+
+            Delete(task);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Task with ID: {Id} deleted successfully", id);
+
             return new BaseResponse<string>
             {
-                Success = false,
-                Message = "المهمة غير موجودة"
+                Success = true,
+                Message = "تم حذف المهمة بنجاح"
             };
         }
-
-        Delete(task);
-        await _context.SaveChangesAsync();
-
-        return new BaseResponse<string>
+        catch (Exception ex)
         {
-            Success = true,
-            Message = "تم حذف المهمة بنجاح"
-        };
+            _logger.LogError(ex, "Error deleting task with ID: {Id}", id);
+            throw;
+        }
     }
 
     private async Task<bool> IsTaskNameUniqueAsync(string name, int stageId)
@@ -164,50 +210,91 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
 
     public async Task<BaseResponse<string>> CompleteTaskAsync(int taskId)
     {
-        var task = await GetByIdAsync(taskId);
-        if (task is null)
-            return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
-
-        task.IsCompleted = true;
-        await _context.SaveChangesAsync();
-        return new BaseResponse<string>
+        _logger.LogInformation("Completing task with ID: {Id}", taskId);
+        try
         {
-            Success = true,
-            Message = "تم تحديث المهمة بنجاح"
-        };
+            var task = await GetByIdAsync(taskId);
+            if (task is null)
+            {
+                _logger.LogWarning("Task with ID: {Id} not found for completion", taskId);
+                return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
+            }
+
+            task.IsCompleted = true;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Task with ID: {Id} marked as completed", taskId);
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم تحديث المهمة بنجاح"
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error completing task with ID: {Id}", taskId);
+            throw;
+        }
     }
 
     public async Task<BaseResponse<string>> UnCheckTaskAsync(int taskId)
     {
-        var task = await GetByIdAsync(taskId);
-        if (task is null)
-            return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
-
-        task.IsCompleted = false;
-        await _context.SaveChangesAsync();
-        return new BaseResponse<string>
+        _logger.LogInformation("Unchecking (marking as not completed) task with ID: {Id}", taskId);
+        try
         {
-            Success = true,
-            Message = "تم تحديث المهمة بنجاح"
-        };
+            var task = await GetByIdAsync(taskId);
+            if (task is null)
+            {
+                _logger.LogWarning("Task with ID: {Id} not found for uncheck", taskId);
+                return new BaseResponse<string> { Success = false, Message = "المهمة غير موجودة" };
+            }
+
+            task.IsCompleted = false;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Task with ID: {Id} marked as not completed", taskId);
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم تحديث المهمة بنجاح"
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error unchecking task with ID: {Id}", taskId);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<GetUpcomingTaskDto>> GetUpcomingTasksAsync(int daysAhead = 7)
     {
-        var today = DateOnly.FromDateTime(DateTime.Now);
-        var endDate = today.AddDays(daysAhead);
+        _logger.LogInformation("Fetching upcoming tasks for the next {DaysAhead} days", daysAhead);
+        try
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var endDate = today.AddDays(daysAhead);
 
-        var upcomingTasks = await _context.Tasks
-            .Include(t => t.Stage)
-                .ThenInclude(s => s.Project)
-            .Where(t => !t.IsCompleted &&
-                       t.ExpectedEndDate.HasValue &&
-                       t.ExpectedEndDate.Value >= today &&
-                       t.ExpectedEndDate.Value <= endDate)
-            .Select(TaskProfile.ToGetUpcomingTaskDto())
-            .OrderBy(t => t.ExpectedEndDate)
-            .ToListAsync();
+            var upcomingTasks = await _context.Tasks
+                .Include(t => t.Stage)
+                    .ThenInclude(s => s.Project)
+                .Where(t => !t.IsCompleted &&
+                           t.ExpectedEndDate.HasValue &&
+                           t.ExpectedEndDate.Value >= today &&
+                           t.ExpectedEndDate.Value <= endDate)
+                .Select(TaskProfile.ToGetUpcomingTaskDto())
+                .OrderBy(t => t.ExpectedEndDate)
+                .ToListAsync();
 
-        return upcomingTasks;
+            _logger.LogInformation("Fetched {Count} upcoming tasks for the next {DaysAhead} days", upcomingTasks.Count, daysAhead);
+
+            return upcomingTasks;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching upcoming tasks for the next {DaysAhead} days", daysAhead);
+            throw;
+        }
     }
 }

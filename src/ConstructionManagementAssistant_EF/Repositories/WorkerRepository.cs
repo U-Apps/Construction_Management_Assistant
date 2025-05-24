@@ -18,60 +18,96 @@
             string? searchTerm = null,
             bool? isAvailable = null)
         {
-            Expression<Func<Worker, bool>> filter = x => true;
+            _logger.LogInformation("Fetching workers for userId: {UserId}, page: {PageNumber}, size: {PageSize}, search: {SearchTerm}", userId, pageNumber, pageSize, searchTerm);
 
-            filter = filter.AndAlso(x => x.UserId == int.Parse(userId));
-
-            if (!string.IsNullOrEmpty(searchTerm))
+            try
             {
-                filter = filter.AndAlso(w =>
-                    w.FirstName.Contains(searchTerm) ||
-                    w.SecondName.Contains(searchTerm) ||
-                    w.ThirdName.Contains(searchTerm) ||
-                    w.LastName.Contains(searchTerm) ||
-                    w.Email.Contains(searchTerm) ||
-                    w.PhoneNumber.Contains(searchTerm) ||
-                    w.Address.Contains(searchTerm));
+                Expression<Func<Worker, bool>> filter = x => true;
+                filter = filter.AndAlso(x => x.UserId == int.Parse(userId));
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    filter = filter.AndAlso(w =>
+                        w.FirstName.Contains(searchTerm) ||
+                        w.SecondName.Contains(searchTerm) ||
+                        w.ThirdName.Contains(searchTerm) ||
+                        w.LastName.Contains(searchTerm) ||
+                        w.Email.Contains(searchTerm) ||
+                        w.PhoneNumber.Contains(searchTerm) ||
+                        w.Address.Contains(searchTerm));
+                }
+
+                var pagedResult = await GetPagedDataWithSelectionAsync(
+                    orderBy: x => x.FirstName,
+                    selector: WorkerProfile.ToGetWorkerDto(),
+                    criteria: filter,
+                    pageNumber: pageNumber,
+                    pageSize: pageSize);
+
+                _logger.LogInformation("Fetched {Count} workers for userId: {UserId}", pagedResult.Items.Count, userId);
+
+                return pagedResult;
             }
-
-
-            var pagedResult = await GetPagedDataWithSelectionAsync(
-                orderBy: x => x.FirstName,
-                selector: WorkerProfile.ToGetWorkerDto(),
-                criteria: filter,
-                pageNumber: pageNumber,
-                pageSize: pageSize);
-
-            return pagedResult;
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching workers for userId: {UserId}", userId);
+                throw;
+            }
         }
+
         public async Task<List<WorkerNameDto>> GetWorkersNames(string userId)
         {
-            return await GetAllDataWithSelectionAsync(
-                orderBy: x => x.FirstName,
-                criteria: x => x.UserId == int.Parse(userId),
-                selector: WorkerProfile.ToGetWorkerNameDto());
+            _logger.LogInformation("Fetching worker names for userId: {UserId}", userId);
+
+            try
+            {
+                var result = await GetAllDataWithSelectionAsync(
+                    orderBy: x => x.FirstName,
+                    criteria: x => x.UserId == int.Parse(userId),
+                    selector: WorkerProfile.ToGetWorkerNameDto());
+
+                _logger.LogInformation("Fetched {Count} worker names for userId: {UserId}", result.Count, userId);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching worker names for userId: {UserId}", userId);
+                throw;
+            }
         }
 
         public async Task<WorkerDetailsDto?> GetWorkerById(int id)
         {
-            var worker = await FindWithSelectionAsync(
-                selector: WorkerProfile.ToWorkerDetailsDto(),
-                criteria: x => x.Id == id);
-            if (worker == null)
+            _logger.LogInformation("Fetching worker with ID: {Id}", id);
+
+            try
             {
-                _logger.LogWarning("worker with ID: {Id} not found", id);
-                return null;
+                var worker = await FindWithSelectionAsync(
+                    selector: WorkerProfile.ToWorkerDetailsDto(),
+                    criteria: x => x.Id == id);
+                if (worker == null)
+                {
+                    _logger.LogWarning("Worker with ID: {Id} not found", id);
+                    return null;
+                }
 
+                _logger.LogInformation("Worker with ID: {Id} fetched successfully", id);
+                return worker;
             }
-
-            return worker;
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching worker with ID: {Id}", id);
+                throw;
+            }
         }
 
         public async Task<BaseResponse<string>> AddWorkerAsync(string userId, AddWorkerDto workerDto)
         {
+            _logger.LogInformation("Adding a new worker: {WorkerName} for userId: {UserId}", workerDto.FirstName, userId);
+
             try
             {
-                _logger.LogInformation("Adding a new worker: {WorkerName}", workerDto.FirstName);
                 var propertiesToCheck = new Dictionary<string, object?>
                 {
                     { nameof(Worker.PhoneNumber), workerDto.PhoneNumber },
@@ -104,60 +140,92 @@
                 _logger.LogError(ex, "Error occurred while adding a worker: {WorkerName}", workerDto.FirstName);
                 throw;
             }
-            ;
         }
 
         public async Task<BaseResponse<string>> UpdateWorkerAsync(UpdateWorkerDto workerDto)
         {
-            var worker = await GetByIdAsync(workerDto.Id);
+            _logger.LogInformation("Updating worker with ID: {Id}", workerDto.Id);
 
-            if (worker is null)
-                return new BaseResponse<string>
+            try
+            {
+                var worker = await GetByIdAsync(workerDto.Id);
+
+                if (worker is null)
                 {
-                    Success = false,
-                    Message = "العامل غير موجود"
+                    _logger.LogWarning("Worker with ID: {Id} not found for update", workerDto.Id);
+                    return new BaseResponse<string>
+                    {
+                        Success = false,
+                        Message = "العامل غير موجود"
+                    };
+                }
+
+                var propertiesToCheck = new Dictionary<string, object?>
+                {
+                    { nameof(Worker.PhoneNumber), workerDto.PhoneNumber },
+                    { nameof(Worker.Email), workerDto.Email },
+                    { nameof(Worker.NationalNumber), workerDto.NationalNumber },
                 };
 
-            var propertiesToCheck = new Dictionary<string, object?>
+                var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck, workerDto.Id);
+
+                if (!duplicateCheck.Success)
+                {
+                    _logger.LogWarning("Duplicate worker properties detected during update: {WorkerName}", workerDto.FirstName);
+                    return duplicateCheck;
+                }
+
+                workerDto.UpdateWorker(worker);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Worker with ID: {Id} updated successfully", workerDto.Id);
+
+                return new BaseResponse<string>
+                {
+                    Success = true,
+                    Message = "تم تحديث العامل بنجاح"
+                };
+            }
+            catch (Exception ex)
             {
-                { nameof(Worker.PhoneNumber), workerDto.PhoneNumber },
-                { nameof(Worker.Email), workerDto.Email },
-                { nameof(Worker.NationalNumber), workerDto.NationalNumber },
-            };
-
-            var duplicateCheck = await CheckDuplicatePropertiesAsync(propertiesToCheck, workerDto.Id);
-
-            if (!duplicateCheck.Success)
-                return duplicateCheck;
-
-            workerDto.UpdateWorker(worker);
-            await _context.SaveChangesAsync();
-
-            return new BaseResponse<string>
-            {
-                Success = true,
-                Message = "تم تحديث العامل بنجاح"
-            };
+                _logger.LogError(ex, "Error updating worker with ID: {Id}", workerDto.Id);
+                throw;
+            }
         }
 
         public async Task<BaseResponse<string>> DeleteWorkerAsync(int id)
         {
-            var worker = await GetByIdAsync(id);
-            if (worker is null)
+            _logger.LogInformation("Deleting worker with ID: {Id}", id);
+
+            try
+            {
+                var worker = await GetByIdAsync(id);
+                if (worker is null)
+                {
+                    _logger.LogWarning("Worker with ID: {Id} not found for delete", id);
+                    return new BaseResponse<string>
+                    {
+                        Success = false,
+                        Message = "العامل غير موجود"
+                    };
+                }
+
+                Delete(worker);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Worker with ID: {Id} deleted successfully", id);
+
                 return new BaseResponse<string>
                 {
-                    Success = false,
-                    Message = "العامل غير موجود"
+                    Success = true,
+                    Message = "تم حذف العامل بنجاح"
                 };
-
-            Delete(worker);
-            await _context.SaveChangesAsync();
-
-            return new BaseResponse<string>
+            }
+            catch (Exception ex)
             {
-                Success = true,
-                Message = "تم حذف العامل بنجاح"
-            };
+                _logger.LogError(ex, "Error deleting worker with ID: {Id}", id);
+                throw;
+            }
         }
     }
 }

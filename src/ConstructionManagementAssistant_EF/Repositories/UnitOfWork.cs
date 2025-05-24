@@ -1,6 +1,4 @@
-﻿using ConstructionManagementAssistant.Core.Repositories;
-
-namespace ConstructionManagementAssistant.EF.Repositories;
+﻿namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -33,10 +31,10 @@ public class UnitOfWork : IUnitOfWork
         Stages = new StageRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<StageRepository>>());
         Tasks = new TaskRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskRepository>>());
         TaskAssignments = new TaskAssignmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<TaskAssignmentRepository>>());
-        Equipment = new EquipmentRepository(_appDbContext);
+        Equipment = new EquipmentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentRepository>>());
         EquipmentReservations = new EquipmentReservationRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<EquipmentReservationRepository>>());
         Documents = new DocumentRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DocumentRepository>>(), serviceProvider.GetRequiredService<Supabase.Client>());
-        Dashboard = new DashboardRepository(_appDbContext); // Add this line
+        Dashboard = new DashboardRepository(_appDbContext, serviceProvider.GetRequiredService<ILogger<DashboardRepository>>());
     }
 
     public void Dispose()
