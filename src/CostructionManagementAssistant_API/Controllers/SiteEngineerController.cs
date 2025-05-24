@@ -4,25 +4,41 @@ using System.Security.Claims;
 
 namespace ConstructionManagementAssistant.API.Controllers;
 
+/// <summary>
+/// API controller for managing site engineers.
+/// Provides endpoints for listing, retrieving, creating, and deleting site engineers.
+/// </summary>
 [ApiController]
 [Authorize]
-public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
+public class SiteEngineerController : ControllerBase
 {
+    private readonly IUnitOfWork _unitOfWork;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SiteEngineerController"/> class.
+    /// </summary>
+    /// <param name="unitOfWork">The unit of work for accessing repositories.</param>
+    public SiteEngineerController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
 
     #region Get Methods
+
     /// <summary>
-    /// الحصول على جميع المهندسين
+    /// Retrieves a paged list of all site engineers for the current user.
     /// </summary>
-    /// <param name="pageNumber">رقم الصفحة</param>
-    /// <param name="pageSize">حجم الصفحة</param>
-    /// <param name="searchTerm">نص البحث, اختياري</param>
-    /// <param name="isAvailable">التوافر, اختياري</param>
+    /// <param name="pageNumber">The page number (default is 1).</param>
+    /// <param name="pageSize">The number of items per page (default is 10, max is 50).</param>
+    /// <param name="searchTerm">Optional search term to filter by name, email, or phone number.</param>
+    /// <param name="isAvailable">Optional filter for availability (currently not used).</param>
     /// <remarks>
-    /// سيتم جلب المهندسين الذين تحتوي اسماءهم أو أي من حقولهم على النص البحثي في حالة ارفاقه
-    /// <br/>
-    /// في حالة لم يتم تحديد نص بحثي أو التوافر سيتم الجلب حسب الصفحات 
+    /// Returns site engineers whose fields match the search term, if provided.
+    /// If no search term or availability is specified, returns paged results.
     /// </remarks>
-    /// <returns>قائمة المهندسين</returns>
+    /// <returns>
+    /// <see cref="BaseResponse{PagedResult{UserDto}}"/> containing the list of site engineers.
+    /// </returns>
     [HttpGet(SystemApiRouts.SiteEngineers.GetAllSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<PagedResult<UserDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllSiteEngineers(
@@ -31,7 +47,6 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
         string? searchTerm = null,
         bool? isAvailable = null)
     {
-
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
         if (!string.IsNullOrEmpty(belongToUserId))
@@ -56,10 +71,12 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
         });
     }
 
-
     /// <summary>
-    /// الحصول على أسماء جميع المهندسين
+    /// Retrieves the names and IDs of all site engineers for the current user.
     /// </summary>
+    /// <returns>
+    /// <see cref="BaseResponse{List{UserNameDto}}"/> containing the names and IDs of site engineers.
+    /// </returns>
     [HttpGet(SystemApiRouts.SiteEngineers.GetSiteEngineerNames)]
     [ProducesResponseType(typeof(BaseResponse<List<UserNameDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSiteEngineerNames()
@@ -80,13 +97,13 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
         });
     }
 
-
-
     /// <summary>
-    /// الحصول على مهندس بواسطة المعرف
+    /// Retrieves the details of a site engineer by their unique identifier.
     /// </summary>
-    /// <param name="Id">معرف المهندس</param>
-    /// <returns>تفاصيل المهندس</returns>
+    /// <param name="Id">The unique identifier of the site engineer.</param>
+    /// <returns>
+    /// <see cref="BaseResponse{UserDto}"/> containing the site engineer details, or an error if not found.
+    /// </returns>
     [HttpGet(SystemApiRouts.SiteEngineers.GetSiteEngineerById)]
     [ProducesResponseType(typeof(BaseResponse<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<UserDto>), StatusCodes.Status404NotFound)]
@@ -110,14 +127,15 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
 
     #endregion
 
-
-
     #region Post Method
 
     /// <summary>
-    /// إنشاء مهندس جديد
+    /// Creates a new site engineer.
     /// </summary>
-    /// <param name="client">بيانات المهندس</param>
+    /// <param name="siteEngineer">The registration data for the new site engineer.</param>
+    /// <returns>
+    /// <see cref="BaseResponse{string}"/> indicating success or failure.
+    /// </returns>
     [HttpPost(SystemApiRouts.SiteEngineers.AddSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
@@ -134,20 +152,19 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
         if (!result.Success)
             return BadRequest(result);
         return Ok(result);
-
     }
 
     #endregion
 
-
-
     //#region Put Methods
 
     ///// <summary>
-    ///// تحديث مهندس موجود
+    ///// Updates an existing site engineer.
     ///// </summary>
-    ///// <param name="siteEngineer">بيانات المهندس المحدثة</param>
-    ///// <returns>لا يوجد محتوى</returns>
+    ///// <param name="siteEngineer">The updated site engineer data.</param>
+    ///// <returns>
+    ///// <see cref="BaseResponse{string}"/> indicating success or failure.
+    ///// </returns>
     //[HttpPut(SystemApiRouts.SiteEngineers.UpdateSiteEngineer)]
     //[ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     //[ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
@@ -161,15 +178,15 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
 
     //#endregion
 
-
-
     #region Delete Methods
 
     /// <summary>
-    /// حذف مهندس
+    /// Deletes a site engineer by their unique identifier.
     /// </summary>
-    /// <param name="id">معرف المهندس</param>
-    /// <returns>لا يوجد محتوى</returns>
+    /// <param name="id">The unique identifier of the site engineer to delete.</param>
+    /// <returns>
+    /// <see cref="BaseResponse{string}"/> indicating success or failure.
+    /// </returns>
     [HttpDelete(SystemApiRouts.SiteEngineers.DeleteSiteEngineer)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
