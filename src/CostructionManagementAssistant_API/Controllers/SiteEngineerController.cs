@@ -33,7 +33,11 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     {
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.SiteEngineers.GetAllSiteEngineers(userId, pageNumber, pageSize, searchTerm);
 
@@ -61,7 +65,11 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     public async Task<IActionResult> GetSiteEngineerNames()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.SiteEngineers.GetSiteEngineersNames(userId);
         return Ok(new BaseResponse<List<UserNameDto>>
@@ -116,7 +124,11 @@ public class SiteEngineerController(IUnitOfWork _unitOfWork) : ControllerBase
     public async Task<IActionResult> CreateSiteEngineer(RegisterDto siteEngineer)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.SiteEngineers.AddSiteEngineerAsync(userId, siteEngineer);
         if (!result.Success)

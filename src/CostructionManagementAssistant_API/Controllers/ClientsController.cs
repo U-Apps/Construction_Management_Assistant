@@ -39,7 +39,11 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
         ClientType? clientType = null)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.Clients.GetAllClients(userId, pageNumber, pageSize, searchTerm, clientType);
         if (result.Items == null || result.Items.Count == 0)
@@ -70,6 +74,11 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     {
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
         var result = await _unitOfWork.Clients.GetClientsNames(userId);
         return Ok(new BaseResponse<List<ClientNameDto>>
         {
@@ -123,7 +132,11 @@ public class ClientsController(IUnitOfWork _unitOfWork) : ControllerBase
     {
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
         var result = await _unitOfWork.Clients.AddClientAsync(userId, client);
         if (!result.Success)
             return BadRequest(result);

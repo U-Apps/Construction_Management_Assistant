@@ -313,7 +313,8 @@ namespace ConstructionManagementAssistant.EF.Repositories
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.GivenName, user.Name ?? ""),
-                new Claim(ClaimTypes.Email, user.Email ?? "")
+                new Claim(ClaimTypes.Email, user.Email ?? ""),
+                new Claim("BelongToUserId", user.BelongToUserId.ToString() ?? ""),
             };
 
             foreach (var role in roles)

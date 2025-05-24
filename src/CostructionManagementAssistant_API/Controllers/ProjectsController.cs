@@ -28,6 +28,11 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     {
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.Projects.GetAllProjects(userId, pageNumber, pageSize, status, searchTerm);
         if (result.Items == null || result.Items.Count == 0)
@@ -60,7 +65,11 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     public async Task<IActionResult> GetAllProjectNames()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var projectNames = await _unitOfWork.Projects.GetAllProjectNames(userId);
         if (projectNames == null || projectNames.Count == 0)

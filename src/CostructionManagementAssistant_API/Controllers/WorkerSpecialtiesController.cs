@@ -19,6 +19,12 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     public async Task<ActionResult<BaseResponse<List<GetWorkerSpecialtyDto>>>> GetAllWorkerSpecialties()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
+
 
         var result = await _unitOfWork.WorkerSpecialties.GetAllWorkerSpecialties(userId);
         if (result == null || !result.Any())
@@ -75,6 +81,12 @@ public class WorkerSpecialtiesController(IUnitOfWork _unitOfWork) : ControllerBa
     public async Task<ActionResult<BaseResponse<string>>> CreateWorkerSpecialty(AddWorkerSpecialtyDto WorkerSpecialty)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
+
 
         var result = await _unitOfWork.WorkerSpecialties.AddWorkerSpecialtyAsync(userId, WorkerSpecialty);
         if (!result.Success)

@@ -91,6 +91,11 @@ public class EquipmentReservationController(IUnitOfWork _unitOfWork) : Controlle
 
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.EquipmentReservations.GetAllEquipmentReservationsAsync(userId);
         return Ok(result);

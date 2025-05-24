@@ -13,6 +13,11 @@ public class DashboardController(IUnitOfWork unitOfWork) : ControllerBase
     public async Task<IActionResult> GetTeamStatistics()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
         var result = await unitOfWork.Dashboard.GetTeamStatisticsAsync(userId);
         return Ok(result);
     }
@@ -22,6 +27,11 @@ public class DashboardController(IUnitOfWork unitOfWork) : ControllerBase
     public async Task<IActionResult> GetProjectStatistics()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
         var result = await unitOfWork.Dashboard.GetProjectsStatistics(userId);
         return Ok(result);
     }
@@ -31,6 +41,11 @@ public class DashboardController(IUnitOfWork unitOfWork) : ControllerBase
     public async Task<IActionResult> GetTaskStatistics()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
         var result = await unitOfWork.Dashboard.GetTasksStatisticsAync(userId);
         return Ok(result);
     }
@@ -40,6 +55,11 @@ public class DashboardController(IUnitOfWork unitOfWork) : ControllerBase
     public async Task<IActionResult> GetEquipmentStatistics()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
         var result = await unitOfWork.Dashboard.GetEquipmentStatisticsAsync(userId);
         return Ok(result);
     }
@@ -49,6 +69,11 @@ public class DashboardController(IUnitOfWork unitOfWork) : ControllerBase
     public async Task<IActionResult> GetDocumentsStatistics()
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
         var result = await unitOfWork.Dashboard.GetDocumentsStatisticsAsync(userId);
         return Ok(result);
     }

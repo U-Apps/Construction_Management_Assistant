@@ -34,7 +34,11 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     {
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.Workers.GetAllWorkers(userId, pageNumber, pageSize, searchTerm, isAvailable);
         if (result.Items == null || !result.Items.Any())
@@ -62,6 +66,11 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     {
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.Workers.GetWorkersNames(userId);
         return Ok(new BaseResponse<List<WorkerNameDto>>
@@ -115,6 +124,11 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     public async Task<ActionResult<BaseResponse<string>>> CreateWorker(AddWorkerDto workerdto)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
         var result = await _unitOfWork.Workers.AddWorkerAsync(userId, workerdto);
         if (!result.Success)

@@ -37,6 +37,11 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
         EquipmentStatus? status = null)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
 
         var result = await _unitOfWork.Equipment.GetAllEquipment(userId, pageNumber, pageSize, searchTerm, status);
@@ -112,6 +117,11 @@ public class EquipmentController(IUnitOfWork _unitOfWork) : ControllerBase
     public async Task<IActionResult> CreateEquipment(AddEquipmentDto dto)
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
+        if (string.IsNullOrEmpty(belongToUserId))
+        {
+            userId = belongToUserId;
+        }
 
 
         var result = await _unitOfWork.Equipment.AddEquipmentAsync(userId, dto);
