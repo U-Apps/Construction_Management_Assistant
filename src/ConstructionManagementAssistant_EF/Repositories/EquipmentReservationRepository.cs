@@ -17,9 +17,19 @@
         if (equipment == null)
             return new BaseResponse<string> { Success = false, Message = "المعدة غير موجودة" };
 
-        if (!await _context.Projects.AnyAsync(x => x.Id == projectId))
+
+        var project = await _context.Projects.FindAsync(projectId);
+        if (project is null)
             return new BaseResponse<string> { Success = false, Message = "المشروع غير موجود" };
 
+        if (project.Status == ProjectStatus.Cancelled || project.Status == ProjectStatus.Pending)
+        {
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "المشروع غير فعال"
+            };
+        }
 
         // Check for overlapping reservation and get the first one found
         var overlappingReservation = await _context.EquipmentReservations

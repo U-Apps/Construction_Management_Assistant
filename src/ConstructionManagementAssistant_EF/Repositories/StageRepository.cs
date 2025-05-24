@@ -24,7 +24,7 @@ public class StageRepository : BaseRepository<Stage>, IStageRepository
                     Message = "المشروع غير موجود"
                 };
 
-            if (project.Status == ProjectStatus.Cancelled || project.Status != ProjectStatus.Pending)
+            if (project.Status == ProjectStatus.Cancelled || project.Status == ProjectStatus.Pending)
             {
                 return new BaseResponse<string>
                 {
