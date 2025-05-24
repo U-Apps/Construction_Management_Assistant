@@ -164,4 +164,11 @@ public static class SystemApiRouts
         public const string GetDocumentsStatistics = Base + "/documents-statistics";
     }
 
+
+    public static class Users
+    {
+        public const string Base = "api/v1/Users";
+        public const string GetProfile = Base + "/getProfile";
+
+    }
 }
