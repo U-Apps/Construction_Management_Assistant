@@ -8,11 +8,494 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedData : Migration
+    public partial class Initail : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "People",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SecondName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ThirdName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NationalNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_People", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    BelongToUserId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Users_BelongToUserId",
+                        column: x => x.BelongToUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ClientType = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clients", x => x.Id);
+                    table.CheckConstraint("CK_Clients_ClientType", "[ClientType] BETWEEN 1 AND 2");
+                    table.ForeignKey(
+                        name: "FK_Clients_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Equipments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SerialNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Equipments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Equipments_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefershToekns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RevokedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefershToekns", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefershToekns_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkerSpecialties",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkerSpecialties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkerSpecialties_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    ExpectedEndDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    SiteEngineerId = table.Column<int>(type: "int", nullable: true),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    SiteAddress = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    GeographicalCoordinates = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CancelationReason = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    CancelationDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    CompletionDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    HandoverDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.CheckConstraint("CK_Project_StatusDatesAndReason", "\r\n                            (\r\n                                ([Status] IN (0, 1)) AND [CompletionDate] IS NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 2) AND [CompletionDate] IS NOT NULL AND [CancelationDate] IS NULL AND [CancelationReason] IS NULL\r\n                            )\r\n                            OR\r\n                            (\r\n                                ([Status] = 3) AND [CompletionDate] IS NULL AND [CancelationDate] IS NOT NULL AND [CancelationReason] IS NOT NULL\r\n                            )\r\n                        ");
+                    table.CheckConstraint("CK_Projects_Status", "[Status] BETWEEN 0 AND 3");
+                    table.ForeignKey(
+                        name: "FK_Projects_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Projects_Users_SiteEngineerId",
+                        column: x => x.SiteEngineerId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    SpecialtyId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workers_People_Id",
+                        column: x => x.Id,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Workers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Workers_WorkerSpecialties_SpecialtyId",
+                        column: x => x.SpecialtyId,
+                        principalTable: "WorkerSpecialties",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EquipmentReservations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EquipmentId = table.Column<int>(type: "int", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EquipmentReservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EquipmentReservations_Equipments_EquipmentId",
+                        column: x => x.EquipmentId,
+                        principalTable: "Equipments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquipmentReservations_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    ExpectedEndDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stages_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StageId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    ExpectedEndDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tasks_Stages_StageId",
+                        column: x => x.StageId,
+                        principalTable: "Stages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Documents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    FileType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Path = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    TaskId = table.Column<int>(type: "int", nullable: true),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Documents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Documents_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Documents_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaskAssignments",
+                columns: table => new
+                {
+                    TaskId = table.Column<int>(type: "int", nullable: false),
+                    WorkerId = table.Column<int>(type: "int", nullable: false),
+                    AssignedDate = table.Column<DateOnly>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaskAssignments", x => new { x.TaskId, x.WorkerId });
+                    table.ForeignKey(
+                        name: "FK_TaskAssignments_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TaskAssignments_Workers_WorkerId",
+                        column: x => x.WorkerId,
+                        principalTable: "Workers",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "People",
                 columns: new[] { "Id", "Address", "CreatedDate", "DeletedDate", "Email", "FirstName", "IsDeleted", "LastName", "ModifiedDate", "NationalNumber", "PhoneNumber", "SecondName", "ThirdName" },
@@ -37,27 +520,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     { 17, "شارع 170, الطائف", new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "abdulrahman@example.com", "عبدالرحمن", false, "الراشد", null, "486159753", "0548615975", "فيصل", "راشد" },
                     { 18, "شارع 180, تبوك", new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "abdulaziz@example.com", "عبدالعزيز", false, "الفهد", null, "159486753", "0515948675", "سعد", "فهد" },
                     { 19, "شارع 190, بريدة", new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "salman@example.com", "سلمان", false, "العبدالله", null, "753159486", "0575315948", "راشد", "عبدالله" },
-                    { 20, "شارع 200, حائل", new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "abdulmohsen@example.com", "عبدالمحسن", false, "الناصر", null, "486753159", "0548675315", "فهد", "ناصر" },
-                    { 21, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ahmed.engineer@example.com", "أحمد", false, "محمد", null, null, "01553456789", null, null },
-                    { 22, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "sara.engineer@example.com", "سارة", false, "علي", null, null, "0987654321", null, null },
-                    { 23, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "mohamed.engineer@example.com", "محمد", false, "حسن", null, null, "0112233445", null, null },
-                    { 24, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "leila.engineer@example.com", "ليلى", false, "إبراهيم", null, null, "0223344556", null, null },
-                    { 25, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ali.engineer@example.com", "علي", false, "يوسف", null, null, "0334455667", null, null },
-                    { 26, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "fatima.engineer@example.com", "فاطمة", false, "سعيد", null, null, "0445566778", null, null },
-                    { 27, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "khaled.engineer@example.com", "خالد", false, "عبد الله", null, null, "0556677889", null, null },
-                    { 28, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "mariam.engineer@example.com", "مريم", false, "أحمد", null, null, "0667788990", null, null },
-                    { 29, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "youssef.engineer@example.com", "يوسف", false, "علي", null, null, "0778899001", null, null },
-                    { 30, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "nora.engineer@example.com", "نورا", false, "محمد", null, null, "0889900112", null, null },
-                    { 31, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "hassan.engineer@example.com", "حسن", false, "علي", null, null, "0990011223", null, null },
-                    { 32, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "mona.engineer@example.com", "منى", false, "سعيد", null, null, "0106622334", null, null },
-                    { 33, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "omar.engineer@example.com", "عمر", false, "خالد", null, null, "00025533445", null, null },
-                    { 34, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "huda.engineer@example.com", "هدى", false, "إبراهيم", null, null, "01113446656", null, null },
-                    { 35, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "yasser.engineer@example.com", "ياسر", false, "يوسف", null, null, "0222005667", null, null },
-                    { 36, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "nadia.engineer@example.com", "نادية", false, "سعيد", null, null, "4445555778", null, null },
-                    { 37, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "majed.engineer@example.com", "ماجد", false, "عبد الله", null, null, "0566677889", null, null },
-                    { 38, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "salma.engineer@example.com", "سلمى", false, "أحمد", null, null, "0688898990", null, null },
-                    { 39, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ziad.engineer@example.com", "زياد", false, "علي", null, null, "01118800001", null, null },
-                    { 40, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "noor.engineer@example.com", "نور", false, "محمد", null, null, "06900112", null, null }
+                    { 20, "شارع 200, حائل", new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "abdulmohsen@example.com", "عبدالمحسن", false, "الناصر", null, "486753159", "0548675315", "فهد", "ناصر" }
                 });
 
             migrationBuilder.InsertData(
@@ -71,25 +534,13 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "446eab07-ad33-4b55-9268-2d4e60fb6b62", "salhbnsmyd3@gmail.com", true, false, null, "saleh mohammed", "SALHBNSMYD3@GMAIL.COM", "SALHBNSMYD3", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "777753928", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "salhbnsmyd3" });
+                columns: new[] { "Id", "AccessFailedCount", "BelongToUserId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, null, "446eab07-ad33-4b55-9268-2d4e60fb6b62", "salhbnsmyd3@gmail.com", true, false, null, "saleh mohammed", "SALHBNSMYD3@GMAIL.COM", "SALHBNSMYD3", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "777753928", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "salhbnsmyd3" });
 
             migrationBuilder.InsertData(
-                table: "WorkerSpecialties",
-                columns: new[] { "Id", "CreatedDate", "ModifiedDate", "Name" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "نجار" },
-                    { 2, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "حداد" },
-                    { 3, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "سباك" },
-                    { 4, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "كهربائي" },
-                    { 5, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء" },
-                    { 6, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "دهان" },
-                    { 7, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مبلط" },
-                    { 8, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مقاول" },
-                    { 9, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مهندس معماري" },
-                    { 10, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مهندس مدني" }
-                });
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Clients",
@@ -156,57 +607,74 @@ namespace ConstructionManagementAssistant.EF.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "SiteEngineers",
-                columns: new[] { "Id", "HireDate", "Password", "UserId" },
+                table: "Users",
+                columns: new[] { "Id", "AccessFailedCount", "BelongToUserId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 21, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 22, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 23, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 24, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 25, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 26, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 27, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 28, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 29, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 30, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 31, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 32, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 33, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 34, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 35, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 36, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 37, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 38, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 39, new DateOnly(2019, 8, 1), "12345678", 1 },
-                    { 40, new DateOnly(2019, 8, 1), "12345678", 1 }
+                    { 21, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "ahmed.engineer@example.com", true, false, null, "أحمد محمد", "AHMED.ENGINEER@EXAMPLE.COM", "AHMED.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "01553156789", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "ahmed.engineer" },
+                    { 22, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "sara.engineer@example.com", true, false, null, "سارة علي", "SARA.ENGINEER@EXAMPLE.COM", "SARA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0987254321", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "sara.engineer" },
+                    { 23, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "mohamed.engineer@example.com", true, false, null, "محمد حسن", "MOHAMED.ENGINEER@EXAMPLE.COM", "MOHAMED.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0112233445", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "mohamed.engineer" },
+                    { 24, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "leila.engineer@example.com", true, false, null, "ليلى إبراهيم", "LEILA.ENGINEER@EXAMPLE.COM", "LEILA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0223344556", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "leila.engineer" },
+                    { 25, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "ali.engineer@example.com", true, false, null, "علي يوسف", "ALI.ENGINEER@EXAMPLE.COM", "ALI.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0334455667", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "ali.engineer" },
+                    { 26, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "fatima.engineer@example.com", true, false, null, "فاطمة سعيد", "FATIMA.ENGINEER@EXAMPLE.COM", "FATIMA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0445566778", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "fatima.engineer" },
+                    { 27, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "khaled.engineer@example.com", true, false, null, "خالد عبد الله", "KHALED.ENGINEER@EXAMPLE.COM", "KHALED.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0556677889", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "khaled.engineer" },
+                    { 28, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "mariam.engineer@example.com", true, false, null, "مريم أحمد", "MARIAM.ENGINEER@EXAMPLE.COM", "MARIAM.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0667788990", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "mariam.engineer" },
+                    { 29, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "youssef.engineer@example.com", true, false, null, "يوسف علي", "YOUSSEF.ENGINEER@EXAMPLE.COM", "YOUSSEF.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0778899001", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "youssef.engineer" },
+                    { 30, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "nora.engineer@example.com", true, false, null, "نورا محمد", "NORA.ENGINEER@EXAMPLE.COM", "NORA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0889900112", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "nora.engineer" },
+                    { 31, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "hassan.engineer@example.com", true, false, null, "حسن علي", "HASSAN.ENGINEER@EXAMPLE.COM", "HASSAN.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0990011223", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "hassan.engineer" },
+                    { 32, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "mona.engineer@example.com", true, false, null, "منى سعيد", "MONA.ENGINEER@EXAMPLE.COM", "MONA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0106622334", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "mona.engineer" },
+                    { 33, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "omar.engineer@example.com", true, false, null, "عمر خالد", "OMAR.ENGINEER@EXAMPLE.COM", "OMAR.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "00025533445", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "omar.engineer" },
+                    { 34, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "huda.engineer@example.com", true, false, null, "هدى إبراهيم", "HUDA.ENGINEER@EXAMPLE.COM", "HUDA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "01113446656", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "huda.engineer" },
+                    { 35, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "yasser.engineer@example.com", true, false, null, "ياسر يوسف", "YASSER.ENGINEER@EXAMPLE.COM", "YASSER.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0222005667", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "yasser.engineer" },
+                    { 36, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "nadia.engineer@example.com", true, false, null, "نادية سعيد", "NADIA.ENGINEER@EXAMPLE.COM", "NADIA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "4445555778", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "nadia.engineer" },
+                    { 37, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "majed.engineer@example.com", true, false, null, "ماجد عبد الله", "MAJED.ENGINEER@EXAMPLE.COM", "MAJED.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0566677889", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "majed.engineer" },
+                    { 38, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "salma.engineer@example.com", true, false, null, "سلمى أحمد", "SALMA.ENGINEER@EXAMPLE.COM", "SALMA.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "0688898990", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "salma.engineer" },
+                    { 39, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "ziad.engineer@example.com", true, false, null, "زياد علي", "ZIAD.ENGINEER@EXAMPLE.COM", "ZIAD.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "01118800001", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "ziad.engineer" },
+                    { 40, 0, 1, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", "noor.engineer@example.com", true, false, null, "نور محمد", "NOOR.ENGINEER@EXAMPLE.COM", "NOOR.ENGINEER", "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==", "06900112", true, "SOKZD3Q27H66B63UEVAFQDGKZBDGOBUX", false, "noor.engineer" }
                 });
 
             migrationBuilder.InsertData(
-                table: "Workers",
-                columns: new[] { "Id", "SpecialtyId", "UserId" },
+                table: "WorkerSpecialties",
+                columns: new[] { "Id", "CreatedDate", "ModifiedDate", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, 1 },
-                    { 2, 2, 1 },
-                    { 3, 3, 1 },
-                    { 4, 4, 1 },
-                    { 5, 5, 1 },
-                    { 6, 6, 1 },
-                    { 7, 7, 1 },
-                    { 8, 8, 1 },
-                    { 9, 9, 1 },
-                    { 10, 10, 1 },
-                    { 11, 1, 1 },
-                    { 12, 2, 1 },
-                    { 13, 3, 1 },
-                    { 14, 4, 1 },
-                    { 15, 5, 1 },
-                    { 16, 6, 1 },
-                    { 17, 7, 1 },
-                    { 18, 8, 1 },
-                    { 19, 9, 1 },
-                    { 20, 10, 1 }
+                    { 1, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "نجار", 1 },
+                    { 2, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "حداد", 1 },
+                    { 3, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "سباك", 1 },
+                    { 4, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "كهربائي", 1 },
+                    { 5, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء", 1 },
+                    { 6, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "دهان", 1 },
+                    { 7, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مبلط", 1 },
+                    { 8, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مقاول", 1 },
+                    { 9, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مهندس معماري", 1 },
+                    { 10, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "مهندس مدني", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 2, 21 },
+                    { 2, 22 },
+                    { 2, 23 },
+                    { 2, 24 },
+                    { 2, 25 },
+                    { 2, 26 },
+                    { 2, 27 },
+                    { 2, 28 },
+                    { 2, 29 },
+                    { 2, 30 },
+                    { 2, 31 },
+                    { 2, 32 },
+                    { 2, 33 },
+                    { 2, 34 },
+                    { 2, 35 },
+                    { 2, 36 },
+                    { 2, 37 },
+                    { 2, 38 },
+                    { 2, 39 },
+                    { 2, 40 }
                 });
 
             migrationBuilder.InsertData(
@@ -234,6 +702,33 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     { 18, null, null, 18, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مركز شرطة حديث", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مركز شرطة", "المدينة، شارع 18", 38, new DateOnly(2022, 10, 1), 1 },
                     { 19, new DateOnly(2020, 9, 1), "تم إلغاء المشروع بسبب نقص التمويل", 19, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء محطة إطفاء حديثة", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء محطة إطفاء", "المدينة، شارع 19", 39, new DateOnly(2022, 10, 1), 3 },
                     { 20, new DateOnly(2020, 9, 1), "تم إلغاء المشروع بسبب تغير الأولويات", 20, null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "بناء مركز ثقافي حديث", new DateOnly(2020, 8, 1), "24.7136, 46.6753", null, false, null, "مشروع بناء مركز ثقافي", "المدينة، شارع 20", 40, new DateOnly(2022, 10, 1), 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Workers",
+                columns: new[] { "Id", "SpecialtyId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 2, 1 },
+                    { 3, 3, 1 },
+                    { 4, 4, 1 },
+                    { 5, 5, 1 },
+                    { 6, 6, 1 },
+                    { 7, 7, 1 },
+                    { 8, 8, 1 },
+                    { 9, 9, 1 },
+                    { 10, 10, 1 },
+                    { 11, 1, 1 },
+                    { 12, 2, 1 },
+                    { 13, 3, 1 },
+                    { 14, 4, 1 },
+                    { 15, 5, 1 },
+                    { 16, 6, 1 },
+                    { 17, 7, 1 },
+                    { 18, 8, 1 },
+                    { 19, 9, 1 },
+                    { 20, 10, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -609,2625 +1104,254 @@ namespace ConstructionManagementAssistant.EF.Migrations
                     { 299, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Organize an opening event for the community.", new DateOnly(2022, 11, 1), false, null, "Organize Community Event", 60, new DateOnly(2022, 11, 1) },
                     { 300, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Evaluate the success of the park project.", new DateOnly(2022, 11, 1), false, null, "Evaluate Project Success", 60, new DateOnly(2022, 11, 1) }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_UserId",
+                table: "Clients",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "UniqueEmail",
+                table: "Clients",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UniquePhoneNumber",
+                table: "Clients",
+                column: "PhoneNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Documents_ProjectId",
+                table: "Documents",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Documents_TaskId",
+                table: "Documents",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "UniquePath",
+                table: "Documents",
+                column: "Path",
+                unique: true,
+                filter: "[Path] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UniqueTitle",
+                table: "Documents",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquipmentReservations_EquipmentId",
+                table: "EquipmentReservations",
+                column: "EquipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquipmentReservations_ProjectId",
+                table: "EquipmentReservations",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Equipments_UserId",
+                table: "Equipments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "UniqueEmail",
+                table: "People",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UniqueNationalNumber",
+                table: "People",
+                column: "NationalNumber",
+                unique: true,
+                filter: "[NationalNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UniquePhoneNumber",
+                table: "People",
+                column: "PhoneNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_ClientId",
+                table: "Projects",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_SiteEngineerId",
+                table: "Projects",
+                column: "SiteEngineerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefershToekns_UserId",
+                table: "RefershToekns",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roles_Name",
+                table: "Roles",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "Roles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stages_ProjectId",
+                table: "Stages",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TaskAssignments_WorkerId",
+                table: "TaskAssignments",
+                column: "WorkerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_StageId",
+                table: "Tasks",
+                column: "StageId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "Users",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_BelongToUserId",
+                table: "Users",
+                column: "BelongToUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_PhoneNumber",
+                table: "Users",
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "Users",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workers_SpecialtyId",
+                table: "Workers",
+                column: "SpecialtyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workers_UserId",
+                table: "Workers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkerSpecialties_UserId",
+                table: "WorkerSpecialties",
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 1);
+            migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 2);
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 3);
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 4);
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 5);
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 6);
+            migrationBuilder.DropTable(
+                name: "Documents");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 7);
+            migrationBuilder.DropTable(
+                name: "EquipmentReservations");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 8);
+            migrationBuilder.DropTable(
+                name: "RefershToekns");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 9);
+            migrationBuilder.DropTable(
+                name: "TaskAssignments");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 10);
+            migrationBuilder.DropTable(
+                name: "Roles");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 11);
+            migrationBuilder.DropTable(
+                name: "Equipments");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 12);
+            migrationBuilder.DropTable(
+                name: "Tasks");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 13);
+            migrationBuilder.DropTable(
+                name: "Workers");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 14);
+            migrationBuilder.DropTable(
+                name: "Stages");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 15);
+            migrationBuilder.DropTable(
+                name: "People");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 16);
+            migrationBuilder.DropTable(
+                name: "WorkerSpecialties");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 17);
+            migrationBuilder.DropTable(
+                name: "Projects");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 18);
+            migrationBuilder.DropTable(
+                name: "Clients");
 
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 21);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 22);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 23);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 24);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 25);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 26);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 27);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 28);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 29);
-
-            migrationBuilder.DeleteData(
-                table: "Equipments",
-                keyColumn: "Id",
-                keyValue: 30);
-
-            migrationBuilder.DeleteData(
-                table: "Roles",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Roles",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 7);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 8);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 9);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 11);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 12);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 13);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 14);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 15);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 16);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 17);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 18);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 21);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 22);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 23);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 24);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 25);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 26);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 27);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 28);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 29);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 30);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 31);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 32);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 33);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 34);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 35);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 36);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 37);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 38);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 39);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 40);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 41);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 42);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 43);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 44);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 45);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 46);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 47);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 48);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 49);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 50);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 51);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 52);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 53);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 54);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 55);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 56);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 57);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 58);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 59);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 60);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 61);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 62);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 63);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 64);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 65);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 66);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 67);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 68);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 69);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 70);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 71);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 72);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 73);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 74);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 75);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 76);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 77);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 78);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 79);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 80);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 81);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 82);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 83);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 84);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 85);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 86);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 87);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 88);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 89);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 90);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 91);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 92);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 93);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 94);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 95);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 96);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 97);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 98);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 99);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 100);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 101);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 102);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 103);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 104);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 105);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 106);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 107);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 108);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 109);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 110);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 111);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 112);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 113);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 114);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 115);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 116);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 117);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 118);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 119);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 120);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 121);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 122);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 123);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 124);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 125);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 126);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 127);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 128);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 129);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 130);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 131);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 132);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 133);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 134);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 135);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 136);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 137);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 138);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 139);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 140);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 141);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 142);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 143);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 144);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 145);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 146);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 147);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 148);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 149);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 150);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 151);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 152);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 153);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 154);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 155);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 156);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 157);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 158);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 159);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 160);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 161);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 162);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 163);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 164);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 165);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 166);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 167);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 168);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 169);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 170);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 171);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 172);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 173);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 174);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 175);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 176);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 177);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 178);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 179);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 180);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 181);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 182);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 183);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 184);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 185);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 186);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 187);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 188);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 189);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 190);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 191);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 192);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 193);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 194);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 195);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 196);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 197);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 198);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 199);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 200);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 201);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 202);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 203);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 204);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 205);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 206);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 207);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 208);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 209);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 210);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 211);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 212);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 213);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 214);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 215);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 216);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 217);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 218);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 219);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 220);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 221);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 222);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 223);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 224);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 225);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 226);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 227);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 228);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 229);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 230);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 231);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 232);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 233);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 234);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 235);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 236);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 237);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 238);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 239);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 240);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 241);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 242);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 243);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 244);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 245);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 246);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 247);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 248);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 249);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 250);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 251);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 252);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 253);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 254);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 255);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 256);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 257);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 258);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 259);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 260);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 261);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 262);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 263);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 264);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 265);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 266);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 267);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 268);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 269);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 270);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 271);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 272);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 273);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 274);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 275);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 276);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 277);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 278);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 279);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 280);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 281);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 282);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 283);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 284);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 285);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 286);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 287);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 288);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 289);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 290);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 291);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 292);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 293);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 294);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 295);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 296);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 297);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 298);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 299);
-
-            migrationBuilder.DeleteData(
-                table: "Tasks",
-                keyColumn: "Id",
-                keyValue: 300);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 7);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 8);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 9);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 11);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 12);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 13);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 14);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 15);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 16);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 17);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 18);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "Workers",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 7);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 8);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 9);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 11);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 12);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 13);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 14);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 15);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 16);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 17);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 18);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 7);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 8);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 9);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 11);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 12);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 13);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 14);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 15);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 16);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 17);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 18);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 21);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 22);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 23);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 24);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 25);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 26);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 27);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 28);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 29);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 30);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 31);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 32);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 33);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 34);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 35);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 36);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 37);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 38);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 39);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 40);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 41);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 42);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 43);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 44);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 45);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 46);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 47);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 48);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 49);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 50);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 51);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 52);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 53);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 54);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 55);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 56);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 57);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 58);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 59);
-
-            migrationBuilder.DeleteData(
-                table: "Stages",
-                keyColumn: "Id",
-                keyValue: 60);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 7);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 8);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 9);
-
-            migrationBuilder.DeleteData(
-                table: "WorkerSpecialties",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 7);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 8);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 9);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 11);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 12);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 13);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 14);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 15);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 16);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 17);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 18);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "Projects",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 7);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 8);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 9);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 11);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 12);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 13);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 14);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 15);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 16);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 17);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 18);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "Clients",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 21);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 22);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 23);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 24);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 25);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 26);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 27);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 28);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 29);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 30);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 31);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 32);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 33);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 34);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 35);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 36);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 37);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 38);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 39);
-
-            migrationBuilder.DeleteData(
-                table: "SiteEngineers",
-                keyColumn: "Id",
-                keyValue: 40);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 21);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 22);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 23);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 24);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 25);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 26);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 27);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 28);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 29);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 30);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 31);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 32);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 33);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 34);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 35);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 36);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 37);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 38);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 39);
-
-            migrationBuilder.DeleteData(
-                table: "People",
-                keyColumn: "Id",
-                keyValue: 40);
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1);
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
