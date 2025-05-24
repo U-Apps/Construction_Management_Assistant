@@ -251,7 +251,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
     /// <returns>نتيجة الإلغاء</returns>
     /// <response code="200">تم إلغاء المشروع بنجاح</response>
     /// <response code="404">لم يتم العثور على المشروع</response>
-    [HttpPost(SystemApiRouts.Projects.CancelProject)]
+    [HttpPut(SystemApiRouts.Projects.CancelProject)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CancelProject(int id, [FromBody] string? cancelationReason = null)
@@ -270,7 +270,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
 
 
 
-    [HttpPost(SystemApiRouts.Projects.PendProject)]
+    [HttpPut(SystemApiRouts.Projects.PendProject)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PendProject(int id)
@@ -285,7 +285,7 @@ public class ProjectsController(IUnitOfWork _unitOfWork) : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost(SystemApiRouts.Projects.ActivateProject)]
+    [HttpPut(SystemApiRouts.Projects.ActivateProject)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ActivateProject(int id)
