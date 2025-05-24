@@ -35,7 +35,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
-        if (string.IsNullOrEmpty(belongToUserId))
+        if (!string.IsNullOrEmpty(belongToUserId))
         {
             userId = belongToUserId;
         }
@@ -67,7 +67,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
 
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
-        if (string.IsNullOrEmpty(belongToUserId))
+        if (!string.IsNullOrEmpty(belongToUserId))
         {
             userId = belongToUserId;
         }
@@ -125,7 +125,7 @@ public class WorkersController(IUnitOfWork _unitOfWork) : ControllerBase
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         var belongToUserId = User.Claims.FirstOrDefault(c => c.Type == "BelongToUserId")?.Value;
-        if (string.IsNullOrEmpty(belongToUserId))
+        if (!string.IsNullOrEmpty(belongToUserId))
         {
             userId = belongToUserId;
         }
