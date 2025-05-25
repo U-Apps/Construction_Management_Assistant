@@ -24,7 +24,7 @@ public static class EFServices
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(connectionString);
-            options.EnableSensitiveDataLogging();
+            //options.EnableSensitiveDataLogging();
         });
 
 
