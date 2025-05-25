@@ -171,6 +171,9 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
               .WithMany(a => a.Projects)
               .HasForeignKey(a => a.ClientId)
               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasQueryFilter(x => !x.Client.IsDeleted);
+
         });
         #endregion
 
@@ -186,6 +189,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
                .WithMany(a => a.Stages)
                .HasForeignKey(a => a.ProjectId)
                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasQueryFilter(x => !x.Project.IsDeleted);
 
         });
         #endregion
@@ -202,6 +206,9 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
                .WithMany(a => a.Tasks)
                .HasForeignKey(a => a.StageId)
                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasQueryFilter(x => !x.Stage.Project.IsDeleted);
+
         });
         #endregion
 
@@ -217,6 +224,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.HasOne(ta => ta.Worker)
                 .WithMany(w => w.TaskAssignments)
                 .HasForeignKey(ta => ta.WorkerId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasQueryFilter(x => !x.Worker.IsDeleted);
 
             //builder.HasData(SeedData.SeedTaskAssignments());
         });
@@ -235,6 +244,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
             builder.HasIndex(e => e.Name, "UniqueTitle").IsUnique();
 
             builder.HasQueryFilter(e => !e.IsDeleted);
+            builder.HasQueryFilter(x => !x.Project.IsDeleted);
+
         });
         #endregion
 
@@ -279,6 +290,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
                 .WithMany(p => p.EquipmentReservations)
                 .HasForeignKey(ea => ea.ProjectId)
                 .OnDelete(DeleteBehavior.NoAction);
+            builder.HasQueryFilter(x => !x.Project.IsDeleted);
 
             //builder.HasData(SeedData.SeedEquipmentReservations());
 
