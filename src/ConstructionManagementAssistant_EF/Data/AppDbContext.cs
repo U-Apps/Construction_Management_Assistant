@@ -28,11 +28,13 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
 
     public AppDbContext()
     {
+        this.Database.MigrateAsync();
+
     }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-
+        this.Database.MigrateAsync();
     }
 
 

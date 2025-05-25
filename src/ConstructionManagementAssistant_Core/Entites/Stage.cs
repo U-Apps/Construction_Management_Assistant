@@ -12,7 +12,7 @@ namespace ConstructionManagementAssistant.Core.Entites
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public int ProjectId { get; set; }
-        public Project Project { get; set; } = new();
+        public Project Project { get; set; }
 
         #region Navigation Properties
         public ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
