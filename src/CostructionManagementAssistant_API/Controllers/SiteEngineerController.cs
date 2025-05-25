@@ -156,27 +156,27 @@ public class SiteEngineerController : ControllerBase
 
     #endregion
 
-    //#region Put Methods
+    #region Put Methods
 
-    ///// <summary>
-    ///// Updates an existing site engineer.
-    ///// </summary>
-    ///// <param name="siteEngineer">The updated site engineer data.</param>
-    ///// <returns>
-    ///// <see cref="BaseResponse{string}"/> indicating success or failure.
-    ///// </returns>
-    //[HttpPut(SystemApiRouts.SiteEngineers.UpdateSiteEngineer)]
-    //[ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
-    //[ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> UpdateSiteEngineer(UpdateSiteEngineerDto siteEngineer)
-    //{
-    //    var result = await _unitOfWork.SiteEngineers.UpdateSiteEngineerAsync(siteEngineer);
-    //    if (!result.Success)
-    //        return BadRequest(result);
-    //    return Ok(result);
-    //}
+    /// <summary>
+    /// Updates an existing site engineer.
+    /// </summary>
+    /// <param name="siteEngineer">The updated site engineer data.</param>
+    /// <returns>
+    /// <see cref="BaseResponse{string}"/> indicating success or failure.
+    /// </returns>
+    [HttpPut(SystemApiRouts.SiteEngineers.UpdateSiteEngineer)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateSiteEngineer(UpdateSiteEngineerDto siteEngineer)
+    {
+        var result = await _unitOfWork.SiteEngineers.UpdateSiteEngineerAsync(siteEngineer);
+        if (!result.Success)
+            return BadRequest(result);
+        return Ok(result);
+    }
 
-    //#endregion
+    #endregion
 
     #region Delete Methods
 

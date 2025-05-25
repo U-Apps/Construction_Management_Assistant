@@ -303,4 +303,51 @@ public class SiteEngineerRepository : ISiteEngineerRepository
             };
         }
     }
+
+    public async Task<BaseResponse<string>> UpdateSiteEngineerAsync(UpdateSiteEngineerDto dto)
+    {
+        _logger.LogInformation("Updating site engineer with ID: {Id}", dto.Id);
+
+        try
+        {
+            // Find the user by ID for reliability
+            var appUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == dto.Id);
+
+            if (appUser == null)
+            {
+                _logger.LogWarning("Site engineer with ID: {Id} not found for update", dto.Id);
+                return new BaseResponse<string>
+                {
+                    Success = false,
+                    Message = "المهندس غير موجود"
+                };
+            }
+
+            // Update fields
+            appUser.Name = dto.Name;
+            appUser.PhoneNumber = dto.PhoneNumber;
+
+            _context.Users.Update(appUser);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Site engineer with ID: {Id} updated successfully", dto.Id);
+
+            return new BaseResponse<string>
+            {
+                Success = true,
+                Message = "تم تحديث المهندس بنجاح"
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating site engineer with ID: {Id}", dto.Id);
+            return new BaseResponse<string>
+            {
+                Success = false,
+                Message = "حدث خطأ أثناء تحديث المهندس",
+                Errors = new List<string> { ex.Message }
+            };
+        }
+    }
 }
+
