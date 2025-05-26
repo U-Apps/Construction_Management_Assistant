@@ -4,6 +4,7 @@ using ConstructionManagementAssistant.EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructionManagementAssistant.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526100425_SeedProjectsInEnglish")]
+    partial class SeedProjectsInEnglish
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,7 +88,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ahmed@example.com",
-                            FullName = "Ahmed Mohamed",
+                            FullName = "أحمد محمد",
                             IsDeleted = false,
                             PhoneNumber = "1121456789",
                             UserId = 1
@@ -96,7 +99,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "sara@example.com",
-                            FullName = "Sara Ali",
+                            FullName = "سارة علي",
                             IsDeleted = false,
                             PhoneNumber = "2927654321",
                             UserId = 1
@@ -107,7 +110,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mohamed@example.com",
-                            FullName = "Mohamed Hassan",
+                            FullName = "محمد حسن",
                             IsDeleted = false,
                             PhoneNumber = "31128833445",
                             UserId = 1
@@ -118,7 +121,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "leila@example.com",
-                            FullName = "Leila Ibrahim",
+                            FullName = "ليلى إبراهيم",
                             IsDeleted = false,
                             PhoneNumber = "4243344556",
                             UserId = 1
@@ -129,7 +132,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ali@example.com",
-                            FullName = "Ali Youssef",
+                            FullName = "علي يوسف",
                             IsDeleted = false,
                             PhoneNumber = "0344455667",
                             UserId = 1
@@ -140,7 +143,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "fatima@example.com",
-                            FullName = "Fatima Saeed",
+                            FullName = "فاطمة سعيد",
                             IsDeleted = false,
                             PhoneNumber = "5445566778",
                             UserId = 1
@@ -151,7 +154,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "khaled@example.com",
-                            FullName = "Khaled Abdullah",
+                            FullName = "خالد عبد الله",
                             IsDeleted = false,
                             PhoneNumber = "6556677889",
                             UserId = 1
@@ -162,7 +165,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mariam@example.com",
-                            FullName = "Mariam Ahmed",
+                            FullName = "مريم أحمد",
                             IsDeleted = false,
                             PhoneNumber = "7667788990",
                             UserId = 1
@@ -173,7 +176,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "youssef@example.com",
-                            FullName = "Youssef Ali",
+                            FullName = "يوسف علي",
                             IsDeleted = false,
                             PhoneNumber = "0878899001",
                             UserId = 1
@@ -184,7 +187,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nora@example.com",
-                            FullName = "Nora Mohamed",
+                            FullName = "نورا محمد",
                             IsDeleted = false,
                             PhoneNumber = "9889900112",
                             UserId = 1
@@ -195,7 +198,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "hassan@example.com",
-                            FullName = "Hassan Ali",
+                            FullName = "حسن علي",
                             IsDeleted = false,
                             PhoneNumber = "14490011223",
                             UserId = 1
@@ -206,7 +209,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mona@example.com",
-                            FullName = "Mona Saeed",
+                            FullName = "منى سعيد",
                             IsDeleted = false,
                             PhoneNumber = "01022122334",
                             UserId = 1
@@ -217,7 +220,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "omar@example.com",
-                            FullName = "Omar Khaled",
+                            FullName = "عمر خالد",
                             IsDeleted = false,
                             PhoneNumber = "01112233445",
                             UserId = 1
@@ -228,7 +231,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "huda@example.com",
-                            FullName = "Huda Ibrahim",
+                            FullName = "هدى إبراهيم",
                             IsDeleted = false,
                             PhoneNumber = "2223344556",
                             UserId = 1
@@ -239,7 +242,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "yasser@example.com",
-                            FullName = "Yasser Youssef",
+                            FullName = "ياسر يوسف",
                             IsDeleted = false,
                             PhoneNumber = "03744455667",
                             UserId = 1
@@ -250,7 +253,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nadia@example.com",
-                            FullName = "Nadia Saeed",
+                            FullName = "نادية سعيد",
                             IsDeleted = false,
                             PhoneNumber = "0045566778",
                             UserId = 1
@@ -261,7 +264,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "majed@example.com",
-                            FullName = "Majed Abdullah",
+                            FullName = "ماجد عبد الله",
                             IsDeleted = false,
                             PhoneNumber = "9956677889",
                             UserId = 1
@@ -272,7 +275,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "salma@example.com",
-                            FullName = "Salma Ahmed",
+                            FullName = "سلمى أحمد",
                             IsDeleted = false,
                             PhoneNumber = "0667788990",
                             UserId = 1
@@ -283,7 +286,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ziad@example.com",
-                            FullName = "Ziad Ali",
+                            FullName = "زياد علي",
                             IsDeleted = false,
                             PhoneNumber = "0228899001",
                             UserId = 1
@@ -294,7 +297,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             ClientType = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "noor@example.com",
-                            FullName = "Noor Mohamed",
+                            FullName = "نور محمد",
                             IsDeleted = false,
                             PhoneNumber = "0874900112",
                             UserId = 1
@@ -4633,7 +4636,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم المدرسة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 1,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4643,7 +4646,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المدرسة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 1,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4653,7 +4656,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 1,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4663,7 +4666,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم المستشفى",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 2,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4673,7 +4676,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المستشفى",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 2,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4683,7 +4686,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 2,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4693,7 +4696,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم المجمع السكني",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 3,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4703,7 +4706,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المجمع السكني",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 3,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4713,7 +4716,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 3,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4723,7 +4726,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم الجسر",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 4,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4733,7 +4736,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء الجسر",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 4,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4743,7 +4746,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 4,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4753,7 +4756,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم المصنع",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 5,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4763,7 +4766,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المصنع",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 5,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4773,7 +4776,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 5,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4783,7 +4786,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم الفندق",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 6,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4793,7 +4796,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء الفندق",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 6,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4803,7 +4806,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 6,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4813,7 +4816,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم محطة القطار",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 7,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4823,7 +4826,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء محطة القطار",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 7,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4833,7 +4836,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 7,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4843,7 +4846,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم المركز التجاري",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 8,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4853,7 +4856,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المركز التجاري",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 8,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4863,7 +4866,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 8,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4873,7 +4876,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم الجامعة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 9,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4883,7 +4886,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء الجامعة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 9,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4893,7 +4896,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 9,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4903,7 +4906,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة تصميم الحديقة العامة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Design",
+                            Name = "تصميم",
                             ProjectId = 10,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4913,7 +4916,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء الحديقة العامة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Construction",
+                            Name = "بناء",
                             ProjectId = 10,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4923,7 +4926,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التشطيب النهائية",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Finishing",
+                            Name = "تشطيب",
                             ProjectId = 10,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4933,7 +4936,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط للمكتبة العامة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 11,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4943,7 +4946,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المكتبة العامة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 11,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4953,7 +4956,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي للمكتبة قبل الافتتاح",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 11,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4963,7 +4966,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط للملعب الرياضي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 12,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4973,7 +4976,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء الملعب الرياضي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 12,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4983,7 +4986,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي للملعب الرياضي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 12,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -4993,7 +4996,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط لمحطة الوقود",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 13,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5003,7 +5006,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء محطة الوقود",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 13,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5013,7 +5016,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي لمحطة الوقود",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 13,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5023,7 +5026,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط للمركز الصحي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 14,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5033,7 +5036,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المركز الصحي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 14,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5043,7 +5046,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي للمركز الصحي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 14,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5053,7 +5056,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط للمجمع التجاري",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 15,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5063,7 +5066,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المجمع التجاري",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 15,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5073,7 +5076,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي للمجمع التجاري",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 15,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5083,7 +5086,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط لمحطة الكهرباء",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 16,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5093,7 +5096,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء محطة الكهرباء",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 16,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5103,7 +5106,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي لمحطة الكهرباء",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 16,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5113,7 +5116,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط لمحطة المياه",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 17,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5123,7 +5126,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء محطة المياه",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 17,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5133,7 +5136,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي لمحطة المياه",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 17,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5143,7 +5146,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط لمركز الشرطة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 18,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5153,7 +5156,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء مركز الشرطة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 18,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5163,7 +5166,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي لمركز الشرطة",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 18,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5173,7 +5176,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط لمحطة الإطفاء",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 19,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5183,7 +5186,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء محطة الإطفاء",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 19,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5193,7 +5196,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي لمحطة الإطفاء",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 19,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5203,7 +5206,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة التخطيط للمركز الثقافي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Planning",
+                            Name = "التخطيط",
                             ProjectId = 20,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5213,7 +5216,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "مرحلة بناء المركز الثقافي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Execution",
+                            Name = "التنفيذ",
                             ProjectId = 20,
                             StartDate = new DateOnly(2022, 11, 1)
                         },
@@ -5223,7 +5226,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "الفحص النهائي للمركز الثقافي",
                             ExpectedEndDate = new DateOnly(2022, 11, 1),
-                            Name = "Final Testing",
+                            Name = "الفحص النهائي",
                             ProjectId = 20,
                             StartDate = new DateOnly(2022, 11, 1)
                         });
@@ -5280,70 +5283,70 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         {
                             Id = 1,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Carpenter",
+                            Name = "نجار",
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Blacksmith",
+                            Name = "حداد",
                             UserId = 1
                         },
                         new
                         {
                             Id = 3,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Plumber",
+                            Name = "سباك",
                             UserId = 1
                         },
                         new
                         {
                             Id = 4,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Electrician",
+                            Name = "كهربائي",
                             UserId = 1
                         },
                         new
                         {
                             Id = 5,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Builder",
+                            Name = "بناء",
                             UserId = 1
                         },
                         new
                         {
                             Id = 6,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Painter",
+                            Name = "دهان",
                             UserId = 1
                         },
                         new
                         {
                             Id = 7,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Tiler",
+                            Name = "مبلط",
                             UserId = 1
                         },
                         new
                         {
                             Id = 8,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Contractor",
+                            Name = "مقاول",
                             UserId = 1
                         },
                         new
                         {
                             Id = 9,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Architect",
+                            Name = "مهندس معماري",
                             UserId = 1
                         },
                         new
                         {
                             Id = 10,
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Civil Engineer",
+                            Name = "مهندس مدني",
                             UserId = 1
                         });
                 });
@@ -5512,7 +5515,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "ahmed.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Ahmed Mohammed",
+                            Name = "أحمد محمد",
                             NormalizedEmail = "AHMED.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "AHMED.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5531,7 +5534,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "sara.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Sarah Ali",
+                            Name = "سارة علي",
                             NormalizedEmail = "SARA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "SARA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5550,7 +5553,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "mohamed.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Mohammed Hassan",
+                            Name = "محمد حسن",
                             NormalizedEmail = "MOHAMED.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "MOHAMED.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5569,7 +5572,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "leila.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Layla Ibrahim",
+                            Name = "ليلى إبراهيم",
                             NormalizedEmail = "LEILA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "LEILA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5588,7 +5591,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "ali.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Ali Youssef",
+                            Name = "علي يوسف",
                             NormalizedEmail = "ALI.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "ALI.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5607,7 +5610,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "fatima.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Fatima Saeed",
+                            Name = "فاطمة سعيد",
                             NormalizedEmail = "FATIMA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "FATIMA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5626,7 +5629,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "khaled.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Khalid Abdullah",
+                            Name = "خالد عبد الله",
                             NormalizedEmail = "KHALED.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "KHALED.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5645,7 +5648,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "mariam.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Mariam Ahmed",
+                            Name = "مريم أحمد",
                             NormalizedEmail = "MARIAM.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "MARIAM.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5664,7 +5667,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "youssef.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Youssef Ali",
+                            Name = "يوسف علي",
                             NormalizedEmail = "YOUSSEF.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "YOUSSEF.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5683,7 +5686,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "nora.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Nora Mohammed",
+                            Name = "نورا محمد",
                             NormalizedEmail = "NORA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "NORA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5702,7 +5705,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "hassan.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Hassan Ali",
+                            Name = "حسن علي",
                             NormalizedEmail = "HASSAN.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "HASSAN.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5721,7 +5724,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "mona.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Mona Saeed",
+                            Name = "منى سعيد",
                             NormalizedEmail = "MONA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "MONA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5740,7 +5743,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "omar.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Omar Khalid",
+                            Name = "عمر خالد",
                             NormalizedEmail = "OMAR.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "OMAR.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5759,7 +5762,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "huda.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Huda Ibrahim",
+                            Name = "هدى إبراهيم",
                             NormalizedEmail = "HUDA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "HUDA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5778,7 +5781,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "yasser.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Yasser Youssef",
+                            Name = "ياسر يوسف",
                             NormalizedEmail = "YASSER.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "YASSER.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5797,7 +5800,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "nadia.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Nadia Saeed",
+                            Name = "نادية سعيد",
                             NormalizedEmail = "NADIA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "NADIA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5816,7 +5819,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "majed.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Majed Abdullah",
+                            Name = "ماجد عبد الله",
                             NormalizedEmail = "MAJED.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "MAJED.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5835,7 +5838,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "salma.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Salma Ahmed",
+                            Name = "سلمى أحمد",
                             NormalizedEmail = "SALMA.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "SALMA.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5854,7 +5857,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "ziad.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Ziad Ali",
+                            Name = "زياد علي",
                             NormalizedEmail = "ZIAD.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "ZIAD.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -5873,7 +5876,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
                             Email = "noor.engineer@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Noor Mohammed",
+                            Name = "نور محمد",
                             NormalizedEmail = "NOOR.ENGINEER@EXAMPLE.COM",
                             NormalizedUserName = "NOOR.ENGINEER",
                             PasswordHash = "AQAAAAIAAYagAAAAEEhXAUHV7cc6ecl49uJ+WcKtnbGjqbMYZMLcIvumr2D30zXfRoHSyIXUv+EzZBfR8g==",
@@ -6146,320 +6149,320 @@ namespace ConstructionManagementAssistant.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "Street 10, Riyadh",
+                            Address = "شارع 10, الرياض",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mohamed@example.com",
-                            FirstName = "Mohammed",
+                            Email = "mohamedd@example.com",
+                            FirstName = "محمد",
                             IsDeleted = false,
-                            LastName = "Al-Khalid",
+                            LastName = "الخالد",
                             NationalNumber = "123456789",
                             PhoneNumber = "0512345611",
-                            SecondName = "Ali",
-                            ThirdName = "Hassan",
+                            SecondName = "علي",
+                            ThirdName = "حسن",
                             SpecialtyId = 1,
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
-                            Address = "Street 20, Jeddah",
+                            Address = "شارع 20, جدة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ahmed@example.com",
-                            FirstName = "Ahmed",
+                            Email = "ahmedd@example.com",
+                            FirstName = "أحمد",
                             IsDeleted = false,
-                            LastName = "Al-Fahid",
+                            LastName = "الفهيد",
                             NationalNumber = "227654321",
                             PhoneNumber = "0228765432",
-                            SecondName = "Khalid",
-                            ThirdName = "Saeed",
+                            SecondName = "خالد",
+                            ThirdName = "سعيد",
                             SpecialtyId = 2,
                             UserId = 1
                         },
                         new
                         {
                             Id = 3,
-                            Address = "Street 30, Makkah",
+                            Address = "شارع 30, مكة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ali@example.com",
-                            FirstName = "Ali",
+                            Email = "aliee@example.com",
+                            FirstName = "علي",
                             IsDeleted = false,
-                            LastName = "Al-Ghamdi",
+                            LastName = "الغامدي",
                             NationalNumber = "446789123",
                             PhoneNumber = "0445678912",
-                            SecondName = "Yasser",
-                            ThirdName = "Tariq",
+                            SecondName = "ياسر",
+                            ThirdName = "طارق",
                             SpecialtyId = 3,
                             UserId = 1
                         },
                         new
                         {
                             Id = 4,
-                            Address = "Street 40, Madinah",
+                            Address = "شارع 40, المدينة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "khalid@example.com",
-                            FirstName = "Khalid",
+                            Email = "khassled@example.com",
+                            FirstName = "خالد",
                             IsDeleted = false,
-                            LastName = "Al-Saeed",
+                            LastName = "السعيد",
                             NationalNumber = "1131654987",
                             PhoneNumber = "0555165498",
-                            SecondName = "Omar",
-                            ThirdName = "Mustafa",
+                            SecondName = "عمر",
+                            ThirdName = "مصطفى",
                             SpecialtyId = 4,
                             UserId = 1
                         },
                         new
                         {
                             Id = 5,
-                            Address = "Street 50, Dammam",
+                            Address = "شارع 50, الدمام",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "yasser@example.com",
-                            FirstName = "Yasser",
+                            Email = "yas4ser@example.com",
+                            FirstName = "ياسر",
                             IsDeleted = false,
-                            LastName = "Al-Najjar",
+                            LastName = "النجار",
                             NationalNumber = "654667321",
                             PhoneNumber = "0565498732",
-                            SecondName = "Hassan",
-                            ThirdName = "Saad",
+                            SecondName = "حسن",
+                            ThirdName = "سعد",
                             SpecialtyId = 5,
                             UserId = 1
                         },
                         new
                         {
                             Id = 6,
-                            Address = "Street 60, Khobar",
+                            Address = "شارع 60, الخبر",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "tariq@example.com",
-                            FirstName = "Tariq",
+                            Email = "taridq@example.com",
+                            FirstName = "طارق",
                             IsDeleted = false,
-                            LastName = "Al-Zaid",
+                            LastName = "الزيد",
                             NationalNumber = "782223456",
                             PhoneNumber = "668912345",
-                            SecondName = "Saeed",
-                            ThirdName = "Mohammed",
+                            SecondName = "سعيد",
+                            ThirdName = "محمد",
                             SpecialtyId = 6,
                             UserId = 1
                         },
                         new
                         {
                             Id = 7,
-                            Address = "Street 70, Taif",
+                            Address = "شارع 70, الطائف",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mustafa@example.com",
-                            FirstName = "Mustafa",
+                            Email = "mustaffa@example.com",
+                            FirstName = "مصطفى",
                             IsDeleted = false,
-                            LastName = "Al-Obaid",
+                            LastName = "العبيد",
                             NationalNumber = "852963741",
                             PhoneNumber = "0585296374",
-                            SecondName = "Abdullah",
-                            ThirdName = "Ahmed",
+                            SecondName = "عبدالله",
+                            ThirdName = "أحمد",
                             SpecialtyId = 7,
                             UserId = 1
                         },
                         new
                         {
                             Id = 8,
-                            Address = "Street 80, Tabuk",
+                            Address = "شارع 80, تبوك",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "saeed@example.com",
-                            FirstName = "Saeed",
+                            Email = "saeefd@example.com",
+                            FirstName = "سعيد",
                             IsDeleted = false,
-                            LastName = "Al-Rashid",
+                            LastName = "الرشيد",
                             NationalNumber = "963852741",
                             PhoneNumber = "0596385274",
-                            SecondName = "Ali",
-                            ThirdName = "Khalid",
+                            SecondName = "علي",
+                            ThirdName = "خالد",
                             SpecialtyId = 8,
                             UserId = 1
                         },
                         new
                         {
                             Id = 9,
-                            Address = "Street 90, Buraidah",
+                            Address = "شارع 90, بريدة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "omar@example.com",
-                            FirstName = "Omar",
+                            Email = "omar@examp2le.com",
+                            FirstName = "عمر",
                             IsDeleted = false,
-                            LastName = "Al-Ghamdi",
+                            LastName = "الغامدي",
                             NationalNumber = "7431852963",
                             PhoneNumber = "05743185296",
-                            SecondName = "Yasser",
-                            ThirdName = "Tariq",
+                            SecondName = "ياسر",
+                            ThirdName = "طارق",
                             SpecialtyId = 9,
                             UserId = 1
                         },
                         new
                         {
                             Id = 10,
-                            Address = "Street 100, Hail",
+                            Address = "شارع 100, حائل",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "hassan@example.com",
-                            FirstName = "Hassan",
+                            Email = "hass2an@example.com",
+                            FirstName = "حسن",
                             IsDeleted = false,
-                            LastName = "Al-Fahid",
+                            LastName = "الفهيد",
                             NationalNumber = "3692528147",
                             PhoneNumber = "05369225814",
-                            SecondName = "Mohammed",
-                            ThirdName = "Ahmed",
+                            SecondName = "محمد",
+                            ThirdName = "أحمد",
                             SpecialtyId = 10,
                             UserId = 1
                         },
                         new
                         {
                             Id = 11,
-                            Address = "Street 110, Riyadh",
+                            Address = "شارع 110, الرياض",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "fahad@example.com",
-                            FirstName = "Fahad",
+                            Email = "fahad@exam2ple.com",
+                            FirstName = "فهد",
                             IsDeleted = false,
-                            LastName = "Al-Obaid",
+                            LastName = "العبيد",
                             NationalNumber = "1592357486",
                             PhoneNumber = "05125935748",
-                            SecondName = "Abdulrahman",
-                            ThirdName = "Nasser",
+                            SecondName = "عبدالرحمن",
+                            ThirdName = "ناصر",
                             SpecialtyId = 1,
                             UserId = 1
                         },
                         new
                         {
                             Id = 12,
-                            Address = "Street 120, Jeddah",
+                            Address = "شارع 120, جدة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "nasser@example.com",
-                            FirstName = "Nasser",
+                            Email = "nasse2r@example.com",
+                            FirstName = "ناصر",
                             IsDeleted = false,
-                            LastName = "Al-Zaid",
+                            LastName = "الزيد",
                             NationalNumber = "7523159486",
                             PhoneNumber = "05275315948",
-                            SecondName = "Salman",
-                            ThirdName = "Faisal",
+                            SecondName = "سلمان",
+                            ThirdName = "فيصل",
                             SpecialtyId = 2,
                             UserId = 1
                         },
                         new
                         {
                             Id = 13,
-                            Address = "Street 130, Makkah",
+                            Address = "شارع 130, مكة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "faisal@example.com",
-                            FirstName = "Faisal",
+                            Email = "faidsal@example.com",
+                            FirstName = "فيصل",
                             IsDeleted = false,
-                            LastName = "Al-Rashid",
+                            LastName = "الرشيد",
                             NationalNumber = "4862753159",
                             PhoneNumber = "05483675315",
-                            SecondName = "Abdulaziz",
-                            ThirdName = "Rashed",
+                            SecondName = "عبدالعزيز",
+                            ThirdName = "راشد",
                             SpecialtyId = 3,
                             UserId = 1
                         },
                         new
                         {
                             Id = 14,
-                            Address = "Street 140, Madinah",
+                            Address = "شارع 140, المدينة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "rashed@example.com",
-                            FirstName = "Rashed",
+                            FirstName = "راشد",
                             IsDeleted = false,
-                            LastName = "Al-Saad",
+                            LastName = "السعد",
                             NationalNumber = "35337159486",
                             PhoneNumber = "02535715948",
-                            SecondName = "Abdullah",
-                            ThirdName = "Saad",
+                            SecondName = "عبدالله",
+                            ThirdName = "سعد",
                             SpecialtyId = 4,
                             UserId = 1
                         },
                         new
                         {
                             Id = 15,
-                            Address = "Street 150, Dammam",
+                            Address = "شارع 150, الدمام",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "saad@example.com",
-                            FirstName = "Saad",
+                            FirstName = "سعد",
                             IsDeleted = false,
-                            LastName = "Al-Fahad",
+                            LastName = "الفهد",
                             NationalNumber = "95321753486",
                             PhoneNumber = "05295175348",
-                            SecondName = "Abdulmohsen",
-                            ThirdName = "Fahad",
+                            SecondName = "عبدالمحسن",
+                            ThirdName = "فهد",
                             SpecialtyId = 5,
                             UserId = 1
                         },
                         new
                         {
                             Id = 16,
-                            Address = "Street 160, Khobar",
+                            Address = "شارع 160, الخبر",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "abdullah@example.com",
-                            FirstName = "Abdullah",
+                            FirstName = "عبدالله",
                             IsDeleted = false,
-                            LastName = "Al-Nasser",
+                            LastName = "الناصر",
                             NationalNumber = "753486159",
                             PhoneNumber = "0575348615",
-                            SecondName = "Abdulrahman",
-                            ThirdName = "Nasser",
+                            SecondName = "عبدالرحمن",
+                            ThirdName = "ناصر",
                             SpecialtyId = 6,
                             UserId = 1
                         },
                         new
                         {
                             Id = 17,
-                            Address = "Street 170, Taif",
+                            Address = "شارع 170, الطائف",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "abdulrahman@example.com",
-                            FirstName = "Abdulrahman",
+                            FirstName = "عبدالرحمن",
                             IsDeleted = false,
-                            LastName = "Al-Rashed",
+                            LastName = "الراشد",
                             NationalNumber = "486159753",
                             PhoneNumber = "0548615975",
-                            SecondName = "Faisal",
-                            ThirdName = "Rashed",
+                            SecondName = "فيصل",
+                            ThirdName = "راشد",
                             SpecialtyId = 7,
                             UserId = 1
                         },
                         new
                         {
                             Id = 18,
-                            Address = "Street 180, Tabuk",
+                            Address = "شارع 180, تبوك",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "abdulaziz@example.com",
-                            FirstName = "Abdulaziz",
+                            FirstName = "عبدالعزيز",
                             IsDeleted = false,
-                            LastName = "Al-Fahad",
+                            LastName = "الفهد",
                             NationalNumber = "159486753",
                             PhoneNumber = "0515948675",
-                            SecondName = "Saad",
-                            ThirdName = "Fahad",
+                            SecondName = "سعد",
+                            ThirdName = "فهد",
                             SpecialtyId = 8,
                             UserId = 1
                         },
                         new
                         {
                             Id = 19,
-                            Address = "Street 190, Buraidah",
+                            Address = "شارع 190, بريدة",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "salman@example.com",
-                            FirstName = "Salman",
+                            FirstName = "سلمان",
                             IsDeleted = false,
-                            LastName = "Al-Abdullah",
+                            LastName = "العبدالله",
                             NationalNumber = "753159486",
                             PhoneNumber = "0575315948",
-                            SecondName = "Rashed",
-                            ThirdName = "Abdullah",
+                            SecondName = "راشد",
+                            ThirdName = "عبدالله",
                             SpecialtyId = 9,
                             UserId = 1
                         },
                         new
                         {
                             Id = 20,
-                            Address = "Street 200, Hail",
+                            Address = "شارع 200, حائل",
                             CreatedDate = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "abdulmohsen@example.com",
-                            FirstName = "Abdulmohsen",
+                            FirstName = "عبدالمحسن",
                             IsDeleted = false,
-                            LastName = "Al-Nasser",
+                            LastName = "الناصر",
                             NationalNumber = "486753159",
                             PhoneNumber = "0548675315",
-                            SecondName = "Fahad",
-                            ThirdName = "Nasser",
+                            SecondName = "فهد",
+                            ThirdName = "ناصر",
                             SpecialtyId = 10,
                             UserId = 1
                         });

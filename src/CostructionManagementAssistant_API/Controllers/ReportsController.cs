@@ -1,4 +1,5 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.ReportDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Chat;
@@ -9,6 +10,7 @@ using System.Text.RegularExpressions;
 namespace ConstructionManagementAssistant.API.Controllers;
 
 [ApiController]
+[Authorize]
 public class ReportsController : ControllerBase
 {
     private readonly string _apiKey;
