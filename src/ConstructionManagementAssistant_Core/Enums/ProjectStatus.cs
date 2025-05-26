@@ -3,16 +3,16 @@
 
 public enum ProjectStatus
 {
-    [Display(Name = "قيد التنفيذ")]
+    //[Display(Name = "قيد التنفيذ")]
     Active,
 
-    [Display(Name = "معلق")]
+    //[Display(Name = "معلق")]
     Pending,
 
-    [Display(Name = "مكتمل")]
+    //[Display(Name = "مكتمل")]
     Completed,
 
 
-    [Display(Name = "ملغي")]
+    //[Display(Name = "ملغي")]
     Cancelled
 }
