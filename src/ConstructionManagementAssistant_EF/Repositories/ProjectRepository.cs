@@ -305,8 +305,15 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     }
 
 
-    public async Task<ProjectDtoForFreportDto?> GetProjectReport(int projectId)
+    public async Task<ProjectDtoForFreportDto> GetProjectReport(int projectId)
     {
+        var exists = await _context.Projects.AnyAsync(x => x.Id == projectId);
+        if (!exists)
+        {
+            _logger.LogWarning("Project with ID: {ProjectId} not found when generating report", projectId);
+            throw new InvalidOperationException($"Project with ID {projectId} not found.");
+        }
+
         return await _context.Projects
             .Where(x => x.Id == projectId)
             .Select(x => new ProjectDtoForFreportDto
@@ -331,13 +338,12 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
                     ClientType = x.Client.ClientType.ToString()
                 },
                 EquipmentReservations = x.EquipmentReservations != null ?
-                x.EquipmentReservations.Select(x => new EquipmentReservationDtoForReport
+                x.EquipmentReservations.Select(er => new EquipmentReservationDtoForReport
                 {
-                    EquipmentName = x.Equipment.Name,
-                    EquipmentModel = x.Equipment.Model,
-                    StartDate = x.StartDate,
-                    EndDate = x.EndDate,
-
+                    EquipmentName = er.Equipment.Name,
+                    EquipmentModel = er.Equipment.Model,
+                    StartDate = er.StartDate,
+                    EndDate = er.EndDate,
                 }).ToList() : new List<EquipmentReservationDtoForReport>(),
 
                 Stages = x.Stages != null
