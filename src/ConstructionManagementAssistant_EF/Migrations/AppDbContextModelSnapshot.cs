@@ -5244,7 +5244,7 @@ namespace ConstructionManagementAssistant.EF.Migrations
 
                     b.HasIndex("WorkerId");
 
-                    b.ToTable("TaskAssignments");
+                    b.ToTable("TaskAssignments", (string)null);
                 });
 
             modelBuilder.Entity("ConstructionManagementAssistant.Core.Entites.WorkerSpecialty", b =>

@@ -3,6 +3,7 @@ using ConstructionManagementAssistant.Core.Identity;
 using ConstructionManagementAssistant.EF.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Infrastructure;
 using Serilog;
@@ -90,4 +91,17 @@ app.UseMiddleware<RedirectToSwaggerMiddleware>();
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.MapControllers();
+
+app.MapControllers();
+
+//Apply EF Core migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+app.Run();
+
+
 app.Run();
