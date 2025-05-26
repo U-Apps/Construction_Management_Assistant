@@ -150,7 +150,7 @@ public class StageRepository : BaseRepository<Stage>, IStageRepository
                 filter = filter.AndAlso(s => s.ExpectedEndDate <= endDateFilter.Value);
             }
             var pagedResult = await GetPagedDataWithSelectionAsync(
-                orderBy: s => s.Name,
+                orderBy: s => s.StartDate,
                 selector: StageProfile.ToGetAllStagesDto(),
                 criteria: filter,
                 pageNumber: pageNumber,

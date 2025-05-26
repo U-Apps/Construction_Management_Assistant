@@ -55,7 +55,7 @@ public class TaskRepository : BaseRepository<ConstructionManagementAssistant.Cor
             }
 
             var pagedResult = await GetPagedDataWithSelectionAsync(
-                orderBy: x => x.Name,
+                orderBy: x => x.StartDate,
                 selector: TaskProfile.ToGetTaskDto(),
                 criteria: filter,
                 pageNumber: pageNumber,
