@@ -1,4 +1,5 @@
-﻿using ConstructionManagementAssistant.Core.Models.Response;
+﻿using ConstructionManagementAssistant.Core.DTOs.ReportDTO;
+using ConstructionManagementAssistant.Core.Models.Response;
 
 namespace ConstructionManagementAssistant.Core.Interfaces
 {
@@ -13,6 +14,7 @@ namespace ConstructionManagementAssistant.Core.Interfaces
             string? searchTerm = null);
 
         Task<List<ProjectNameDto>> GetAllProjectNames(string userId);
+        Task<ProjectDtoForFreportDto> GetProjectReport(int projectId);
 
         Task<BaseResponse<string>> CancelProjectAsync(int projectId, string? cancelationReason);
         Task<BaseResponse<string>> PendProjectAsync(int projectId);

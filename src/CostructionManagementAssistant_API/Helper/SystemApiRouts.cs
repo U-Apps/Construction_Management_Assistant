@@ -171,4 +171,10 @@ public static class SystemApiRouts
         public const string GetProfile = Base + "/getProfile";
 
     }
+    public static class Reports
+    {
+        public const string Base = "api/v1/Reports";
+        public const string DownloadProjectReprot = Base + "/downloadProjectReprot/{projectId}";
+
+    }
 }

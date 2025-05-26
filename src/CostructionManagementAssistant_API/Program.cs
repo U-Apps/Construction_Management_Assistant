@@ -4,6 +4,7 @@ using ConstructionManagementAssistant.EF.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using QuestPDF.Infrastructure;
 using Serilog;
 using System.Text;
 
@@ -22,8 +23,12 @@ builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 
 var key = Encoding.ASCII.GetBytes(Jwt!.Key);
 
+QuestPDF.Settings.License = LicenseType.Community; // or LicenseType.Commercial if applicable
 
 
+
+builder.Services.Configure<OpenAIOptions>(
+    builder.Configuration.GetSection("OpenAI"));
 
 
 

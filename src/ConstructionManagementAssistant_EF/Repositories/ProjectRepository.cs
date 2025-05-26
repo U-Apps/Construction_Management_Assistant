@@ -1,4 +1,6 @@
-﻿namespace ConstructionManagementAssistant.EF.Repositories;
+﻿using ConstructionManagementAssistant.Core.DTOs.ReportDTO;
+
+namespace ConstructionManagementAssistant.EF.Repositories;
 
 public class ProjectRepository : BaseRepository<Project>, IProjectRepository
 {
@@ -301,4 +303,66 @@ public class ProjectRepository : BaseRepository<Project>, IProjectRepository
             Message = "تم تفعيل المشروع بنجاح"
         };
     }
+
+
+    public async Task<ProjectDtoForFreportDto?> GetProjectReport(int projectId)
+    {
+        return await _context.Projects
+            .Where(x => x.Id == projectId)
+            .Select(x => new ProjectDtoForFreportDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Status = x.Status.ToString(),
+                SiteEngineer = x.SiteEngineer == null
+                    ? null
+                    : new SiteEngineerDtoForReport
+                    {
+                        Name = x.SiteEngineer.Name,
+                        Email = x.SiteEngineer.Email,
+                        PhoneNumber = x.SiteEngineer.PhoneNumber
+                    },
+                Client = new ClientDtoForReport
+                {
+                    Name = x.Client.FullName,
+                    Email = x.Client.Email,
+                    PhoneNumber = x.Client.PhoneNumber,
+                    ClientType = x.Client.ClientType.ToString()
+                },
+                EquipmentReservations = x.EquipmentReservations != null ?
+                x.EquipmentReservations.Select(x => new EquipmentReservationDtoForReport
+                {
+                    EquipmentName = x.Equipment.Name,
+                    EquipmentModel = x.Equipment.Model,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+
+                }).ToList() : new List<EquipmentReservationDtoForReport>(),
+
+                Stages = x.Stages != null
+                    ? x.Stages.Select(s => new StageWithTasksDtoForReport
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Description = s.Description,
+                        StartDate = s.StartDate,
+                        ExpectedEndDate = s.ExpectedEndDate,
+                        Tasks = s.Tasks != null
+                            ? s.Tasks.Select(t => new ProjectTaskDtoForReport
+                            {
+                                Id = t.Id,
+                                Name = t.Name,
+                                Description = t.Description,
+                                StartDate = t.StartDate,
+                                ExpectedEndDate = t.ExpectedEndDate,
+                                IsCompleted = t.IsCompleted,
+                            }).ToList()
+                            : new List<ProjectTaskDtoForReport>()
+                    }).ToList()
+                    : new List<StageWithTasksDtoForReport>()
+            })
+            .FirstOrDefaultAsync();
+    }
+
 }
