@@ -1,9 +1,13 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.ReportDTO;
+using ConstructionManagementAssistant.EF.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Chat;
 using QuestPDF.Fluent;
+using System.Data;
+using System.Dynamic;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -15,13 +19,14 @@ public class ReportsController : ControllerBase
 {
     private readonly string _apiKey;
     private readonly IUnitOfWork _unitOfWork;
-    public ReportsController(IOptions<OpenAIOptions> apiKey, IUnitOfWork unitOfWork)
+    private readonly AppDbContext _context;
+    public ReportsController(IOptions<OpenAIOptions> apiKey, IUnitOfWork unitOfWork, AppDbContext context)
     {
         _apiKey = apiKey.Value.ApiKey;
         _unitOfWork = unitOfWork;
+        _context = context;
     }
 
-    public IUnitOfWork UnitOfWork { get; }
 
 
     private static string BuildProjectReportPrompt(ProjectDtoForFreportDto project)
@@ -81,7 +86,6 @@ public class ReportsController : ControllerBase
     }
 
 
-    // well document for both languages
     [HttpGet(SystemApiRouts.Reports.DownloadProjectReprot)]
     public async Task<IActionResult> GenerateReport(int projectId)
     {
@@ -306,6 +310,112 @@ public class ReportsController : ControllerBase
         var fileName = $"{project.Name} Report_{DateTime.UtcNow:yyyyMMddHHmmss}.pdf";
         return File(pdfBytes, "application/pdf", fileName);
     }
+
+
+
+
+
+
+
+    private async Task<string> GetDbSchemaAsync()
+    {
+        var schemaQuery = @"
+        SELECT 
+            t.name AS TableName,
+            c.name AS ColumnName,
+            ty.name AS DataType
+        FROM 
+            sys.tables t
+        JOIN 
+            sys.columns c ON t.object_id = c.object_id
+        JOIN 
+            sys.types ty ON c.user_type_id = ty.user_type_id
+        ORDER BY 
+            t.name, c.column_id"
+        ;
+
+        var schema = await _context.Database.SqlQueryRaw<string>(schemaQuery).ToListAsync();
+        return string.Join("\n", schema);
+    }
+    private async Task<string> GenerateSqlQueryAsync(string userQuestion, string dbSchema)
+    {
+        var openAiClient = new OpenAIClient(_apiKey);
+        var prompt = $@"
+        You are a SQL Server expert. Generate a SQL query for this question:
+        QUESTION: {userQuestion}
+
+        DATABASE SCHEMA:
+        {dbSchema}
+
+        RULES:
+        - Use JOINs if needed.
+        - Return only the SQL query, no explanations or any other letters or markdown or any thing, just raw sql.
+    ";
+
+
+        OpenAIClient client = new OpenAIClient(_apiKey);
+        ChatClient chatService = client.GetChatClient("gpt-4o-mini");
+        var result = await chatService.CompleteChatAsync(prompt);
+        var rawText = result.Value.Content[0].Text;
+
+
+        return rawText;
+    }
+    private async Task<List<ExpandoObject>> ExecuteGeneratedSqlAsync(string sqlQuery)
+    {
+        if (!sqlQuery.Trim().ToUpper().StartsWith("SELECT"))
+            throw new Exception("Only SELECT queries are allowed.");
+
+        var result = new List<ExpandoObject>();
+
+        var connection = _context.Database.GetDbConnection();
+        await using var command = connection.CreateCommand();
+        command.CommandText = sqlQuery;
+
+        if (connection.State != ConnectionState.Open)
+            await connection.OpenAsync();
+
+        await using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            var row = new ExpandoObject() as IDictionary<string, object>;
+
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row[reader.GetName(i)] = await reader.IsDBNullAsync(i) ? null : reader.GetValue(i);
+            }
+
+            result.Add((ExpandoObject)row);
+        }
+
+        return result;
+    }
+
+
+    [HttpGet(SystemApiRouts.Reports.askQuestion)]
+    public async Task<IActionResult> AskQuestion([FromQuery] string question)
+    {
+        try
+        {
+            // 1. Get schema
+            var schema = await GetDbSchemaAsync();
+
+            // 2. Generate SQL via OpenAI
+            var sqlQuery = await GenerateSqlQueryAsync(question, schema);
+
+            // 3. Execute query
+            var results = await ExecuteGeneratedSqlAsync(sqlQuery);
+
+            return Ok(results);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception as needed (not shown here)
+            var errorMessage = "Sorry, I couldn't understand your question. Please be more specific and try again.";
+            return BadRequest(new { message = errorMessage });
+        }
+    }
+
 
 
 

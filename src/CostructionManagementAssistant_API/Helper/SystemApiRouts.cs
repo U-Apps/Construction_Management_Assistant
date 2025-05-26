@@ -175,6 +175,7 @@ public static class SystemApiRouts
     {
         public const string Base = "api/v1/Reports";
         public const string DownloadProjectReprot = Base + "/downloadProjectReprot/{projectId}";
+        public const string askQuestion = Base + "/askQuestion";
 
     }
 }
