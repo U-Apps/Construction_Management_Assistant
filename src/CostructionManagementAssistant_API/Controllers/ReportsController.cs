@@ -26,7 +26,6 @@ public class ReportsController : ControllerBase
 
     private static string BuildProjectReportPrompt(ProjectDtoForFreportDto project)
     {
-        // Use the static prompt template, replacing the placeholder with the serialized project JSON
         var projectJson = JsonSerializer.Serialize(project, new JsonSerializerOptions
         {
             WriteIndented = true,
@@ -34,69 +33,73 @@ public class ReportsController : ControllerBase
         });
 
         var promptTemplate =
-            "You are a construction project management assistant. Analyze the following JSON construction project data and generate a professional and comprehensive status report. " +
-            "Structure the report using clear section headers, bullet points, and tables where helpful.\r\n\r\n" +
-            "The report must include the following sections:\r\n\r\n" +
-            "1. Project Overview and Current Status\r\n" +
-            "List all projects with:\r\n\r\n" +
-            "Project Name\r\n\r\n" +
-            "Associated Client (if available in data)\r\n\r\n" +
-            "Site Engineer\r\n\r\n" +
-            "Summarize for each project:\r\n\r\n" +
-            "Current stage\r\n\r\n" +
-            "Percent completion\r\n\r\n" +
-            "Overall project status (e.g., On Track, Delayed, Completed)\r\n\r\n" +
-            "2. Stage Completion Analysis\r\n" +
-            "For each project:\r\n\r\n" +
-            "Break down all stages with:\r\n\r\n" +
-            "Stage Name\r\n\r\n" +
-            "Percent completion\r\n\r\n" +
-            "Schedule status: On Track, Behind Schedule, or Ahead of Schedule (Compare stage start and expected end dates with current date)\r\n\r\n" +
-            "3. Task Progress and Bottlenecks\r\n" +
-            "Under each stage, list all tasks with:\r\n\r\n" +
-            "Task Name\r\n\r\n" +
-            "Current status: Not Started, In Progress, or Completed (based on IsCompleted flag and dates)\r\n\r\n" +
-            "Highlight any delayed or blocked tasks and provide possible reasons (e.g., unassigned workers, no equipment reservation, exceeded expected dates)\r\n\r\n" +
-            "4. Resource Allocation\r\n" +
-            "Workers\r\n\r\n" +
-            "Show task assignments per worker\r\n\r\n" +
-            "Flag over-allocated (assigned to multiple concurrent tasks) and idle workers (not assigned)\r\n\r\n" +
-            "Equipment\r\n\r\n" +
-            "List equipment per project/task with:\r\n\r\n" +
-            "Reservation status: In Use, Reserved, Idle\r\n\r\n" +
-            "Usage conflicts or underutilization\r\n\r\n" +
-            "5. Risks and Recommendations\r\n" +
-            "Identify current or potential risks:\r\n\r\n" +
-            "Labor shortages\r\n\r\n" +
-            "Equipment scheduling conflicts\r\n\r\n" +
-            "Delays in stages or key dependencies\r\n\r\n" +
-            "Provide clear, actionable recommendations:\r\n\r\n" +
-            "Reassign or redistribute workers\r\n\r\n" +
-            "Reserve backup equipment\r\n\r\n" +
-            "Adjust task priorities or stage schedules\r\n\r\n" +
-            "Project details:\r\n{0}";
+            "You are a construction project management expert analyzing project data to generate comprehensive reports. " +
+            "Follow these guidelines strictly:\n\n" +
+
+            "### Report Structure Requirements:\n" +
+            "1. **Executive Summary** (3-5 bullet points)\n" +
+            "   - Overall project health status (use: ✅ On Track, ⚠️ At Risk, or ❌ Off Track)\n" +
+            "   - Key milestones reached/upcoming\n" +
+            "   - Critical risks needing attention\n\n" +
+
+            "2. **Project Overview**\n" +
+            "   - Table format with columns: Project | Client | Site Engineer | % Complete | Status\n" +
+            "   - Status indicators: (🟢 On Track) (🟡 Minor Delays) (🔴 Significant Delay)\n\n" +
+
+            "3. **Stage Analysis**\n" +
+            "   - For each stage, include:\n" +
+            "     - Visual progress bar [=====    ] 60%\n" +
+            "     - Timeline comparison: Planned vs Actual (use 📅 icon)\n" +
+            "     - Critical path identification\n\n" +
+
+            "4. **Resource Allocation**\n" +
+            "   - Worker utilization heatmap (High/Medium/Low)\n" +
+            "   - Equipment conflict matrix\n" +
+            "   - Highlight:\n" +
+            "     - Over-utilized resources (❗ icon)\n" +
+            "     - Underutilized resources (💤 icon)\n\n" +
+
+            "5. **Risk Matrix**\n" +
+            "   - Table with: Risk | Impact (H/M/L) | Probability (H/M/L) | Mitigation Strategy\n" +
+            "   - Flag top 3 critical risks with 🚨\n\n" +
+
+            "6. **Recommendations**\n" +
+            "   - Categorized as:\n" +
+            "     - 🚀 Quick Wins\n" +
+            "     - 🛠️ Process Improvements\n" +
+            "     - 🔄 Resource Reallocations\n\n" +
+
+            "### Formatting Rules:\n" +
+            "- Use markdown formatting\n" +
+            "- Include emoji for visual scanning\n" +
+            "- Never use placeholder text - show 'N/A' if data missing\n" +
+            "- Prioritize actionable insights over raw data\n\n" +
+
+            "### Project Data:\n{0}";
 
         return string.Format(promptTemplate, projectJson);
     }
-
-
-
-
 
 
     // well document for both languages
     [HttpGet(SystemApiRouts.Reports.DownloadProjectReprot)]
     public async Task<IActionResult> GenerateReport(int projectId)
     {
+        // Theme colors (adjust based on your actual app theme)
+        var primaryColor = "#2E86AB";  // Blue-ish
+        var secondaryColor = "#A23B72"; // Purple-ish
+        var accentColor = "#F18F01";   // Orange
+        var successColor = "#3BB273";   // Green
+        var warningColor = "#F4A259";   // Yellow-orange
+        var dangerColor = "#E94F37";    // Red
+        var textColor = "#333333";      // Dark gray
+        var lightBgColor = "#F8F9FA";   // Light gray
 
         var project = await _unitOfWork.Projects.GetProjectReport(projectId);
-
         var prompt = BuildProjectReportPrompt(project);
-
 
         OpenAIClient client = new OpenAIClient(_apiKey);
         ChatClient chatService = client.GetChatClient("gpt-4o-mini");
-
         var result = await chatService.CompleteChatAsync(prompt);
         var rawText = result.Value.Content[0].Text;
 
@@ -107,7 +110,6 @@ public class ReportsController : ControllerBase
             .Where(line => !string.IsNullOrWhiteSpace(line))
             .ToList();
 
-        // Generate PDF using QuestPDF
         byte[] pdfBytes;
         using (var stream = new MemoryStream())
         {
@@ -115,22 +117,31 @@ public class ReportsController : ControllerBase
             {
                 container.Page(page =>
                 {
+                    // Page styling
+                    page.DefaultTextStyle(x => x.FontSize(12).FontColor(textColor));
                     page.Margin(30);
-                    page.Header().AlignCenter().PaddingBottom(15).Text($"Report: {project.Name}")
-                        .FontSize(20)
-                        .Bold()
-                        .Underline();
+
+                    // Header with theme colors
+                    page.Header().PaddingBottom(15).Row(row =>
+                    {
+                        row.RelativeItem().Background(primaryColor).Padding(10).AlignCenter().Text($"Report: {project.Name}")
+                            .FontColor("#FFFFFF")
+                            .FontSize(20)
+                            .Bold();
+                    });
 
                     page.Content().Column(column =>
                     {
                         bool inList = false;
+                        bool inTable = false;
 
                         foreach (var line in lines)
                         {
-                            // Handle section headers (markdown ## or ###)
+                            // Handle section headers
                             if (line.StartsWith("## "))
                             {
-                                column.Item().PaddingBottom(10).Text(line.Replace("## ", ""))
+                                column.Item().PaddingBottom(10).PaddingTop(15).Text(line.Replace("## ", ""))
+                                    .FontColor(primaryColor)
                                     .FontSize(18)
                                     .Bold();
                                 inList = false;
@@ -138,35 +149,124 @@ public class ReportsController : ControllerBase
                             else if (line.StartsWith("### "))
                             {
                                 column.Item().PaddingBottom(8).Text(line.Replace("### ", ""))
+                                    .FontColor(secondaryColor)
                                     .FontSize(16)
                                     .Bold();
                                 inList = false;
                             }
-                            // Handle numbered lists
-                            else if (Regex.IsMatch(line, @"^\d+\.\s"))
+                            // Handle status indicators
+                            else if (line.Contains("🟢") || line.Contains("✅"))
                             {
-                                var item = column.Item();
-                                if (!inList) item = item.PaddingTop(5);
-                                item.PaddingLeft(15).Text(line).FontSize(12);
-                                inList = true;
+                                column.Item().PaddingBottom(5).Text(line)
+                                    .FontColor(successColor);
                             }
-                            // Handle bullet lists (markdown * or -)
-                            else if (line.StartsWith("* ") || line.StartsWith("- "))
+                            else if (line.Contains("🟡") || line.Contains("⚠️"))
+                            {
+                                column.Item().PaddingBottom(5).Text(line)
+                                    .FontColor(warningColor);
+                            }
+                            else if (line.Contains("🔴") || line.Contains("❌"))
+                            {
+                                column.Item().PaddingBottom(5).Text(line)
+                                    .FontColor(dangerColor);
+                            }
+                            // Handle progress bars
+                            else if (line.Contains("[") && line.Contains("%"))
+                            {
+                                var progressText = line;
+                                var percentMatch = Regex.Match(line, @"(\d+)%");
+                                var percent = percentMatch.Success ? int.Parse(percentMatch.Groups[1].Value) : 0;
+
+                                column.Item().PaddingVertical(5).Stack(stack =>
+                                {
+                                    stack.Item().Text(progressText);
+                                    stack.Item().PaddingTop(2).Height(8).Background(lightBgColor).Width(percent * 2)
+                                        .Background(percent > 70 ? successColor : percent > 30 ? warningColor : dangerColor);
+                                });
+                            }
+                            // Handle bullet lists
+                            else if (line.StartsWith("* ") || line.StartsWith("- ") || line.StartsWith("• "))
                             {
                                 var item = column.Item();
                                 if (!inList) item = item.PaddingTop(5);
                                 item.Row(row =>
                                 {
-                                    row.AutoItem().Text("•");
+                                    row.AutoItem().Text("•").FontColor(accentColor);
                                     row.RelativeItem().PaddingLeft(5).Text(line.Substring(2).Trim());
                                 });
                                 inList = true;
                             }
-                            // Handle code blocks (markdown ```)
-                            else if (line.StartsWith("```"))
+                            // Handle tables
+                            else if (line.Contains("|") && line.Split('|').Length > 2)
                             {
-                                // Skip the code block markers
-                                inList = false;
+                                if (!inTable)
+                                {
+                                    // First line of table - assumed to be headers
+                                    var headers = line.Split('|')
+                                        .Select(c => c.Trim())
+                                        .Where(c => !string.IsNullOrEmpty(c))
+                                        .ToArray();
+
+                                    column.Item().PaddingTop(10).Table(table =>
+                                    {
+                                        // Define columns (all equal width in this example)
+                                        table.ColumnsDefinition(columns =>
+                                        {
+                                            for (int i = 0; i < headers.Length; i++)
+                                            {
+                                                columns.RelativeColumn();
+                                            }
+                                        });
+
+                                        // Add header row
+                                        table.Header(header =>
+                                        {
+                                            foreach (var headerText in headers)
+                                            {
+                                                header.Cell()
+                                                    .Background(primaryColor)
+                                                    .Padding(5)
+                                                    .Text(headerText)
+                                                    .FontColor("#FFFFFF")
+                                                    .Bold();
+                                            }
+                                        });
+
+                                        inTable = true;
+                                    });
+                                }
+                                else
+                                {
+                                    // Table content rows
+                                    var cells = line.Split('|')
+                                        .Select(c => c.Trim())
+                                        .Where(c => !string.IsNullOrEmpty(c))
+                                        .ToArray();
+
+                                    column.Item().Table(table =>
+                                    {
+                                        table.ColumnsDefinition(columns =>
+                                        {
+                                            for (int i = 0; i < cells.Length; i++)
+                                            {
+                                                columns.RelativeColumn();
+                                            }
+                                        });
+
+                                        table.Cell().BorderBottom(1)
+                                            .BorderColor(lightBgColor)
+                                            .Padding(5)
+                                            .Text(cells[0]);
+
+                                        for (int i = 1; i < cells.Length; i++)
+                                        {
+                                            table.Cell().BorderBottom(1)
+                                                .BorderColor(lightBgColor)
+                                                .Padding(5)
+                                                .Text(cells[i]);
+                                        }
+                                    });
+                                }
                             }
                             else
                             {
@@ -175,15 +275,27 @@ public class ReportsController : ControllerBase
                                     .FontSize(12)
                                     .LineHeight(1.2f);
                                 inList = false;
+                                inTable = false;
                             }
                         }
+
+                        // Add visual summary at end
+                        column.Item().PaddingTop(20).Background(lightBgColor).Padding(15).Column(summaryColumn =>
+                        {
+                            summaryColumn.Item().Text("Project Summary").FontSize(16).Bold().FontColor(primaryColor);
+                            summaryColumn.Item().PaddingTop(5).Text($"Generated on {DateTime.UtcNow:yyyy-MM-dd HH:mm} UTC").Italic();
+                        });
                     });
 
-                    page.Footer().AlignCenter().Text(text =>
+                    // Footer with theme colors
+                    page.Footer().Background(primaryColor).Padding(10).Row(row =>
                     {
-                        text.Span("Page ").FontSize(10);
-                        text.CurrentPageNumber().FontSize(10);
-                        text.Span($" | Generated on {DateTime.UtcNow:yyyy-MM-dd HH:mm} UTC").FontSize(10);
+                        row.RelativeItem().AlignCenter().Text(text =>
+                        {
+                            text.Span("Page ").FontColor("#FFFFFF").FontSize(10);
+                            text.CurrentPageNumber().FontColor("#FFFFFF").FontSize(10);
+                            text.Span($" | {project.Name} Report").FontColor("#FFFFFF").FontSize(10);
+                        });
                     });
                 });
             }).GeneratePdf(stream);
@@ -194,7 +306,6 @@ public class ReportsController : ControllerBase
         var fileName = $"{project.Name} Report_{DateTime.UtcNow:yyyyMMddHHmmss}.pdf";
         return File(pdfBytes, "application/pdf", fileName);
     }
-
 
 
 
