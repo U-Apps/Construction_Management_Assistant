@@ -17,7 +17,7 @@ public static class EFConfig
 
         services.AddDbContext<AppDbContext>(options =>
         {
-            options.UseSqlServer(connectionString);
+            options.UseSqlServer(connectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
             //options.EnableSensitiveDataLogging();
         });
     }
