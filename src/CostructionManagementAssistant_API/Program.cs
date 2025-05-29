@@ -1,3 +1,5 @@
+using ConstructionManagementAssistant.EF.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Register services
@@ -7,7 +9,9 @@ builder.Services.AddSwaggerServices();
 builder.Services.AddEF(builder.Configuration);
 builder.Services.AddSupabase();
 builder.Host.UseSerilogLoggging();
-
+builder.Services.AddScoped<IAuthService, AuthRepository>();
+builder.Services.AddScoped<IEmailService, EmailReposotry>();
+builder.Services.AddScoped<IEmailService, EmailReposotry>();
 var Jwt = builder.Configuration.GetSection("JWT").Get<JWT>();
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 
