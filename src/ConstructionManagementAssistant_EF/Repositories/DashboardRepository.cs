@@ -123,7 +123,7 @@ public class DashboardRepository : IDashboardRepository
 
             var totalEquipment = await _context.Equipments.CountAsync(e => e.UserId == userIdInt);
             var reservedEquipment = await _context.Equipments
-                .CountAsync(e => e.UserId == userIdInt && e.Assignments != null && e.Assignments.Any(r =>
+                .CountAsync(e => e.UserId == userIdInt && e.Assignments.Any(r =>
                     r.StartDate <= DateTime.Now && r.EndDate >= DateTime.Now));
             var availableEquipment = totalEquipment - reservedEquipment;
             var totalReservation = await _context.EquipmentReservations.CountAsync(r =>

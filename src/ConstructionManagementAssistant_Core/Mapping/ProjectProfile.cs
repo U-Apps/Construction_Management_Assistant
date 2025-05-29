@@ -14,7 +14,7 @@ public static class ProjectProfile
             ClientName = project.Client.FullName,
             ProjectStatus = (project.Status).GetDisplayName(),
             Progress =
-                project.Stages != null && project.Stages.Any(s => s.Tasks != null && s.Tasks.Any())
+                project.Stages != null && project.Stages.Any(s => s.Tasks.Any())
                     ? (int)(
                         (project.Stages
                             .SelectMany(s => s.Tasks)
@@ -75,7 +75,7 @@ public static class ProjectProfile
             ExpectedEndDate = Project.ExpectedEndDate,
             ProjectStatus = Project.Status.GetDisplayName(),
             Progress =
-                Project.Stages != null && Project.Stages.Any(s => s.Tasks != null && s.Tasks.Any())
+                Project.Stages != null && Project.Stages.Any(s => s.Tasks.Any())
                     ? (int)(
                         (Project.Stages
                             .SelectMany(s => s.Tasks)

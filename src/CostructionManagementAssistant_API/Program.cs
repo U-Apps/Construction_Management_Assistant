@@ -1,12 +1,16 @@
+using ConstructionManagementAssistant.API.Controllers;
 using ConstructionManagementAssistant.API.Startup;
+using ConstructionManagementAssistant.Core.Constants;
 using ConstructionManagementAssistant.Core.Identity;
 using ConstructionManagementAssistant.EF.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Infrastructure;
 using Serilog;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,7 +104,21 @@ app.MapControllers();
 //    db.Database.Migrate();
 //}
 
-app.Run();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var schemaQuery = @"
+        SELECT t.name AS TableName, c.name AS ColumnName
+        FROM sys.tables t
+        JOIN sys.columns c ON t.object_id = c.object_id
+        where t.name in ('Clients','Projects','Stages','Tasks','Equipments')
+        ORDER BY t.name, c.column_id";
 
+    // Use raw SQL to get schema rows
+    var schemaRows = db.Database.SqlQueryRaw<SchemaRow>(schemaQuery).ToList();
+
+    // Serialize to JSON and store globally
+    ReportsController.dbSchema = JsonSerializer.Serialize(schemaRows);
+}
 
 app.Run();

@@ -20,6 +20,7 @@ public class ReportsController : ControllerBase
     private readonly string _apiKey;
     private readonly IUnitOfWork _unitOfWork;
     private readonly AppDbContext _context;
+    public static string dbSchema;
     public ReportsController(IOptions<OpenAIOptions> apiKey, IUnitOfWork unitOfWork, AppDbContext context)
     {
         _apiKey = apiKey.Value.ApiKey;
@@ -317,26 +318,26 @@ public class ReportsController : ControllerBase
 
 
 
-    private async Task<string> GetDbSchemaAsync()
-    {
-        var schemaQuery = @"
-        SELECT 
-            t.name AS TableName,
-            c.name AS ColumnName,
-            ty.name AS DataType
-        FROM 
-            sys.tables t
-        JOIN 
-            sys.columns c ON t.object_id = c.object_id
-        JOIN 
-            sys.types ty ON c.user_type_id = ty.user_type_id
-        ORDER BY 
-            t.name, c.column_id"
-        ;
+    //private async Task<string> GetDbSchemaAsync()
+    //{
+    //    var schemaQuery = @"
+    //    SELECT 
+    //        t.name AS TableName,
+    //        c.name AS ColumnName,
+    //        ty.name AS DataType
+    //    FROM 
+    //        sys.tables t
+    //    JOIN 
+    //        sys.columns c ON t.object_id = c.object_id
+    //    JOIN 
+    //        sys.types ty ON c.user_type_id = ty.user_type_id
+    //    ORDER BY 
+    //        t.name, c.column_id"
+    //    ;
 
-        var schema = await _context.Database.SqlQueryRaw<string>(schemaQuery).ToListAsync();
-        return string.Join("\n", schema);
-    }
+    //    var schema = await _context.Database.SqlQueryRaw<string>(schemaQuery).ToListAsync();
+    //    return string.Join("\n", schema);
+    //}
     private async Task<string> GenerateSqlQueryAsync(string userQuestion, string dbSchema)
     {
         var openAiClient = new OpenAIClient(_apiKey);
@@ -398,10 +399,10 @@ public class ReportsController : ControllerBase
         try
         {
             // 1. Get schema
-            var schema = await GetDbSchemaAsync();
+            //var schema = await GetDbSchemaAsync();
 
             // 2. Generate SQL via OpenAI
-            var sqlQuery = await GenerateSqlQueryAsync(question, schema);
+            var sqlQuery = await GenerateSqlQueryAsync(question, dbSchema);
 
             // 3. Execute query
             var results = await ExecuteGeneratedSqlAsync(sqlQuery);
