@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116 d17.12
+VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructionManagementAssistant_API", "CostructionManagementAssistant_API\ConstructionManagementAssistant_API.csproj", "{A4F3182C-D61D-49AF-9F4D-F637D330901D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructionManagementAssistant.API", "src\CostructionManagementAssistant_API\ConstructionManagementAssistant.API.csproj", "{A4F3182C-D61D-49AF-9F4D-F637D330901D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructionManagementAssistant_Core", "ConstructionManagementAssistant_Core\ConstructionManagementAssistant_Core.csproj", "{30EAC8F8-B69E-4E26-9CB8-EC170EEE00F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructionManagementAssistant.Core", "src\ConstructionManagementAssistant_Core\ConstructionManagementAssistant.Core.csproj", "{30EAC8F8-B69E-4E26-9CB8-EC170EEE00F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructionManagementAssistant_EF", "ConstructionManagementAssistant_EF\ConstructionManagementAssistant_EF.csproj", "{5D6E0870-AF7F-4030-AFED-7C0019B7F1FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructionManagementAssistant.EF", "src\ConstructionManagementAssistant_EF\ConstructionManagementAssistant.EF.csproj", "{5D6E0870-AF7F-4030-AFED-7C0019B7F1FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

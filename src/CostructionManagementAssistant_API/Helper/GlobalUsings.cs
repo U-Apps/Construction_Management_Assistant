@@ -1,0 +1,14 @@
+﻿global using ConstructionManagementAssistant.API.Middleware;
+global using ConstructionManagementAssistant.Core.DTOs;
+global using ConstructionManagementAssistant.Core.Enums;
+global using ConstructionManagementAssistant.Core.Helper;
+global using ConstructionManagementAssistant.Core.Interfaces;
+global using ConstructionManagementAssistant.Core.Models.Response;
+global using ConstructionManagementAssistant.EF.Helper;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.OpenApi.Models;
+global using System.ComponentModel.DataAnnotations;
+global using System.Net;
+global using System.Reflection;
+global using System.Text.Json.Serialization;
+//global using Task = ConstructionManagementAssistant.Core.Entites.Task;
