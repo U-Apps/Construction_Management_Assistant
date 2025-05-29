@@ -1,5 +1,4 @@
 ﻿using ConstructionManagementAssistant.Core.DTOs.ReportDTO;
-using ConstructionManagementAssistant.EF.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -21,6 +20,7 @@ public class ReportsController : ControllerBase
     private readonly IUnitOfWork _unitOfWork;
     private readonly AppDbContext _context;
     public static string dbSchema;
+
     public ReportsController(IOptions<OpenAIOptions> apiKey, IUnitOfWork unitOfWork, AppDbContext context)
     {
         _apiKey = apiKey.Value.ApiKey;

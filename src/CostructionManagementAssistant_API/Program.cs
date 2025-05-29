@@ -1,25 +1,11 @@
-using ConstructionManagementAssistant.API.Controllers;
-using ConstructionManagementAssistant.API.Startup;
-using ConstructionManagementAssistant.Core.Constants;
-using ConstructionManagementAssistant.Core.Identity;
-using ConstructionManagementAssistant.EF.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using QuestPDF.Infrastructure;
-using Serilog;
-using System.Text;
-using System.Text.Json;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Register services
 builder.Services.AddControllersServices();
 builder.Services.AddOpenApiServices();
 builder.Services.AddSwaggerServices();
-builder.Services.AddCoreServices();
-builder.Services.AddEFServices(builder.Configuration);
+builder.Services.AddEF(builder.Configuration);
+builder.Services.AddSupabase();
 builder.Host.UseSerilogLoggging();
 
 var Jwt = builder.Configuration.GetSection("JWT").Get<JWT>();
